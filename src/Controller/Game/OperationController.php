@@ -6,6 +6,7 @@ namespace FrankProjects\UltimateWarfare\Controller\Game;
 
 use FrankProjects\UltimateWarfare\Entity\GameUnitType;
 use FrankProjects\UltimateWarfare\Exception\GameUnitTypeNotFoundException;
+use FrankProjects\UltimateWarfare\Exception\OperationNotFoundException;
 use FrankProjects\UltimateWarfare\Exception\WorldRegionNotFoundException;
 use FrankProjects\UltimateWarfare\Repository\GameUnitTypeRepository;
 use FrankProjects\UltimateWarfare\Repository\OperationRepository;
@@ -159,16 +160,12 @@ final class OperationController extends BaseGameController
 
         try {
             $worldRegion = $this->regionActionService->getWorldRegionByIdAndWorld($regionId, $player->getWorld());
-        } catch (WorldRegionNotFoundException $e) {
-            $this->addFlash('error', $e->getMessage());
-            return $this->redirectToRoute('Game/RegionList', [], 302);
-        }
 
-        $operation = $this->operationRepository->find($operationId);
+            $operation = $this->operationRepository->find($operationId);
 
-        try {
             $playerRegion = $this->regionActionService->getWorldRegionByIdAndPlayer($playerRegionId, $player);
-        } catch (WorldRegionNotFoundException $e) {
+
+        } catch (WorldRegionNotFoundException | OperationNotFoundException $e) {
             $this->addFlash('error', $e->getMessage());
             return $this->redirectToRoute('Game/RegionList', [], 302);
         }
@@ -179,7 +176,7 @@ final class OperationController extends BaseGameController
                     $worldRegion,
                     $operation,
                     $playerRegion,
-                    intval($request->get('amount'))
+                    (int)$request->get('amount')
                 );
                 $this->addFlash('success', 'Successfully executed the operation!');
             } catch (Throwable $e) {

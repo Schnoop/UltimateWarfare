@@ -6,6 +6,7 @@ namespace FrankProjects\UltimateWarfare\Controller\Game;
 
 use FrankProjects\UltimateWarfare\Entity\Player;
 use FrankProjects\UltimateWarfare\Entity\WorldSector;
+use FrankProjects\UltimateWarfare\Exception\WorldNotFoundException;
 use FrankProjects\UltimateWarfare\Repository\PlayerRepository;
 use FrankProjects\UltimateWarfare\Repository\WorldRegionRepository;
 use FrankProjects\UltimateWarfare\Repository\WorldRepository;
@@ -81,7 +82,13 @@ final class WorldController extends BaseGameController
         $name = (string) $request->request->get('name');
 
         $user = $this->getGameUser();
-        $world = $this->worldRepository->find($worldId);
+
+        try {
+            $world = $this->worldRepository->find($worldId);
+        } catch (WorldNotFoundException $e) {
+            $this->addFlash('error', 'World not found!');
+            return $this->redirectToRoute('Game/SelectWorld', [], 302);
+        }
 
         foreach ($user->getPlayers() as $player) {
             if ($player->getWorld()->getId() == $worldId) {

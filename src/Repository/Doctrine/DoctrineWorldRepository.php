@@ -7,6 +7,7 @@ namespace FrankProjects\UltimateWarfare\Repository\Doctrine;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use FrankProjects\UltimateWarfare\Entity\World;
+use FrankProjects\UltimateWarfare\Exception\WorldNotFoundException;
 use FrankProjects\UltimateWarfare\Repository\WorldRepository;
 
 final class DoctrineWorldRepository implements WorldRepository
@@ -24,9 +25,16 @@ final class DoctrineWorldRepository implements WorldRepository
         $this->repository = $this->entityManager->getRepository(World::class);
     }
 
-    public function find(int $id): ?World
+    /**
+     * @throws WorldNotFoundException
+     */
+    public function find(int $id): World
     {
-        return $this->repository->find($id);
+        $world = $this->repository->find($id);
+        if ($world === null) {
+            throw new WorldNotFoundException();
+        }
+        return $world;
     }
 
     /**

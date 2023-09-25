@@ -6,10 +6,14 @@ namespace FrankProjects\UltimateWarfare\Repository;
 
 use FrankProjects\UltimateWarfare\Entity\Operation;
 use FrankProjects\UltimateWarfare\Entity\Player;
+use FrankProjects\UltimateWarfare\Exception\OperationNotFoundException;
 
 interface OperationRepository
 {
-    public function find(int $id): ?Operation;
+    /**
+     * @throws OperationNotFoundException
+     */
+    public function find(int $id): Operation;
 
     /**
      * @return Operation[]

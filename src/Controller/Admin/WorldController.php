@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FrankProjects\UltimateWarfare\Controller\Admin;
 
 use FrankProjects\UltimateWarfare\Entity\World;
+use FrankProjects\UltimateWarfare\Exception\WorldNotFoundException;
 use FrankProjects\UltimateWarfare\Form\Admin\World\MapConfigurationType;
 use FrankProjects\UltimateWarfare\Form\Admin\WorldType;
 use FrankProjects\UltimateWarfare\Repository\WorldRepository;
@@ -67,8 +68,9 @@ final class WorldController extends AbstractController
 
     public function edit(Request $request, int $worldId): Response
     {
-        $world = $this->worldRepository->find($worldId);
-        if ($world === null) {
+        try {
+            $world = $this->worldRepository->find($worldId);
+        } catch (WorldNotFoundException $e) {
             $this->addFlash('error', 'World does not exist');
             return $this->redirectToRoute('Admin/World/List', [], 302);
         }
@@ -115,8 +117,9 @@ final class WorldController extends AbstractController
 
     public function generate(Request $request, int $worldId, int $sector = 0): Response
     {
-        $world = $this->worldRepository->find($worldId);
-        if ($world === null) {
+        try {
+            $world = $this->worldRepository->find($worldId);
+        } catch (WorldNotFoundException $e) {
             $this->addFlash('error', 'World does not exist');
             return $this->redirectToRoute('Admin/World/List', [], 302);
         }

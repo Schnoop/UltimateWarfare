@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use FrankProjects\UltimateWarfare\Entity\Operation;
 use FrankProjects\UltimateWarfare\Entity\Player;
+use FrankProjects\UltimateWarfare\Exception\OperationNotFoundException;
 use FrankProjects\UltimateWarfare\Repository\OperationRepository;
 
 final class DoctrineOperationRepository implements OperationRepository
@@ -25,9 +26,16 @@ final class DoctrineOperationRepository implements OperationRepository
         $this->repository = $this->entityManager->getRepository(Operation::class);
     }
 
-    public function find(int $id): ?Operation
+    /**
+     * @throws OperationNotFoundException
+     */
+    public function find(int $id): Operation
     {
-        return $this->repository->find($id);
+        $operation = $this->repository->find($id);
+        if ($operation === null) {
+            throw new OperationNotFoundException();
+        }
+        return $operation;
     }
 
     /**

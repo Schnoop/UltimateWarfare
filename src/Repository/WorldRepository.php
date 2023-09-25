@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace FrankProjects\UltimateWarfare\Repository;
 
 use FrankProjects\UltimateWarfare\Entity\World;
+use FrankProjects\UltimateWarfare\Exception\WorldNotFoundException;
 
 interface WorldRepository
 {
-    public function find(int $id): ?World;
+    /**
+     * @throws WorldNotFoundException
+     */
+    public function find(int $id): World;
 
     /**
      * @return World[]
