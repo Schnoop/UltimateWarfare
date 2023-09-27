@@ -1,6 +1,5 @@
-label:
-  title: Title
-  message: Message
-  enabled: Enabled
-  mainpage: Main page
-  save: Save
+label.title: Title
+label.message: Message
+label.enabled: Enabled
+label.mainpage: 'Main page'
+label.save: Save

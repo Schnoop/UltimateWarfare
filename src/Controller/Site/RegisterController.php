@@ -10,6 +10,7 @@ use FrankProjects\UltimateWarfare\Service\Action\RegisterActionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\TranslatableMessage;
 use Throwable;
 
 final class RegisterController extends AbstractController
@@ -33,7 +34,7 @@ final class RegisterController extends AbstractController
                 $this->registerActionService->register($user);
                 $this->addFlash(
                     'success',
-                    "You successfully created an account! An e-mail has been sent to {$user->getEmail()} with your activation code..."
+                    new TranslatableMessage('You successfully created an account! An e-mail has been sent to %email% with your activation code...', ['%email%' => $user->getEmail()], 'register')
                 );
             } catch (Throwable $e) {
                 $this->addFlash('error', $e->getMessage());
@@ -53,7 +54,7 @@ final class RegisterController extends AbstractController
     {
         try {
             $this->registerActionService->activateUser($token);
-            $this->addFlash('success', 'You successfully activated your account!');
+            $this->addFlash('success', new TranslatableMessage('You successfully activated your account!', [], 'register'));
         } catch (Throwable $e) {
             $this->addFlash('error', $e->getMessage());
         }

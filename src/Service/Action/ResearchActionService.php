@@ -11,21 +11,25 @@ use FrankProjects\UltimateWarfare\Repository\PlayerRepository;
 use FrankProjects\UltimateWarfare\Repository\ResearchPlayerRepository;
 use FrankProjects\UltimateWarfare\Repository\ResearchRepository;
 use RuntimeException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ResearchActionService
 {
     private PlayerRepository $playerRepository;
     private ResearchRepository $researchRepository;
     private ResearchPlayerRepository $researchPlayerRepository;
+    private TranslatorInterface $translator;
 
     public function __construct(
         ResearchRepository $researchRepository,
         ResearchPlayerRepository $researchPlayerRepository,
-        PlayerRepository $playerRepository
+        PlayerRepository $playerRepository,
+        TranslatorInterface $translator
     ) {
         $this->researchRepository = $researchRepository;
         $this->researchPlayerRepository = $researchPlayerRepository;
         $this->playerRepository = $playerRepository;
+        $this->translator = $translator;
     }
 
     public function performResearch(int $researchId, Player $player): void
@@ -58,7 +62,7 @@ final class ResearchActionService
             }
 
             if ($playerResearch->getActive()) {
-                throw new RunTimeException('Research project is already completed!');
+                throw new RunTimeException($this->translator->trans('Research project is already completed!', [], 'research'));
             }
 
             $this->researchPlayerRepository->remove($playerResearch);
@@ -70,11 +74,11 @@ final class ResearchActionService
         $research = $this->researchRepository->find($researchId);
 
         if ($research === null) {
-            throw new RunTimeException('This technology does not exist!');
+            throw new RunTimeException($this->translator->trans('This technology does not exist!', [], 'research'));
         }
 
         if (!$research->getActive()) {
-            throw new RunTimeException('This technology is disabled!');
+            throw new RunTimeException($this->translator->trans('This technology is disabled!', [], 'research'));
         }
 
         return $research;
@@ -87,11 +91,11 @@ final class ResearchActionService
         /** @var ResearchPlayer $playerResearch */
         foreach ($player->getPlayerResearch() as $playerResearch) {
             if (!$playerResearch->getActive()) {
-                throw new RunTimeException('You can only research 1 technology at a time!');
+                throw new RunTimeException($this->translator->trans('You can only research 1 technology at a time!', [], 'research'));
             }
 
             if ($playerResearch->getResearch()->getId() === $research->getId()) {
-                throw new RunTimeException('This technology has already been researched!');
+                throw new RunTimeException($this->translator->trans('This technology has already been researched!', [], 'research'));
             }
 
             $researchArray[$playerResearch->getResearch()->getId()] = $playerResearch->getResearch();
@@ -99,12 +103,12 @@ final class ResearchActionService
 
         foreach ($research->getResearchNeeds() as $researchNeed) {
             if (!isset($researchArray[$researchNeed->getRequiredResearch()->getId()])) {
-                throw new RunTimeException('You do not have all required technologies!');
+                throw new RunTimeException($this->translator->trans('You do not have all required technologies!', [], 'research'));
             }
         }
 
         if ($research->getCost() > $player->getResources()->getCash()) {
-            throw new RunTimeException('You can not afford that!');
+            throw new RunTimeException($this->translator->trans('You can not afford that!', [], 'research'));
         }
     }
 }

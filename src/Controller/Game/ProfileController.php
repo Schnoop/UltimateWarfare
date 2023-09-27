@@ -6,6 +6,7 @@ namespace FrankProjects\UltimateWarfare\Controller\Game;
 
 use FrankProjects\UltimateWarfare\Repository\PlayerRepository;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\TranslatableMessage;
 
 final class ProfileController extends BaseGameController
 {
@@ -15,7 +16,7 @@ final class ProfileController extends BaseGameController
         $profilePlayer = $playerRepository->findByNameAndWorld($playerName, $player->getWorld());
 
         if ($profilePlayer === null) {
-            $this->addFlash('error', 'Player profile can not be found!');
+            $this->addFlash('error', new TranslatableMessage('Player profile can not be found!', [], 'profile'));
             return $this->redirectToRoute('Game/Headquarter');
         }
 

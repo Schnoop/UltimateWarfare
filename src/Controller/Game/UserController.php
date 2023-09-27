@@ -12,6 +12,7 @@ use FrankProjects\UltimateWarfare\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 
 final class UserController extends BaseGameController
 {
@@ -40,7 +41,7 @@ final class UserController extends BaseGameController
     {
         $user = $this->getGameUser(false);
         if ($user->getActive()) {
-            $this->addFlash('error', 'You are not banned!');
+            $this->addFlash('error', new TranslatableMessage('You are not banned!', [], 'user'));
             return $this->redirectToRoute('Game/Account');
         }
 
@@ -57,7 +58,7 @@ final class UserController extends BaseGameController
             $unbanRequest->setUser($user);
             $this->unbanRequestRepository->save($unbanRequest);
 
-            $this->addFlash('success', 'We have received your request, we will try to read your request ASAP...');
+            $this->addFlash('success', new TranslatableMessage('We have received your request, we will try to read your request ASAP...', [], 'user'));
         }
 
         return $this->render(
@@ -81,16 +82,16 @@ final class UserController extends BaseGameController
 
             if ($passwordHasher->isPasswordValid($user, $oldPassword)) {
                 if ($plainPassword === null) {
-                    $this->addFlash('error', 'New passwords do not match');
+                    $this->addFlash('error', new TranslatableMessage('New passwords do not match', [], 'user'));
                 } else {
                     $newEncodedPassword = $passwordHasher->hashPassword($user, $plainPassword);
                     $user->setPassword($newEncodedPassword);
                     $this->userRepository->save($user);
 
-                    $this->addFlash('success', "Password change successfully!");
+                    $this->addFlash('success', new TranslatableMessage('Password change successfully!', [], 'user'));
                 }
             } else {
-                $this->addFlash('error', 'Old password is invalid');
+                $this->addFlash('error', new TranslatableMessage('Old password is invalid', [], 'user'));
             }
         }
 
@@ -141,9 +142,9 @@ final class UserController extends BaseGameController
                     $user->setAvatar($image->getImageBlob());
                     $this->userRepository->save($user);
 
-                    $this->addFlash('success', 'Avatar uploaded successfully!');
+                    $this->addFlash('success', new TranslatableMessage('Avatar uploaded successfully!', [], 'user'));
                 } catch (\Exception $e) {
-                    $this->addFlash('error', 'Could not upload avatar');
+                    $this->addFlash('error', new TranslatableMessage('Could not upload avatar', [], 'user'));
                 }
 
                 return $this->redirectToRoute('Game/Account/Edit');
@@ -167,7 +168,7 @@ final class UserController extends BaseGameController
         $user->setAvatar('');
         $this->userRepository->save($user);
 
-        $this->addFlash('success', 'Avatar successfully deleted!');
+        $this->addFlash('success', new TranslatableMessage('Avatar successfully deleted!', [], 'user'));
         return $this->redirectToRoute('Game/Account/Edit');
     }
 
@@ -196,14 +197,14 @@ final class UserController extends BaseGameController
                 $user->setAdviser(true);
                 $this->userRepository->save($user);
 
-                $this->addFlash('success', 'Successfully changed settings!');
+                $this->addFlash('success', new TranslatableMessage('Successfully changed settings!', [], 'user'));
             }
         } else {
             if ($user->getAdviser() == 1) {
                 $user->setAdviser(false);
                 $this->userRepository->save($user);
 
-                $this->addFlash('success', 'Successfully changed settings!');
+                $this->addFlash('success', new TranslatableMessage('Successfully changed settings!', [], 'user'));
             }
         }
     }

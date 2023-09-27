@@ -7,6 +7,7 @@ namespace FrankProjects\UltimateWarfare\Controller\Game;
 use FrankProjects\UltimateWarfare\Service\Action\FederationBankActionService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\TranslatableMessage;
 use Throwable;
 
 final class FederationBankController extends BaseGameController
@@ -25,7 +26,7 @@ final class FederationBankController extends BaseGameController
             $resources = $request->get('resources');
             if ($request->isMethod(Request::METHOD_POST) && $resources !== null) {
                 $this->federationBankActionService->deposit($this->getPlayer(), $resources);
-                $this->addFlash('success', 'You successfully made a deposit!');
+                $this->addFlash('success', new TranslatableMessage('You successfully made a deposit!', [], 'federationbank'));
             }
         } catch (Throwable $e) {
             $this->addFlash('error', $e->getMessage());
@@ -45,7 +46,7 @@ final class FederationBankController extends BaseGameController
             $resources = $request->get('resources');
             if ($request->isMethod(Request::METHOD_POST) && $resources !== null) {
                 $this->federationBankActionService->withdraw($this->getPlayer(), $resources);
-                $this->addFlash('success', 'You successfully made a withdrawal!');
+                $this->addFlash('success', new TranslatableMessage('You successfully made a withdrawal!', [], 'federationbank'));
             }
         } catch (Throwable $e) {
             $this->addFlash('error', $e->getMessage());

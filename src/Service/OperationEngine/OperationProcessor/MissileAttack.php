@@ -43,32 +43,45 @@ final class MissileAttack extends OperationProcessor
                 if ($worldRegionUnit->getGameUnit()->getGameUnitType()->getId() == GameUnitType::GAME_UNIT_TYPE_BUILDINGS) {
                     $this->worldRegionUnitRepository->remove($worldRegionUnit);
                     $this->addToOperationLog(
-                        "You destroyed all {$worldRegionUnit->getGameUnit()->getName()} buildings!"
+                        $this->translator->trans('You destroyed all %name% buildings!', ['%name%' => $worldRegionUnit->getGameUnit()->getName()], 'operations')
                     );
                 }
             }
 
-            $reportText = "{$this->playerRegion->getPlayer()->getName()} launched a missile attack against region {$this->region->getX()}, {$this->region->getY()} and destroyed all buildings.";
+            $reportText = $this->translator->trans('%player% launched a missile attack against region %regionX%, %regionY% and destroyed all buildings.', [
+                '%player%' => $this->playerRegion->getPlayer()->getName(),
+                '%regionX%' => $this->region->getX(),
+                '%regionY%' => $this->region->getY(),
+            ], 'operations');
+
             $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
         } else {
-            $buildingsDestroyed = intval($this->amount / 2);
+            $buildingsDestroyed = (int)($this->amount / 2);
             foreach ($this->region->getWorldRegionUnits() as $worldRegionUnit) {
                 if ($worldRegionUnit->getGameUnit()->getGameUnitType()->getId() == GameUnitType::GAME_UNIT_TYPE_BUILDINGS) {
                     $percentage = $worldRegionUnit->getAmount() / $totalBuildings;
-                    $destroyed = intval($buildingsDestroyed * $percentage);
+                    $destroyed = (int)($buildingsDestroyed * $percentage);
                     $worldRegionUnit->setAmount($worldRegionUnit->getAmount() - $destroyed);
                     $this->worldRegionUnitRepository->save($worldRegionUnit);
                     $this->addToOperationLog(
-                        "You destroyed {$destroyed} {$worldRegionUnit->getGameUnit()->getName()} buildings!"
+                        $this->translator->trans('You destroyed %destroyed% %name% buildings!', ['%destroyed%' => $destroyed, '%name%' => $worldRegionUnit->getGameUnit()->getName()], 'operations')
                     );
                 }
             }
 
-            $reportText = "{$this->playerRegion->getPlayer()->getName()} launched a missile attack against region {$this->region->getX()}, {$this->region->getY()} and destroyed {$buildingsDestroyed} buildings.";
+            $reportText = $this->translator->trans('%player% launched a missile attack against region %regionX%, %regionY% and destroyed %destroyed% buildings.', [
+                '%player%' => $this->playerRegion->getPlayer()->getName(),
+                '%destroyed%' => $buildingsDestroyed,
+                '%regionX%' => $this->region->getX(),
+                '%regionY%' => $this->region->getY(),
+            ], 'operations');
+
             $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
         }
 
-        $this->addToOperationLog("You destroyed {$buildingsDestroyed} buildings!");
+        $this->addToOperationLog(
+            $this->translator->trans('You destroyed %destroyed% buildings!', ['%destroyed%' => $buildingsDestroyed], 'operations')
+        );
     }
 
     public function processFailed(): void
@@ -82,10 +95,15 @@ final class MissileAttack extends OperationProcessor
             }
         }
 
-        $reportText = "{$this->playerRegion->getPlayer()->getName()} tried to launch a missile attack against region {$this->region->getX()}, {$this->region->getY()} but failed.";
+        $reportText = $this->translator->trans('%player% tried to launch a missile attack against region %regionX%, %regionY% but failed.', [
+            '%player%' => $this->playerRegion->getPlayer()->getName(),
+            '%regionX%' => $this->region->getX(),
+            '%regionY%' => $this->region->getY(),
+        ], 'operations');
+
         $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
 
-        $this->addToOperationLog("We failed our Missile Attack and lost {$troopsLost} Special Ops");
+        $this->addToOperationLog($this->translator->trans('We failed our Missile Attack and lost %specialOpsLost% Special Ops', ['%specialOpsLost%' => $troopsLost], 'operations'));
     }
 
     public function processPostOperation(): void

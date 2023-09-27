@@ -12,6 +12,7 @@ use FrankProjects\UltimateWarfare\Repository\WorldRegionRepository;
 use FrankProjects\UltimateWarfare\Repository\WorldRegionUnitRepository;
 use FrankProjects\UltimateWarfare\Util\ReportCreator;
 use RuntimeException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class OperationProcessor implements OperationInterface
 {
@@ -30,6 +31,10 @@ abstract class OperationProcessor implements OperationInterface
      * @var array <int, string>
      */
     protected array $operationLog = [];
+    protected TranslatorInterface $translator;
+
+    protected const ATTACK = 'unknown attack ';
+    protected const FULL_SUCCESS = 'and destroyed nothing at all.';
 
     /**
      * OperationProcessor constructor.
@@ -53,7 +58,8 @@ abstract class OperationProcessor implements OperationInterface
         PlayerRepository $playerRepository,
         WorldRegionUnitRepository $worldRegionUnitRepository,
         WorldRegionRepository $worldRegionRepository,
-        ConstructionRepository $constructionRepository
+        ConstructionRepository $constructionRepository,
+        TranslatorInterface $translator
     ) {
         $this->region = $region;
         $this->operation = $operation;
@@ -64,6 +70,7 @@ abstract class OperationProcessor implements OperationInterface
         $this->worldRegionUnitRepository = $worldRegionUnitRepository;
         $this->worldRegionRepository = $worldRegionRepository;
         $this->constructionRepository = $constructionRepository;
+        $this->translator = $translator;
     }
 
     /**
@@ -77,6 +84,7 @@ abstract class OperationProcessor implements OperationInterface
      * @param WorldRegionUnitRepository $worldRegionUnitRepository
      * @param WorldRegionRepository $worldRegionRepository
      * @param ConstructionRepository $constructionRepository
+     * @param TranslatorInterface $translator
      * @return OperationInterface
      */
     public static function factory(
@@ -89,7 +97,8 @@ abstract class OperationProcessor implements OperationInterface
         PlayerRepository $playerRepository,
         WorldRegionUnitRepository $worldRegionUnitRepository,
         WorldRegionRepository $worldRegionRepository,
-        ConstructionRepository $constructionRepository
+        ConstructionRepository $constructionRepository,
+        TranslatorInterface $translator
     ): OperationInterface {
         $className = "FrankProjects\\UltimateWarfare\\Service\\OperationEngine\\OperationProcessor\\" . $subclass;
         if (!class_exists($className) || is_subclass_of($className, OperationInterface::class) === false) {
@@ -105,7 +114,8 @@ abstract class OperationProcessor implements OperationInterface
             $playerRepository,
             $worldRegionUnitRepository,
             $worldRegionRepository,
-            $constructionRepository
+            $constructionRepository,
+            $translator
         );
     }
 

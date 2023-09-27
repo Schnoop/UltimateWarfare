@@ -13,6 +13,7 @@ use FrankProjects\UltimateWarfare\Service\Action\FleetActionService;
 use FrankProjects\UltimateWarfare\Service\Action\RegionActionService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\TranslatableMessage;
 use Throwable;
 
 final class AttackController extends BaseGameController
@@ -72,12 +73,12 @@ final class AttackController extends BaseGameController
         }
 
         if ($worldRegion->getPlayer() === null) {
-            $this->addFlash('error', "Can not attack nobody!");
+            $this->addFlash('error', new TranslatableMessage('Can not attack nobody!', [], 'attack'));
             return $this->redirectToRoute('Game/World/Region', ['regionId' => $worldRegion->getId()], 302);
         }
 
         if ($worldRegion->getPlayer()->getId() == $player->getId()) {
-            $this->addFlash('error', "Can not attack your own region!");
+            $this->addFlash('error', new TranslatableMessage('Can not attack your own region!', [], 'attack'));
             return $this->redirectToRoute('Game/World/Region', ['regionId' => $worldRegion->getId()], 302);
         }
 

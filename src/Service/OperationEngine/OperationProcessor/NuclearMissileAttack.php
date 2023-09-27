@@ -41,12 +41,15 @@ final class NuclearMissileAttack extends OperationProcessor
         $this->region->setPlayer(null);
         $this->worldRegionRepository->save($this->region);
 
-        $reportText = "{$this->playerRegion->getPlayer()->getName()} launched a nuclear missile attack against region {$this->region->getX()}, {$this->region->getY()} and destroyed everything.";
+        $reportText = $this->translator->trans('%player% launched a nuclear missile attack against region %regionX%, %regionY% and destroyed everything.', [
+            '%player%' => $this->playerRegion->getPlayer()->getName(),
+            '%regionX%' => $this->region->getX(),
+            '%regionY%' => $this->region->getY(),
+        ], 'operations');
+
         $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
 
-        $this->addToOperationLog(
-            "The region is fully destroyed, a high amount of toxic radiation will make the region unliveable for an unknown amount of time!"
-        );
+        $this->addToOperationLog($this->translator->trans('The region is fully destroyed, a high amount of toxic radiation will make the region unliveable for an unknown amount of time!', [], 'operations'));
     }
 
     public function processFailed(): void
@@ -60,10 +63,15 @@ final class NuclearMissileAttack extends OperationProcessor
             }
         }
 
-        $reportText = "{$this->playerRegion->getPlayer()->getName()} tried to launch a nuclear missile attack on region {$this->region->getX()}, {$this->region->getY()} but failed.";
+        $reportText = $this->translator->trans('%player% tried to launch a nuclear missile attack against region %regionX%, %regionY% but failed.', [
+            '%player%' => $this->playerRegion->getPlayer()->getName(),
+            '%regionX%' => $this->region->getX(),
+            '%regionY%' => $this->region->getY(),
+        ], 'operations');
+
         $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
 
-        $this->addToOperationLog("We failed to our nuclear missile attack and lost {$specialOpsLost} Special Ops");
+        $this->addToOperationLog($this->translator->trans('We failed to our nuclear missile attack and lost %specialOpsLost% Special Ops', ['%specialOpsLost%' => $specialOpsLost], 'operations'));
     }
 
     public function processPostOperation(): void

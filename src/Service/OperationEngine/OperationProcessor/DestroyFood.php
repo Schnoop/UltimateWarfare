@@ -54,30 +54,41 @@ final class DestroyFood extends OperationProcessor
         $random = mt_rand(1, $maxPercentage);
         $percentageDestroyed = round($random / 100);
         $player = $this->region->getPlayer();
-        $foodDestroyed = intval($player->getResources()->getFood() * $percentageDestroyed);
+        $foodDestroyed = (int)($player->getResources()->getFood() * $percentageDestroyed);
         $player->getResources()->addFood(-$foodDestroyed);
         $this->playerRepository->save($player);
 
-        $this->addToOperationLog("You destroyed {$percentageDestroyed}% of the food, {$foodDestroyed} in total!");
-        $reportText = "{$this->playerRegion->getPlayer()->getName()} destroyed {$foodDestroyed} food on region {$this->region->getX()}, {$this->region->getY()}.";
+        $this->addToOperationLog($this->translator->trans('You destroyed %percentageDestroyed% of the food, %foodDestroyed% in total!', ['%percentageDestroyed%' => $percentageDestroyed . '%', '%foodDestroyed%' => $foodDestroyed], 'operations'));
+        $reportText = $this->translator->trans('%player% destroyed %food% food on region %regionX%, %regionY%.', [
+            '%player%' => $this->playerRegion->getPlayer()->getName(),
+            '%food%' => $foodDestroyed,
+            '%regionX%' => $this->region->getX(),
+            '%regionY%' => $this->region->getY(),
+        ], 'operations');
+
         $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
     }
 
     public function processFailed(): void
     {
-        $specialOpsLost = intval($this->getSpecialOps() * 0.05);
+        $specialOpsLost = (int)($this->getSpecialOps() * 0.05);
 
         foreach ($this->playerRegion->getWorldRegionUnits() as $worldRegionUnit) {
             if ($worldRegionUnit->getGameUnit()->getId() === self::GAME_UNIT_SPECIAL_OPS_ID) {
-                $worldRegionUnit->setAmount(intval($worldRegionUnit->getAmount() - $specialOpsLost));
+                $worldRegionUnit->setAmount(($worldRegionUnit->getAmount() - $specialOpsLost));
                 $this->worldRegionUnitRepository->save($worldRegionUnit);
             }
         }
 
-        $reportText = "{$this->playerRegion->getPlayer()->getName()} tried to destroy food on region {$this->region->getX()}, {$this->region->getY()} but failed.";
+        $reportText = $this->translator->trans('%player% tried to destroy food on region %regionX%, %regionY% but failed.', [
+            '%player%' => $this->playerRegion->getPlayer()->getName(),
+            '%regionX%' => $this->region->getX(),
+            '%regionY%' => $this->region->getY(),
+        ], 'operations');
+
         $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
 
-        $this->addToOperationLog("We failed to destroy food and lost {$specialOpsLost} Special Ops");
+        $this->addToOperationLog($this->translator->trans('We failed to destroy food and lost %specialOpsLost% Special Ops', ['%specialOpsLost%' => $specialOpsLost], 'operations'));
     }
 
     public function processPostOperation(): void

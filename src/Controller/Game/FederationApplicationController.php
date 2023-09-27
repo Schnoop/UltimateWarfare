@@ -8,6 +8,7 @@ use FrankProjects\UltimateWarfare\Repository\FederationRepository;
 use FrankProjects\UltimateWarfare\Service\Action\FederationApplicationActionService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\TranslatableMessage;
 use Throwable;
 
 final class FederationApplicationController extends BaseGameController
@@ -40,7 +41,7 @@ final class FederationApplicationController extends BaseGameController
                 $this->getPlayer(),
                 $federationApplicationId
             );
-            $this->addFlash('success', 'You successfully accepted a new player!');
+            $this->addFlash('success', new TranslatableMessage('You successfully accepted a new player!', [], 'federationapplication'));
         } catch (Throwable $e) {
             $this->addFlash('error', $e->getMessage());
         }
@@ -55,7 +56,7 @@ final class FederationApplicationController extends BaseGameController
                 $this->getPlayer(),
                 $federationApplicationId
             );
-            $this->addFlash('success', 'You successfully rejected a player!');
+            $this->addFlash('success', new TranslatableMessage('You successfully rejected a player!', [], 'federationapplication'));
         } catch (Throwable $e) {
             $this->addFlash('error', $e->getMessage());
         }
@@ -80,7 +81,7 @@ final class FederationApplicationController extends BaseGameController
                     $federation,
                     $application
                 );
-                $this->addFlash('success', 'You successfully send your application!');
+                $this->addFlash('success', new TranslatableMessage('You successfully send your application!', [], 'federationapplication'));
             }
         } catch (Throwable $e) {
             $this->addFlash('error', $e->getMessage());
@@ -90,6 +91,7 @@ final class FederationApplicationController extends BaseGameController
             'game/federation/sendApplication.html.twig',
             [
                 'player' => $this->getPlayer(),
+                'federation' => $federation,
             ]
         );
     }

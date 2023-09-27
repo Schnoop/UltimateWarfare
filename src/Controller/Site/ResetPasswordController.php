@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 use Throwable;
 
 final class ResetPasswordController extends AbstractController
@@ -39,7 +40,7 @@ final class ResetPasswordController extends AbstractController
 
             if ($user !== null) {
                 if (!$user->isEnabled()) {
-                    $this->addFlash('error', 'Your account is not activated!');
+                    $this->addFlash('error', new TranslatableMessage('Your account is not activated!', [], 'password'));
                 } elseif (
                     $user->getPasswordRequestedAt() === null ||
                     $user->getPasswordRequestedAt()->getTimestamp() + 12 * 60 * 60 < time()
@@ -55,16 +56,16 @@ final class ResetPasswordController extends AbstractController
                         $this->mailService->sendPasswordResetMail($user, $request->getClientIp());
                         $this->addFlash(
                             'success',
-                            "An e-mail has been sent to {$user->getEmail()} with your recovery instructions... Check your Spam mail if you didn't receive an email"
+                            new TranslatableMessage('An e-mail has been sent to %email% with your recovery instructions... Check your Spam mail if you didn\'t receive an email', ['%email%' => $user->getEmail()], 'password')
                         );
                     } catch (Throwable $e) {
                         $this->addFlash('error', $e->getMessage());
                     }
                 } else {
-                    $this->addFlash('error', 'Already has active reset token, please check your email!');
+                    $this->addFlash('error', new TranslatableMessage('Already has active reset token, please check your email!', [], 'password'));
                 }
             } else {
-                $this->addFlash('error', 'Unknown email address');
+                $this->addFlash('error', new TranslatableMessage('Unknown email address', [], 'password'));
             }
         }
 
@@ -85,7 +86,7 @@ final class ResetPasswordController extends AbstractController
                 $user->setConfirmationToken(null);
                 $this->userRepository->save($user);
 
-                $this->addFlash('success', 'You successfully changed your password!');
+                $this->addFlash('success', new TranslatableMessage('You successfully changed your password!', [], 'password'));
                 return $this->redirectToRoute('Site/Login');
             }
 
@@ -98,7 +99,7 @@ final class ResetPasswordController extends AbstractController
             );
         }
 
-        $this->addFlash('error', 'Invalid password reset token!');
+        $this->addFlash('error', new TranslatableMessage('Invalid password reset token!', [], 'password'));
         return $this->redirectToRoute('Site/Login');
     }
 }

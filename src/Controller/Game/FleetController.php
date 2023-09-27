@@ -16,6 +16,7 @@ use FrankProjects\UltimateWarfare\Service\Action\RegionActionService;
 use FrankProjects\UltimateWarfare\Util\DistanceCalculator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\TranslatableMessage;
 use Throwable;
 
 final class FleetController extends BaseGameController
@@ -51,7 +52,7 @@ final class FleetController extends BaseGameController
     {
         try {
             $this->fleetActionService->recall($fleetId, $this->getPlayer());
-            $this->addFlash('success', 'You successfully recalled your troops!');
+            $this->addFlash('success', new TranslatableMessage('You successfully recalled your troops!', [], 'fleet'));
         } catch (Throwable $e) {
             $this->addFlash('error', $e->getMessage());
         }
@@ -68,7 +69,7 @@ final class FleetController extends BaseGameController
     {
         try {
             $this->fleetActionService->reinforce($fleetId, $this->getPlayer());
-            $this->addFlash('success', 'You successfully reinforced your region!');
+            $this->addFlash('success', new TranslatableMessage('You successfully reinforced your region!', [], 'fleet'));
         } catch (Throwable $e) {
             $this->addFlash('error', $e->getMessage());
         }
@@ -113,7 +114,7 @@ final class FleetController extends BaseGameController
                     $gameUnitType,
                     $request->get('units')
                 );
-                $this->addFlash('success', 'You successfully send units!');
+                $this->addFlash('success', new TranslatableMessage('You successfully send units!', [], 'fleet'));
             } catch (Throwable $e) {
                 $this->addFlash('error', $e->getMessage());
             }

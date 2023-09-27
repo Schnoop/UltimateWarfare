@@ -55,18 +55,25 @@ final class DestroyCash extends OperationProcessor
         $random = mt_rand(1, $maxPercentage);
         $percentageDestroyed = round($random / 100);
         $player = $this->region->getPlayer();
-        $cashDestroyed = intval($player->getResources()->getCash() * $percentageDestroyed);
+        $cashDestroyed = (int)($player->getResources()->getCash() * $percentageDestroyed);
         $player->getResources()->addCash(-$cashDestroyed);
         $this->playerRepository->save($player);
 
-        $this->addToOperationLog("You destroyed {$percentageDestroyed}% of the cash, {$cashDestroyed} in total!");
-        $reportText = "{$this->playerRegion->getPlayer()->getName()} destroyed {$cashDestroyed} cash on region {$this->region->getX()}, {$this->region->getY()}.";
+        $this->addToOperationLog($this->translator->trans('You destroyed %percentageDestroyed% of the cash, %cashDestroyed% in total!', ['%percentageDestroyed%' => $percentageDestroyed . '%', '%cashDestroyed%' => $cashDestroyed], 'operations'));
+
+        $reportText = $this->translator->trans('%player% destroyed %cash% cash on region %regionX%, %regionY%.', [
+            '%player%' => $this->playerRegion->getPlayer()->getName(),
+            '%cash%' => $cashDestroyed,
+            '%regionX%' => $this->region->getX(),
+            '%regionY%' => $this->region->getY(),
+        ], 'operations');
+
         $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
     }
 
     public function processFailed(): void
     {
-        $specialOpsLost = intval($this->getSpecialOps() * 0.05);
+        $specialOpsLost = (int)($this->getSpecialOps() * 0.05);
 
         foreach ($this->playerRegion->getWorldRegionUnits() as $worldRegionUnit) {
             if ($worldRegionUnit->getGameUnit()->getId() === self::GAME_UNIT_SPECIAL_OPS_ID) {
@@ -75,10 +82,15 @@ final class DestroyCash extends OperationProcessor
             }
         }
 
-        $reportText = "{$this->playerRegion->getPlayer()->getName()} tried to destroy cash on region {$this->region->getX()}, {$this->region->getY()} but failed.";
+        $reportText = $this->translator->trans('%player% tried to destroy cash on region %regionX%, %regionY% but failed.', [
+            '%player%' => $this->playerRegion->getPlayer()->getName(),
+            '%regionX%' => $this->region->getX(),
+            '%regionY%' => $this->region->getY(),
+        ], 'operations');
+
         $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
 
-        $this->addToOperationLog("We failed to destroy cash and lost {$specialOpsLost} Special Ops");
+        $this->addToOperationLog($this->translator->trans('We failed to destroy cash and lost %specialOpsLost% Special Ops', ['%specialOpsLost%' => $specialOpsLost], 'operations'));
     }
 
     public function processPostOperation(): void

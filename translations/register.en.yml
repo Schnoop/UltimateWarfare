@@ -1,7 +1,8 @@
-label:
-  accept_rules: Accept the rules
-  email: Email
-  username: Username
-  password: Password
-  password_repeat: Repeat Password
-  register: Register
+label.accept_rules: 'Accept the rules'
+label.email: Email
+label.username: Username
+label.password: Password
+label.password_repeat: 'Repeat Password'
+label.register: Register
+'You successfully created an account! An e-mail has been sent to %email% with your activation code...': '__You successfully created an account! An e-mail has been sent to %email% with your activation code...'
+'You successfully activated your account!': '__You successfully activated your account!'

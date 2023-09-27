@@ -39,14 +39,16 @@ final class StealthBomberAttack extends OperationProcessor
             foreach ($this->region->getWorldRegionUnits() as $worldRegionUnit) {
                 if ($worldRegionUnit->getGameUnit()->getGameUnitType()->getId() == GameUnitType::GAME_UNIT_TYPE_SPECIAL_BUILDINGS) {
                     $this->worldRegionUnitRepository->remove($worldRegionUnit);
-                    $this->addToOperationLog(
-                        "You destroyed all {$worldRegionUnit->getGameUnit()->getName()} buildings!"
-                    );
+                    $this->addToOperationLog($this->translator->trans('You destroyed all %gameUnitName% buildings!', ['%gameUnitName%' => $worldRegionUnit->getGameUnit()->getName()], 'operations'));
                 }
             }
 
-            $this->addToOperationLog("You destroyed all special buildings!");
-            $reportText = "Somebody launched a Stealth Bomber attack against region {$this->region->getX()}, {$this->region->getY()} and destroyed all special buildings.";
+            $this->addToOperationLog($this->translator->trans('You destroyed all special buildings!', [], 'operations'));
+            $reportText = $this->translator->trans('Somebody launched a Stealth Bomber attack against region %regionX%, %regionY% and destroyed all special buildings.', [
+                '%regionX%' => $this->region->getX(),
+                '%regionY%' => $this->region->getY(),
+            ], 'operations');
+
             $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
         } else {
             $buildingsDestroyed = $this->amount * self::BUILDINGS_DESTROYED_PER_BOMBER;
@@ -56,40 +58,44 @@ final class StealthBomberAttack extends OperationProcessor
                     $destroyed = round($buildingsDestroyed * $percentage);
                     $worldRegionUnit->setAmount((int) ($worldRegionUnit->getAmount() - $destroyed));
                     $this->worldRegionUnitRepository->save($worldRegionUnit);
-                    $this->addToOperationLog(
-                        "You destroyed {$destroyed} {$worldRegionUnit->getGameUnit()->getName()} buildings!"
-                    );
+                    $this->addToOperationLog($this->translator->trans('You destroyed %destroyed% %gameUnitName% buildings!', ['%destroyed%' => $destroyed, '%gameUnitName%' => $worldRegionUnit->getGameUnit()->getName()], 'operations'));
                 }
             }
 
-            $reportText = "Somebody launched a Stealth Bomber attack against region {$this->region->getX()}, {$this->region->getY()} and destroyed {$buildingsDestroyed} buildings.";
+            $reportText = $this->translator->trans('Somebody launched a Stealth Bomber attack against region %regionX%, %regionY% and destroyed %destroyed% buildings.', [
+                '%destroyed%' => $buildingsDestroyed,
+                '%regionX%' => $this->region->getX(),
+                '%regionY%' => $this->region->getY(),
+            ], 'operations');
             $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
         }
     }
 
     public function processFailed(): void
     {
-        $specialOpsLost = intval($this->getSpecialOps() * 0.05);
-        $stealthBombersLost = intval($this->amount * 0.1);
+        $specialOpsLost = (int)($this->getSpecialOps() * 0.05);
+        $stealthBombersLost = (int)($this->amount * 0.1);
 
         foreach ($this->playerRegion->getWorldRegionUnits() as $worldRegionUnit) {
             if ($worldRegionUnit->getGameUnit()->getId() === self::GAME_UNIT_SPECIAL_OPS_ID) {
-                $worldRegionUnit->setAmount(intval($worldRegionUnit->getAmount() - $specialOpsLost));
+                $worldRegionUnit->setAmount(($worldRegionUnit->getAmount() - $specialOpsLost));
                 $this->worldRegionUnitRepository->save($worldRegionUnit);
             }
 
             if ($worldRegionUnit->getGameUnit()->getId() === self::GAME_UNIT_STEALTH_BOMBER_ID) {
-                $worldRegionUnit->setAmount(intval($worldRegionUnit->getAmount() - $stealthBombersLost));
+                $worldRegionUnit->setAmount(($worldRegionUnit->getAmount() - $stealthBombersLost));
                 $this->worldRegionUnitRepository->save($worldRegionUnit);
             }
         }
 
-        $reportText = "{$this->playerRegion->getPlayer()->getName()} tried to launch a Stealth Bomber attack against region {$this->region->getX()}, {$this->region->getY()} but failed.";
+        $reportText = $this->translator->trans('%player% tried to launch a Stealth Bomber attack against region %regionX%, %regionY% but failed.', [
+            '%player%' => $this->playerRegion->getPlayer()->getName(),
+            '%regionX%' => $this->region->getX(),
+            '%regionY%' => $this->region->getY(),
+        ], 'operations');
         $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
 
-        $this->addToOperationLog(
-            "We failed our Stealth Bomber attack and lost {$specialOpsLost} Special Ops and {$stealthBombersLost} Stealth Bombers"
-        );
+        $this->addToOperationLog($this->translator->trans('We failed our Stealth Bomber attack and lost %specialOpsLost% Special Ops and %stealthBombersLost% Stealth Bombers', ['%specialOpsLost%' => $specialOpsLost, '%stealthBombersLost%' => $stealthBombersLost], 'operations'));
     }
 
     public function processPostOperation(): void

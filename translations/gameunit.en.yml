@@ -1,18 +1,17 @@
-label:
-  name: Name
-  nameMulti: Plural name
-  networth: Networth
-  timestamp: Building time
-  description: Description
-  battleStats: Battle Stats
-  health: Health
-  armor: Armor
-  travelSpeed: Travel Speed
-  airBattleStats: Air Battle Stats
-  attack: Attack Power
-  attackSpeed: Attack Speed
-  defence: Defence Power
-  defenceSpeed: Defence Speed
-  seaBattleStats: Sea Battle Stats
-  groundBattleStats: Ground Battle Stats
-  save: Save
+label.name: Name
+label.nameMulti: 'Plural name'
+label.networth: Networth
+label.timestamp: 'Building time'
+label.description: Description
+label.battleStats: 'Battle Stats'
+label.health: Health
+label.armor: Armor
+label.travelSpeed: 'Travel Speed'
+label.airBattleStats: 'Air Battle Stats'
+label.attack: 'Attack Power'
+label.attackSpeed: 'Attack Speed'
+label.defence: 'Defence Power'
+label.defenceSpeed: 'Defence Speed'
+label.seaBattleStats: 'Sea Battle Stats'
+label.groundBattleStats: 'Ground Battle Stats'
+label.save: Save

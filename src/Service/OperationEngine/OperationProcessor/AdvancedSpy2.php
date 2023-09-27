@@ -27,11 +27,11 @@ final class AdvancedSpy2 extends OperationProcessor
     public function processSuccess(): void
     {
         $player = $this->region->getPlayer();
-        $this->addToOperationLog("Searching for player reports...");
+        $this->addToOperationLog($this->translator->trans('Searching for player reports...', [], 'operations'));
 
         foreach ($player->getReports() as $report) {
             if ($report->getTimestamp() < time() && $report->getTimestamp() > time() - 86400) {
-                $this->addToOperationLog("Report - {$report->getTimestamp()}");
+                $this->addToOperationLog($this->translator->trans('Report - %time%', ['%time%' => $report->getTimestamp()], 'operations'));
                 $this->addToOperationLog("{$report->getReport()}");
             }
         }
@@ -39,19 +39,23 @@ final class AdvancedSpy2 extends OperationProcessor
 
     public function processFailed(): void
     {
-        $spiesLost = intval($this->amount * 0.05);
+        $spiesLost = (int)($this->amount * 0.05);
 
         foreach ($this->playerRegion->getWorldRegionUnits() as $worldRegionUnit) {
             if ($worldRegionUnit->getGameUnit()->getId() === self::GAME_UNIT_SPY_ID) {
-                $worldRegionUnit->setAmount(intval($worldRegionUnit->getAmount() - $spiesLost));
+                $worldRegionUnit->setAmount(($worldRegionUnit->getAmount() - $spiesLost));
                 $this->worldRegionUnitRepository->save($worldRegionUnit);
             }
         }
 
-        $reportText = "{$this->playerRegion->getPlayer()->getName()} tried to spy on region {$this->region->getX()}, {$this->region->getY()} but failed.";
+        $reportText = $this->translator->trans('%player% tried to spy on region %regionX%, %regionY% but failed.', [
+            '%player%' => $this->playerRegion->getPlayer()->getName(),
+            '%regionX%' => $this->region->getX(),
+            '%regionY%' => $this->region->getY(),
+        ], 'operations');
         $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText, Report::TYPE_GENERAL);
 
-        $this->addToOperationLog("We failed to spy and lost {$spiesLost} spies");
+        $this->addToOperationLog($this->translator->trans('We failed to spy and lost %spies% spies', ['%spies%' => $spiesLost], 'operations'));
     }
 
     public function processPostOperation(): void

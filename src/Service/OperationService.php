@@ -13,6 +13,7 @@ use FrankProjects\UltimateWarfare\Repository\WorldRegionUnitRepository;
 use FrankProjects\UltimateWarfare\Service\OperationEngine\OperationProcessor;
 use FrankProjects\UltimateWarfare\Util\ReportCreator;
 use RuntimeException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class OperationService
 {
@@ -23,6 +24,7 @@ final class OperationService
     private WorldRegionUnitRepository $worldRegionUnitRepository;
     private WorldRegionRepository $worldRegionRepository;
     private ConstructionRepository $constructionRepository;
+    private TranslatorInterface $translator;
 
     public function __construct(
         ReportCreator $reportCreator,
@@ -31,7 +33,8 @@ final class OperationService
         PlayerRepository $playerRepository,
         WorldRegionUnitRepository $worldRegionUnitRepository,
         WorldRegionRepository $worldRegionRepository,
-        ConstructionRepository $constructionRepository
+        ConstructionRepository $constructionRepository,
+        TranslatorInterface $translator
     ) {
         $this->reportCreator = $reportCreator;
         $this->networthUpdaterService = $networthUpdaterService;
@@ -40,6 +43,7 @@ final class OperationService
         $this->worldRegionUnitRepository = $worldRegionUnitRepository;
         $this->worldRegionRepository = $worldRegionRepository;
         $this->constructionRepository = $constructionRepository;
+        $this->translator = $translator;
     }
 
     /**
@@ -68,7 +72,8 @@ final class OperationService
             $this->playerRepository,
             $this->worldRegionUnitRepository,
             $this->worldRegionRepository,
-            $this->constructionRepository
+            $this->constructionRepository,
+            $this->translator
         );
         $operationResults = $operationProcessor->execute();
 
@@ -88,23 +93,23 @@ final class OperationService
         int $amount
     ): void {
         if (!$operation->isEnabled()) {
-            throw new RunTimeException("Operation not enabled");
+            throw new RunTimeException($this->translator->trans('Operation not enabled', [], 'operation'));
         }
 
         if ($region->getWorld()->getId() !== $playerRegion->getWorld()->getId()) {
-            throw new RunTimeException("Regions not in same world");
+            throw new RunTimeException($this->translator->trans('Regions not in same world', [], 'operation'));
         }
 
         if ($region->getPlayer() === null) {
-            throw new RunTimeException("Target region has no owner");
+            throw new RunTimeException($this->translator->trans('Target region has no owner', [], 'operation'));
         }
 
         if ($region->getPlayer()->getId() === $playerRegion->getPlayer()->getId()) {
-            throw new RunTimeException("You can not attack yourself");
+            throw new RunTimeException($this->translator->trans('You can not attack yourself', [], 'operation'));
         }
 
         if ($playerRegion->getPlayer()->getResources()->getCash() < $operation->getCost() * $amount) {
-            throw new RunTimeException("You do not have enough cash");
+            throw new RunTimeException($this->translator->trans('You do not have enough cash', [], 'operation'));
         }
 
         foreach ($playerRegion->getPlayer()->getPlayerResearch() as $playerResearch) {
@@ -115,13 +120,13 @@ final class OperationService
                 return;
             }
         }
-        throw new RunTimeException("You do not have all requirements to perform this operation");
+        throw new RunTimeException($this->translator->trans('You do not have all requirements to perform this operation', [], 'operation'));
     }
 
     private function hasWorldRegionGameUnitAmount(WorldRegion $region, Operation $operation, int $amount): void
     {
         if ($amount < 1) {
-            throw new RunTimeException("Can not send negative game units");
+            throw new RunTimeException($this->translator->trans('Can not send negative game units', [], 'operation'));
         }
 
         foreach ($region->getWorldRegionUnits() as $regionUnit) {
@@ -131,6 +136,6 @@ final class OperationService
                 }
             }
         }
-        throw new RunTimeException("Not enough game units");
+        throw new RunTimeException($this->translator->trans('Not enough game units', [], 'operation'));
     }
 }

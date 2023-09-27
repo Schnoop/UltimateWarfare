@@ -1,9 +1,8 @@
-another_language: Another Language?
-label:
-  donate: Donate
-  guide: Guide/FAQ
-  home: Home
-  login: Login
-  lost_password: Forgot your password?
-  register: Register
-  rules: Rules
+another_language: 'Another Language?'
+label.donate: Donate
+label.guide: Guide/FAQ
+label.home: Home
+label.login: Login
+label.lost_password: 'Forgot your password?'
+label.register: Register
+label.rules: Rules

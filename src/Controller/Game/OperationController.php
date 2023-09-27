@@ -14,6 +14,7 @@ use FrankProjects\UltimateWarfare\Service\Action\RegionActionService;
 use FrankProjects\UltimateWarfare\Service\OperationService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\TranslatableMessage;
 use Throwable;
 
 final class OperationController extends BaseGameController
@@ -86,12 +87,12 @@ final class OperationController extends BaseGameController
         }
 
         if ($worldRegion->getPlayer() === null) {
-            $this->addFlash('error', "Can not attack nobody!");
+            $this->addFlash('error', new TranslatableMessage('Can not attack nobody!', [], 'operation'));
             return $this->redirectToRoute('Game/World/Region', ['regionId' => $worldRegion->getId()], 302);
         }
 
         if ($worldRegion->getPlayer()->getId() == $player->getId()) {
-            $this->addFlash('error', "Can not attack your own region!");
+            $this->addFlash('error', new TranslatableMessage('Can not attack your own region!', [], 'operation'));
             return $this->redirectToRoute('Game/World/Region', ['regionId' => $worldRegion->getId()], 302);
         }
 
@@ -130,12 +131,12 @@ final class OperationController extends BaseGameController
         }
 
         if ($worldRegion->getPlayer() === null) {
-            $this->addFlash('error', "Can not attack nobody!");
+            $this->addFlash('error', new TranslatableMessage('Can not attack nobody!', [], 'operation'));
             return $this->redirectToRoute('Game/World/Region', ['regionId' => $worldRegion->getId()], 302);
         }
 
         if ($worldRegion->getPlayer()->getId() == $player->getId()) {
-            $this->addFlash('error', "Can not attack your own region!");
+            $this->addFlash('error', new TranslatableMessage('Can not attack your own region!', [], 'operation'));
             return $this->redirectToRoute('Game/World/Region', ['regionId' => $worldRegion->getId()], 302);
         }
 
@@ -181,7 +182,7 @@ final class OperationController extends BaseGameController
                     $playerRegion,
                     intval($request->get('amount'))
                 );
-                $this->addFlash('success', 'Successfully executed the operation!');
+                $this->addFlash('success', new TranslatableMessage('Successfully executed the operation!', [], 'operation'));
             } catch (Throwable $e) {
                 $this->addFlash('error', $e->getMessage());
             }

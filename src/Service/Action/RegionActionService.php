@@ -15,6 +15,7 @@ use FrankProjects\UltimateWarfare\Util\DistanceCalculator;
 use FrankProjects\UltimateWarfare\Util\NetworthCalculator;
 use FrankProjects\UltimateWarfare\Util\TimeCalculator;
 use RuntimeException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class RegionActionService
 {
@@ -23,19 +24,22 @@ final class RegionActionService
     private FederationRepository $federationRepository;
     private DistanceCalculator $distanceCalculator;
     private TimeCalculator $timeCalculator;
+    private TranslatorInterface $translator;
 
     public function __construct(
         WorldRegionRepository $worldRegionRepository,
         PlayerRepository $playerRepository,
         FederationRepository $federationRepository,
         DistanceCalculator $distanceCalculator,
-        TimeCalculator $timeCalculator
+        TimeCalculator $timeCalculator,
+        TranslatorInterface $translator
     ) {
         $this->worldRegionRepository = $worldRegionRepository;
         $this->playerRepository = $playerRepository;
         $this->federationRepository = $federationRepository;
         $this->distanceCalculator = $distanceCalculator;
         $this->timeCalculator = $timeCalculator;
+        $this->translator = $translator;
     }
 
     /**
@@ -44,11 +48,11 @@ final class RegionActionService
     public function getAttackFromWorldRegionList(WorldRegion $worldRegion, Player $player): array
     {
         if ($worldRegion->getPlayer() === null) {
-            throw new RunTimeException('Can not attack region without owner!');
+            throw new RunTimeException($this->translator->trans('Can not attack region without owner!', [], 'region'));
         }
 
         if ($worldRegion->getPlayer()->getId() == $player->getId()) {
-            throw new RunTimeException('Can not attack your own region!');
+            throw new RunTimeException($this->translator->trans('Can not attack your own region!', [], 'region'));
         }
 
         $playerRegions = [];
@@ -75,11 +79,11 @@ final class RegionActionService
     public function getOperationAttackFromWorldRegionList(WorldRegion $worldRegion, Player $player): array
     {
         if ($worldRegion->getPlayer() === null) {
-            throw new RunTimeException('Can not attack region without owner!');
+            throw new RunTimeException($this->translator->trans('Can not attack region without owner!', [], 'region'));
         }
 
         if ($worldRegion->getPlayer()->getId() == $player->getId()) {
-            throw new RunTimeException('Can not attack your own region!');
+            throw new RunTimeException($this->translator->trans('Can not attack your own region!', [], 'region'));
         }
 
         $playerRegions = [];
@@ -110,11 +114,11 @@ final class RegionActionService
         $resources = $player->getResources();
 
         if ($worldRegion->getPlayer() !== null) {
-            throw new RunTimeException('Region is already owned by somebody!');
+            throw new RunTimeException($this->translator->trans('Region is already owned by somebody!', [], 'region'));
         }
 
         if ($resources->getCash() < $player->getRegionPrice()) {
-            throw new RunTimeException('You do not have enough money!');
+            throw new RunTimeException($this->translator->trans('You do not have enough money!', [], 'region'));
         }
 
         $resources->setCash($resources->getCash() - $player->getRegionPrice());
@@ -151,7 +155,7 @@ final class RegionActionService
         }
 
         if ($worldRegion->getWorld()->getId() != $world->getId()) {
-            throw new RunTimeException('World region is not part for your game world!');
+            throw new RunTimeException($this->translator->trans('World region is not part for your game world!', [], 'region'));
         }
 
         return $worldRegion;
@@ -168,11 +172,11 @@ final class RegionActionService
         $worldRegion = $this->getWorldRegionByIdAndWorld($worldRegionId, $player->getWorld());
 
         if ($worldRegion->getPlayer() === null) {
-            throw new RunTimeException('World region has no owner!');
+            throw new RunTimeException($this->translator->trans('World region has no owner!', [], 'region'));
         }
 
         if ($worldRegion->getPlayer()->getId() != $player->getId()) {
-            throw new RunTimeException('World region is not yours!');
+            throw new RunTimeException($this->translator->trans('World region is not yours!', [], 'region'));
         }
 
 

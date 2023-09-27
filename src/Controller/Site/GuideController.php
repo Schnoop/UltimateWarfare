@@ -11,6 +11,7 @@ use FrankProjects\UltimateWarfare\Repository\GameUnitTypeRepository;
 use FrankProjects\UltimateWarfare\Repository\OperationRepository;
 use FrankProjects\UltimateWarfare\Repository\ResearchRepository;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\TranslatableMessage;
 
 final class GuideController extends BaseController
 {
@@ -29,7 +30,7 @@ final class GuideController extends BaseController
         $gameUnit = $gameUnitRepository->find($gameUnitId);
 
         if ($gameUnit === null) {
-            $this->addFlash('error', 'No such game unit!');
+            $this->addFlash('error', new TranslatableMessage('No such game unit!', [], 'guide'));
             return $this->redirectToRoute('Guide/ListUnits');
         }
 

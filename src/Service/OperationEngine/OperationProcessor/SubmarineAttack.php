@@ -39,12 +39,15 @@ final class SubmarineAttack extends OperationProcessor
             foreach ($this->region->getWorldRegionUnits() as $worldRegionUnit) {
                 if ($worldRegionUnit->getGameUnit()->getId() == self::GAME_UNIT_SHIP_ID) {
                     $this->worldRegionUnitRepository->remove($worldRegionUnit);
-                    $this->addToOperationLog("You sunk {$ships} {$worldRegionUnit->getGameUnit()->getNameMulti()}!");
+                    $this->addToOperationLog($this->translator->trans('You sunk %shipsDestroyed% %name%!', ['%shipsDestroyed%' => $ships, '%name%' => $worldRegionUnit->getGameUnit()->getNameMulti()], 'operations'));
                 }
             }
 
-            $this->addToOperationLog("You sunk all ships!");
-            $reportText = "Somebody launched a Submarine attack against region {$this->region->getX()}, {$this->region->getY()} and sunk all ships.";
+            $this->addToOperationLog($this->translator->trans('You sunk all ships!', [], 'operations'));
+            $reportText = $this->translator->trans('Somebody launched a Submarine attack against region %regionX%, %regionY% and sunk all ships.', [
+                '%regionX%' => $this->region->getX(),
+                '%regionY%' => $this->region->getY(),
+            ], 'operations');
             $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
         } else {
             $shipsDestroyed = $this->amount * self::SHIPS_KILLED_PER_SUBMARINE;
@@ -52,40 +55,44 @@ final class SubmarineAttack extends OperationProcessor
                 if ($worldRegionUnit->getGameUnit()->getId() == self::GAME_UNIT_SHIP_ID) {
                     $worldRegionUnit->setAmount($worldRegionUnit->getAmount() - $shipsDestroyed);
                     $this->worldRegionUnitRepository->save($worldRegionUnit);
-                    $this->addToOperationLog(
-                        "You sunk {$shipsDestroyed} {$worldRegionUnit->getGameUnit()->getNameMulti()}!"
-                    );
+                    $this->addToOperationLog($this->translator->trans('You sunk %shipsDestroyed% %name%!', ['%shipsDestroyed%' => $shipsDestroyed, '%name%' => $worldRegionUnit->getGameUnit()->getNameMulti()], 'operations'));
                 }
             }
 
-            $reportText = "Somebody launched a Submarine attack against region {$this->region->getX()}, {$this->region->getY()} and sunk {$shipsDestroyed} ships.";
+            $reportText = $this->translator->trans('Somebody launched a Submarine attack against region %regionX%, %regionY% and sunk %sunk% ships.', [
+                '%sunk%' => $shipsDestroyed,
+                '%regionX%' => $this->region->getX(),
+                '%regionY%' => $this->region->getY(),
+            ], 'operations');
             $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
         }
     }
 
     public function processFailed(): void
     {
-        $specialOpsLost = intval($this->getSpecialOps() * 0.05);
-        $submarinesLost = intval($this->amount * 0.2);
+        $specialOpsLost = (int)($this->getSpecialOps() * 0.05);
+        $submarinesLost = (int)($this->amount * 0.2);
 
         foreach ($this->playerRegion->getWorldRegionUnits() as $worldRegionUnit) {
             if ($worldRegionUnit->getGameUnit()->getId() === self::GAME_UNIT_SPECIAL_OPS_ID) {
-                $worldRegionUnit->setAmount(intval($worldRegionUnit->getAmount() - $specialOpsLost));
+                $worldRegionUnit->setAmount(($worldRegionUnit->getAmount() - $specialOpsLost));
                 $this->worldRegionUnitRepository->save($worldRegionUnit);
             }
 
             if ($worldRegionUnit->getGameUnit()->getId() === self::GAME_UNIT_SUBMARINE_ID) {
-                $worldRegionUnit->setAmount(intval($worldRegionUnit->getAmount() - $submarinesLost));
+                $worldRegionUnit->setAmount(($worldRegionUnit->getAmount() - $submarinesLost));
                 $this->worldRegionUnitRepository->save($worldRegionUnit);
             }
         }
 
-        $reportText = "{$this->playerRegion->getPlayer()->getName()} tried to launch a Submarine attack against region {$this->region->getX()}, {$this->region->getY()} but failed.";
+        $reportText = $this->translator->trans('%player% tried to launch a Submarine attack against region %regionX%, %regionY% but failed.', [
+            '%player%' => $this->playerRegion->getPlayer()->getName(),
+            '%regionX%' => $this->region->getX(),
+            '%regionY%' => $this->region->getY(),
+        ], 'operations');
         $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
 
-        $this->addToOperationLog(
-            "We failed our Submarine attack and lost {$specialOpsLost} Special Ops and {$submarinesLost} Submarines"
-        );
+        $this->addToOperationLog($this->translator->trans('We failed our Submarine attack and lost %specialOpsLost% Special Ops and %submarinesLost% Submarines', ['%specialOpsLost%' => $specialOpsLost, '%submarinesLost%' => $submarinesLost], 'operations'));
     }
 
     public function processPostOperation(): void

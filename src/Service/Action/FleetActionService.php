@@ -16,6 +16,7 @@ use FrankProjects\UltimateWarfare\Repository\FleetUnitRepository;
 use FrankProjects\UltimateWarfare\Repository\GameUnitRepository;
 use FrankProjects\UltimateWarfare\Repository\WorldRegionUnitRepository;
 use RuntimeException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class FleetActionService
 {
@@ -23,17 +24,20 @@ final class FleetActionService
     private FleetUnitRepository $fleetUnitRepository;
     private GameUnitRepository $gameUnitRepository;
     private WorldRegionUnitRepository $worldRegionUnitRepository;
+    private TranslatorInterface $translator;
 
     public function __construct(
         FleetRepository $fleetRepository,
         FleetUnitRepository $fleetUnitRepository,
         GameUnitRepository $gameUnitRepository,
-        WorldRegionUnitRepository $worldRegionUnitRepository
+        WorldRegionUnitRepository $worldRegionUnitRepository,
+        TranslatorInterface $translator
     ) {
         $this->fleetRepository = $fleetRepository;
         $this->fleetUnitRepository = $fleetUnitRepository;
         $this->gameUnitRepository = $gameUnitRepository;
         $this->worldRegionUnitRepository = $worldRegionUnitRepository;
+        $this->translator = $translator;
     }
 
     public function recall(int $fleetId, Player $player): bool
@@ -41,7 +45,7 @@ final class FleetActionService
         $fleet = $this->getFleetByIdAndPlayer($fleetId, $player);
 
         if ($fleet->getWorldRegion()->getPlayer()->getId() != $player->getId()) {
-            throw new RunTimeException('You are not the owner of this region!');
+            throw new RunTimeException($this->translator->trans('You are not the owner of this region!', [], 'fleet'));
         }
 
         $this->addFleetUnitsToWorldRegion($fleet, $fleet->getWorldRegion());
@@ -54,7 +58,7 @@ final class FleetActionService
         $fleet = $this->getFleetByIdAndPlayer($fleetId, $player);
 
         if ($fleet->getTargetWorldRegion()->getPlayer()->getId() != $player->getId()) {
-            throw new RunTimeException('You are not the owner of this region!');
+            throw new RunTimeException($this->translator->trans('You are not the owner of this region!', [], 'fleet'));
         }
 
         $this->addFleetUnitsToWorldRegion($fleet, $fleet->getTargetWorldRegion());
@@ -73,11 +77,11 @@ final class FleetActionService
         array $unitData
     ): void {
         if ($targetRegion->getWorld()->getId() != $player->getWorld()->getId()) {
-            throw new RunTimeException('Target region does not exist!');
+            throw new RunTimeException($this->translator->trans('Target region does not exist!', [], 'fleet'));
         }
 
         if ($region->getPlayer()->getId() != $player->getId()) {
-            throw new RunTimeException('Region is not owned by you.');
+            throw new RunTimeException($this->translator->trans('Region is not owned by you.', [], 'fleet'));
         }
 
         $fleet = Fleet::createForPlayer($player, $region, $targetRegion);
@@ -107,7 +111,7 @@ final class FleetActionService
         $fleet = $this->fleetRepository->findByIdAndPlayer($fleetId, $player);
 
         if ($fleet === null) {
-            throw new RunTimeException('Fleet does not exist!');
+            throw new RunTimeException($this->translator->trans('Fleet does not exist!', [], 'fleet'));
         }
 
         return $fleet;
@@ -151,7 +155,7 @@ final class FleetActionService
             if ($regionUnit->getGameUnit()->getId() == $gameUnit->getId()) {
                 $hasUnit = true;
                 if ($amount > $regionUnit->getAmount()) {
-                    throw new RunTimeException("You don't have that many " . $gameUnit->getName() . "s!");
+                    throw new RunTimeException($this->translator->trans('You do not have that many %gameunit%s!', ['%gameunit%' => $gameUnit->getName()], 'fleet'));
                 }
 
                 $regionUnit->setAmount($regionUnit->getAmount() - $amount);
@@ -169,7 +173,7 @@ final class FleetActionService
         }
 
         if ($hasUnit !== true) {
-            throw new RunTimeException("You don't have that many " . $gameUnit->getName() . "s!");
+            throw new RunTimeException($this->translator->trans('You do not have that many %gameunit%s!', ['%gameunit%' => $gameUnit->getName()], 'fleet'));
         }
     }
 }

@@ -1,19 +1,22 @@
-label:
-  description: Description
-  federation: Federation
-  federationLimit: Federation limit
-  market: Market
-  maxPlayers: Maximum players
-  name: Name
-  public: Public
-  save: Save
-  status: Status
-  created: Created
-  finished: Finished
-  running: Running
-  waterLevel: Water level
-  beachLevel: Beach level
-  forrestLevel: Forrest level
-  generate: Generate
-  size: Size
-  seed: Seed
+label.description: Description
+label.federation: Federation
+label.federationLimit: 'Federation limit'
+label.market: Market
+label.maxPlayers: 'Maximum players'
+label.name: Name
+label.public: Public
+label.save: Save
+label.status: Status
+label.created: Created
+label.finished: Finished
+label.running: Running
+label.waterLevel: 'Water level'
+label.beachLevel: 'Beach level'
+label.forrestLevel: 'Forrest level'
+label.generate: Generate
+label.size: Size
+label.seed: Seed
+'There are active worlds, no need to create a new one at this moment': '__There are active worlds, no need to create a new one at this moment'
+'Successfully created a new world!': '__Successfully created a new world!'
+'You are already playing in this world!': '__You are already playing in this world!'
+'Another player with this name already exist!': '__Another player with this name already exist!'

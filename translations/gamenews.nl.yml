@@ -1,6 +1,5 @@
-label:
-  title: Titel
-  message: Bericht
-  enabled: Ingeschakeld
-  mainpage: Hoofdpagina
-  save: Opslaan
+label.title: Titel
+label.message: Bericht
+label.enabled: Ingeschakeld
+label.mainpage: Hoofdpagina
+label.save: Opslaan

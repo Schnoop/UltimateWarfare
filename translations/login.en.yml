@@ -1,6 +1,5 @@
-label:
-  username: Username
-  password: Password
-  login: Log in
-  lost_password: Forgot your password?
-  remember_me: Remember me
+label.username: Username
+label.password: Password
+label.login: 'Log in'
+label.lost_password: 'Forgot your password?'
+label.remember_me: 'Remember me'

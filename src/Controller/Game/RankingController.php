@@ -6,6 +6,7 @@ namespace FrankProjects\UltimateWarfare\Controller\Game;
 
 use FrankProjects\UltimateWarfare\Repository\PlayerRepository;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\TranslatableMessage;
 
 final class RankingController extends BaseGameController
 {
@@ -14,10 +15,10 @@ final class RankingController extends BaseGameController
         $player = $this->getPlayer();
 
         if ($sortBy == 'region') {
-            $rankingsTitle = "Rankings by Regions (Top 10)";
+            $rankingsTitle = new TranslatableMessage('Rankings by Regions (Top 10)', [], 'ranking');
             $players = $playerRepository->findByWorldAndRegions($player->getWorld());
         } else {
-            $rankingsTitle = "Rankings by Networth (Top 10)";
+            $rankingsTitle = new TranslatableMessage('Rankings by Networth (Top 10)', [], 'ranking');
             $players = $playerRepository->findByWorldAndNetworth($player->getWorld());
         }
 

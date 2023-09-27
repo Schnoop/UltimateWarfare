@@ -7,6 +7,7 @@ namespace FrankProjects\UltimateWarfare\Controller\Game;
 use FrankProjects\UltimateWarfare\Repository\FleetRepository;
 use FrankProjects\UltimateWarfare\Service\BattleEngine;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\TranslatableMessage;
 use Throwable;
 
 final class BattleController extends BaseGameController
@@ -27,7 +28,7 @@ final class BattleController extends BaseGameController
         $player = $this->getPlayer();
         $fleet = $this->fleetRepository->findByIdAndPlayer($fleetId, $player);
         if ($fleet === null) {
-            $this->addFlash('error', 'Fleet does not exist');
+            $this->addFlash('error', new TranslatableMessage('Fleet does not exist', [], 'battle'));
             return $this->redirectToRoute('Game/Fleets', [], 302);
         }
 

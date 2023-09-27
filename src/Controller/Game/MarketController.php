@@ -11,6 +11,7 @@ use FrankProjects\UltimateWarfare\Service\Action\MarketActionService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\TranslatableMessage;
 use Throwable;
 
 final class MarketController extends BaseGameController
@@ -57,7 +58,7 @@ final class MarketController extends BaseGameController
     {
         try {
             $this->marketActionService->buyOrder($this->getPlayer(), $marketItemId);
-            $this->addFlash('success', 'You bought something on the market!');
+            $this->addFlash('success', new TranslatableMessage('You bought something on the market!', [], 'market'));
         } catch (Throwable $e) {
             $this->addFlash('error', $e->getMessage());
         }
@@ -96,7 +97,7 @@ final class MarketController extends BaseGameController
     {
         try {
             $this->marketActionService->sellOrder($this->getPlayer(), $marketItemId);
-            $this->addFlash('success', 'You sold something on the market!');
+            $this->addFlash('success', new TranslatableMessage('You sold something on the market!', [], 'market'));
         } catch (Throwable $e) {
             $this->addFlash('error', $e->getMessage());
         }
@@ -130,7 +131,7 @@ final class MarketController extends BaseGameController
     {
         try {
             $this->marketActionService->cancelOrder($this->getPlayer(), $marketItemId);
-            $this->addFlash('success', 'You cancelled your order!');
+            $this->addFlash('success', new TranslatableMessage('You cancelled your order!', [], 'market'));
         } catch (Throwable $e) {
             $this->addFlash('error', $e->getMessage());
         }
@@ -159,7 +160,7 @@ final class MarketController extends BaseGameController
 
             try {
                 $this->marketActionService->placeOffer($player, $resource, $price, $amount, $option);
-                $this->addFlash('success', 'you placed a new offer on the market!');
+                $this->addFlash('success', new TranslatableMessage('You placed a new offer on the market!', [], 'market'));
             } catch (Throwable $e) {
                 $this->addFlash('error', $e->getMessage());
             }

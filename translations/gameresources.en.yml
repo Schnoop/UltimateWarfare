@@ -1,9 +1,8 @@
-label:
-  cash: Cash
-  food: Food
-  steel: Steel
-  wood: Wood
-  startResources: Start resources
-  cost: Cost
-  income: Income
-  upkeep: Upkeep
+label.cash: Cash
+label.food: Food
+label.steel: Steel
+label.wood: Wood
+label.startResources: 'Start resources'
+label.cost: Cost
+label.income: Income
+label.upkeep: Upkeep

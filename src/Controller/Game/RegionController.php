@@ -13,6 +13,7 @@ use FrankProjects\UltimateWarfare\Service\Action\ConstructionActionService;
 use FrankProjects\UltimateWarfare\Service\Action\RegionActionService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\TranslatableMessage;
 use Throwable;
 
 final class RegionController extends BaseGameController
@@ -44,7 +45,7 @@ final class RegionController extends BaseGameController
 
             if ($request->isMethod(Request::METHOD_POST)) {
                 $this->regionActionService->buyWorldRegion($regionId, $this->getPlayer());
-                $this->addFlash('success', 'You have bought a Region!');
+                $this->addFlash('success', new TranslatableMessage('You have bought a Region!', [], 'region'));
                 return $this->redirectToRoute('Game/World/Region', ['regionId' => $worldRegion->getId()]);
             }
         } catch (WorldRegionNotFoundException $e) {

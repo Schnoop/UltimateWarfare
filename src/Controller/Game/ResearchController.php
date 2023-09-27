@@ -8,6 +8,7 @@ use FrankProjects\UltimateWarfare\Repository\ResearchPlayerRepository;
 use FrankProjects\UltimateWarfare\Repository\ResearchRepository;
 use FrankProjects\UltimateWarfare\Service\Action\ResearchActionService;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\TranslatableMessage;
 use Throwable;
 
 final class ResearchController extends BaseGameController
@@ -87,7 +88,7 @@ final class ResearchController extends BaseGameController
     {
         try {
             $this->researchActionService->performResearch($researchId, $this->getPlayer());
-            $this->addFlash('success', 'Successfully started a new research project!');
+            $this->addFlash('success', new TranslatableMessage('Successfully started a new research project!', [], 'research'));
         } catch (Throwable $e) {
             $this->addFlash('error', $e->getMessage());
         }
@@ -99,7 +100,7 @@ final class ResearchController extends BaseGameController
     {
         try {
             $this->researchActionService->performCancel($researchId, $this->getPlayer());
-            $this->addFlash('success', 'Successfully cancelled your research project!');
+            $this->addFlash('success', new TranslatableMessage('Successfully cancelled your research project!', [], 'research'));
         } catch (Throwable $e) {
             $this->addFlash('error', $e->getMessage());
         }

@@ -1,8 +1,6 @@
-label:
-  old_password: Old Password
-  password: Password
-  password_repeat: Repeat Password
-  change_password: Change Password
-  avatar: Avatar
-  upload: Upload
-
+label.old_password: 'Old Password'
+label.password: Password
+label.password_repeat: 'Repeat Password'
+label.change_password: 'Change Password'
+label.avatar: Avatar
+label.upload: Upload

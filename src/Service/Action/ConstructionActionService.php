@@ -15,6 +15,7 @@ use FrankProjects\UltimateWarfare\Repository\PlayerRepository;
 use FrankProjects\UltimateWarfare\Repository\WorldRegionUnitRepository;
 use FrankProjects\UltimateWarfare\Service\NetworthUpdaterService;
 use RuntimeException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ConstructionActionService
 {
@@ -23,19 +24,22 @@ final class ConstructionActionService
     private PlayerRepository $playerRepository;
     private WorldRegionUnitRepository $worldRegionUnitRepository;
     private NetworthUpdaterService $networthUpdaterService;
+    private TranslatorInterface $translator;
 
     public function __construct(
         ConstructionRepository $constructionRepository,
         GameUnitRepository $gameUnitRepository,
         PlayerRepository $playerRepository,
         WorldRegionUnitRepository $worldRegionUnitRepository,
-        NetworthUpdaterService $networthUpdaterService
+        NetworthUpdaterService $networthUpdaterService,
+        TranslatorInterface $translator
     ) {
         $this->constructionRepository = $constructionRepository;
         $this->gameUnitRepository = $gameUnitRepository;
         $this->playerRepository = $playerRepository;
         $this->worldRegionUnitRepository = $worldRegionUnitRepository;
         $this->networthUpdaterService = $networthUpdaterService;
+        $this->translator = $translator;
     }
 
     /**
@@ -85,20 +89,20 @@ final class ConstructionActionService
             $totalSpace = $region->getSpace() - $regionBuildings - $buildingsInConstruction;
 
             if ($totalBuild > $totalSpace) {
-                throw new RunTimeException('You do not have that much building space.');
+                throw new RunTimeException($this->translator->trans('You do not have that much building space.', [], 'construction'));
             }
         }
 
         $resources = $player->getResources();
 
         if ($priceCash > $resources->getCash()) {
-            throw new RunTimeException("You don't have enough cash to build that.");
+            throw new RunTimeException($this->translator->trans('You do not have enough cash to build that.', [], 'construction'));
         }
         if ($priceWood > $resources->getWood()) {
-            throw new RunTimeException("You don't have enough wood to build that.");
+            throw new RunTimeException($this->translator->trans('You do not have enough wood to build that.', [], 'construction'));
         }
         if ($priceSteel > $resources->getSteel()) {
-            throw new RunTimeException("You don't have enough steel to build that.");
+            throw new RunTimeException($this->translator->trans('You do not have enough steel to build that.', [], 'construction'));
         }
 
         $resources->setCash($resources->getCash() - $priceCash);
@@ -148,11 +152,11 @@ final class ConstructionActionService
         $construction = $this->constructionRepository->find($constructionId);
 
         if ($construction === null) {
-            throw new RunTimeException('This construction queue does not exist!');
+            throw new RunTimeException($this->translator->trans('This construction queue does not exist!', [], 'construction'));
         }
 
         if ($construction->getPlayer()->getId() != $player->getId()) {
-            throw new RunTimeException('This is not your construction queue!');
+            throw new RunTimeException($this->translator->trans('This is not your construction queue!', [], 'construction'));
         }
 
         $this->constructionRepository->remove($construction);
@@ -202,7 +206,7 @@ final class ConstructionActionService
             }
 
             if ($amount > $worldRegionUnit->getAmount()) {
-                throw new RunTimeException('You do not have that many ' . $gameUnit->getName() . "s!");
+                throw new RunTimeException($this->translator->trans('You do not have that many %name%s!', ['%name%' => $gameUnit->getName()], 'construction'));
             }
 
             $worldRegionUnit->setAmount($worldRegionUnit->getAmount() - $amount);

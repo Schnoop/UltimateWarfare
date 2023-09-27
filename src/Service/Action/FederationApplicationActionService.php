@@ -15,6 +15,7 @@ use FrankProjects\UltimateWarfare\Repository\FederationRepository;
 use FrankProjects\UltimateWarfare\Repository\PlayerRepository;
 use FrankProjects\UltimateWarfare\Repository\ReportRepository;
 use RuntimeException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class FederationApplicationActionService
 {
@@ -23,19 +24,22 @@ final class FederationApplicationActionService
     private FederationApplicationRepository $federationApplicationRepository;
     private PlayerRepository $playerRepository;
     private ReportRepository $reportRepository;
+    private TranslatorInterface $translator;
 
     public function __construct(
         FederationRepository $federationRepository,
         FederationApplicationRepository $federationApplicationRepository,
         FederationNewsRepository $federationNewsRepository,
         PlayerRepository $playerRepository,
-        ReportRepository $reportRepository
+        ReportRepository $reportRepository,
+        TranslatorInterface $translator
     ) {
         $this->federationRepository = $federationRepository;
         $this->federationApplicationRepository = $federationApplicationRepository;
         $this->federationNewsRepository = $federationNewsRepository;
         $this->playerRepository = $playerRepository;
         $this->reportRepository = $reportRepository;
+        $this->translator = $translator;
     }
 
     public function acceptFederationApplication(Player $player, int $applicationId): void
@@ -44,18 +48,18 @@ final class FederationApplicationActionService
 
         $federationApplication = $this->getFederationApplication($player, $applicationId);
         if ($federationApplication->getPlayer()->getFederation() !== null) {
-            throw new RunTimeException("Player is already in another Federation!");
+            throw new RunTimeException($this->translator->trans('Player is already in another Federation!', [], 'federation'));
         }
 
         if (count($player->getFederation()->getPlayers()) >= $player->getWorld()->getFederationLimit()) {
-            throw new RunTimeException("Federation members world limit reached!");
+            throw new RunTimeException($this->translator->trans('Federation members world limit reached!', [], 'federation'));
         }
 
-        $news = "{$federationApplication->getPlayer()->getName()} has has been accepted into the Federation by {$player->getName()}";
+        $news = $this->translator->trans('%player% has has been accepted into the Federation by %player2%', ['%player%' => $federationApplication->getPlayer()->getName(), '%player2%' => $player->getName()], 'federation');
         $federationNews = FederationNews::createForFederation($player->getFederation(), $news);
         $this->federationNewsRepository->save($federationNews);
 
-        $reportString = "You have been accepted in the Federation {$player->getFederation()->getName()}";
+        $reportString = $this->translator->trans('You have been accepted in the Federation %federation%', ['%federation%' => $player->getFederation()->getName()], 'federation');
         $report = Report::createForPlayer(
             $federationApplication->getPlayer(),
             time(),
@@ -88,11 +92,11 @@ final class FederationApplicationActionService
 
         $federationApplication = $this->getFederationApplication($player, $applicationId);
 
-        $news = "{$federationApplication->getPlayer()->getName()} has has been rejected to join the Federation by {$player->getName()}";
+        $news = $this->translator->trans('%player% has has been rejected to join the Federation by %player2%', ['%player%' => $federationApplication->getPlayer()->getName(), '%player2%' => $player->getName()], 'federation');
         $federationNews = FederationNews::createForFederation($player->getFederation(), $news);
         $this->federationNewsRepository->save($federationNews);
 
-        $reportString = "You have been rejected by the Federation {$player->getFederation()->getName()}";
+        $reportString = $this->translator->trans('You have been rejected by the Federation %federation%', ['%federation%' => $player->getFederation()->getName()], 'federation');
         $report = Report::createForPlayer(
             $federationApplication->getPlayer(),
             time(),
@@ -109,11 +113,11 @@ final class FederationApplicationActionService
         $this->ensureFederationEnabled($player);
 
         if ($player->getFederation() !== null) {
-            throw new RunTimeException("You are already in a Federation");
+            throw new RunTimeException($this->translator->trans('You are already in a Federation!', [], 'federation'));
         }
 
         if ($federation->getWorld()->getId() !== $player->getWorld()->getId()) {
-            throw new RunTimeException("Federation is not in your world!");
+            throw new RunTimeException($this->translator->trans('Federation is not in your world!', [], 'federation'));
         }
 
         $federationApplication = FederationApplication::createForFederation($federation, $player, $application);
@@ -124,7 +128,7 @@ final class FederationApplicationActionService
     {
         $world = $player->getWorld();
         if (!$world->getFederation()) {
-            throw new RunTimeException("Federations not enabled!");
+            throw new RunTimeException($this->translator->trans('Federations not enabled!', [], 'federation'));
         }
     }
 
@@ -136,15 +140,15 @@ final class FederationApplicationActionService
         );
 
         if ($federationApplication === null) {
-            throw new RunTimeException('FederationApplication does not exist!');
+            throw new RunTimeException($this->translator->trans('FederationApplication does not exist!', [], 'federation'));
         }
 
         if ($player->getFederation() === null) {
-            throw new RunTimeException('You are not in a Federation!');
+            throw new RunTimeException($this->translator->trans('You are not in a Federation!', [], 'federation'));
         }
 
         if ($player->getFederation()->getId() !== $federationApplication->getFederation()->getId()) {
-            throw new RunTimeException('FederationApplication does not belong to your Federation!');
+            throw new RunTimeException($this->translator->trans('FederationApplication does not belong to your Federation!', [], 'federation'));
         }
 
         return $federationApplication;

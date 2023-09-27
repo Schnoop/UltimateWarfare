@@ -9,6 +9,7 @@ use FrankProjects\UltimateWarfare\Repository\FederationRepository;
 use FrankProjects\UltimateWarfare\Service\Action\FederationActionService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\TranslatableMessage;
 use Throwable;
 
 final class FederationController extends BaseGameController
@@ -98,7 +99,7 @@ final class FederationController extends BaseGameController
         try {
             if ($request->isMethod(Request::METHOD_POST)) {
                 $this->federationActionService->createFederation($this->getPlayer(), $federationName);
-                $this->addFlash('success', "You successfully created a new Federation");
+                $this->addFlash('success', new TranslatableMessage('You successfully created a new Federation', [], 'federation'));
 
                 return $this->redirectToRoute('Game/Federation');
             }
@@ -147,7 +148,7 @@ final class FederationController extends BaseGameController
             if ($request->isMethod(Request::METHOD_POST) && $request->get('player') !== null) {
                 $aidPlayerId = intval($request->get('player'));
                 $this->federationActionService->sendAid($this->getPlayer(), $aidPlayerId, $request->get('resources'));
-                $this->addFlash('success', "You have send aid!");
+                $this->addFlash('success', new TranslatableMessage('You have send aid!', [], 'federation'));
 
                 return $this->redirectToRoute('Game/Federation');
             }
@@ -168,7 +169,7 @@ final class FederationController extends BaseGameController
         try {
             if ($request->isMethod(Request::METHOD_POST)) {
                 $this->federationActionService->removeFederation($this->getPlayer());
-                $this->addFlash('success', "You successfully removed a Federation");
+                $this->addFlash('success', new TranslatableMessage('You successfully removed a Federation', [], 'federation'));
 
                 return $this->redirectToRoute('Game/Federation');
             }
@@ -189,7 +190,7 @@ final class FederationController extends BaseGameController
         try {
             if ($request->isMethod(Request::METHOD_POST)) {
                 $this->federationActionService->changeFederationName($this->getPlayer(), $request->get('name'));
-                $this->addFlash('success', "You successfully changed the Federation name!");
+                $this->addFlash('success', new TranslatableMessage('You successfully changed the Federation name!', [], 'federation'));
 
                 return $this->redirectToRoute('Game/Federation');
             }
@@ -210,7 +211,7 @@ final class FederationController extends BaseGameController
         try {
             if ($request->isMethod(Request::METHOD_POST)) {
                 $this->federationActionService->leaveFederation($this->getPlayer());
-                $this->addFlash('success', "You successfully left your Federation");
+                $this->addFlash('success', new TranslatableMessage('You successfully left your Federation', [], 'federation'));
 
                 return $this->redirectToRoute('Game/Federation');
             }
@@ -230,7 +231,7 @@ final class FederationController extends BaseGameController
     {
         try {
             $this->federationActionService->kickPlayer($this->getPlayer(), $playerId);
-            $this->addFlash('success', "You successfully kicked a player");
+            $this->addFlash('success', new TranslatableMessage('You successfully kicked a player', [], 'federation'));
         } catch (Throwable $e) {
             $this->addFlash('error', $e->getMessage());
         }
@@ -243,7 +244,7 @@ final class FederationController extends BaseGameController
         try {
             if ($request->isMethod(Request::METHOD_POST) && $request->get('message') !== null) {
                 $this->federationActionService->updateLeadershipMessage($this->getPlayer(), $request->get('message'));
-                $this->addFlash('success', "You successfully updated the leadership message");
+                $this->addFlash('success', new TranslatableMessage('You successfully updated the leadership message', [], 'federation'));
 
                 return $this->redirectToRoute('Game/Federation');
             }
@@ -272,7 +273,7 @@ final class FederationController extends BaseGameController
                     $request->get('playerId'),
                     $request->get('role')
                 );
-                $this->addFlash('success', "You successfully updated a player rank");
+                $this->addFlash('success', new TranslatableMessage('You successfully updated a player rank', [], 'federation'));
             }
         } catch (Throwable $e) {
             $this->addFlash('error', $e->getMessage());

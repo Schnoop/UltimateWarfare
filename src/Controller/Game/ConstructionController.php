@@ -15,6 +15,7 @@ use FrankProjects\UltimateWarfare\Service\Action\RegionActionService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\TranslatableMessage;
 use Throwable;
 
 final class ConstructionController extends BaseGameController
@@ -85,7 +86,7 @@ final class ConstructionController extends BaseGameController
         try {
             $gameUnitType = $this->gameUnitTypeRepository->find($gameUnitTypeId);
         } catch (GameUnitTypeNotFoundException $e) {
-            $this->addFlash('error', 'Unknown GameUnitType!');
+            $this->addFlash('error', new TranslatableMessage('Unknown GameUnitType!', [], 'construction'));
             return $this->redirectToRoute('Game/World/Region', ['regionId' => $worldRegion->getId()], 302);
         }
 
@@ -125,9 +126,9 @@ final class ConstructionController extends BaseGameController
          * XXX TODO: Refactor to show what game units are being built/trained
          */
         if ($gameUnitType->getId() == GameUnitType::GAME_UNIT_TYPE_UNITS) {
-            $this->addFlash('success', 'New units are now being trained!');
+            $this->addFlash('success', new TranslatableMessage('New units are now being trained!', [], 'construction'));
         } else {
-            $this->addFlash('success', 'New buildings are now being built!');
+            $this->addFlash('success', new TranslatableMessage('New buildings are now being built!', [], 'construction'));
         }
     }
 
@@ -178,9 +179,9 @@ final class ConstructionController extends BaseGameController
          * XXX TODO: Refactor to show what game units are being destroyed/disbanded
          */
         if ($gameUnitType->getId() == GameUnitType::GAME_UNIT_TYPE_UNITS) {
-            $this->addFlash('success', "You have disbanded units!");
+            $this->addFlash('success', new TranslatableMessage('You have disbanded units!', [], 'construction'));
         } else {
-            $this->addFlash('success', "You have destroyed buildings!");
+            $this->addFlash('success', new TranslatableMessage('You have destroyed buildings!', [], 'construction'));
         }
     }
 
@@ -188,7 +189,7 @@ final class ConstructionController extends BaseGameController
     {
         try {
             $this->constructionActionService->cancelConstruction($this->getPlayer(), $constructionId);
-            $this->addFlash('success', 'Successfully cancelled construction queue!');
+            $this->addFlash('success', new TranslatableMessage('Successfully cancelled construction queue!', [], 'construction'));
         } catch (Throwable $e) {
             $this->addFlash('error', $e->getMessage());
         }

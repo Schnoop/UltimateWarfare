@@ -10,6 +10,7 @@ use FrankProjects\UltimateWarfare\Repository\ContactRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\TranslatableMessage;
 
 final class ContactController extends AbstractController
 {
@@ -30,7 +31,7 @@ final class ContactController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->contactRepository->save($contact);
-            $this->addFlash('success', 'Thank you for contacting us!');
+            $this->addFlash('success', new TranslatableMessage('Thank you for contacting us!', [], 'contact'));
         }
 
         return $this->render(

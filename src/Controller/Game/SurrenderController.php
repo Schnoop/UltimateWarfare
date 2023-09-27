@@ -9,6 +9,7 @@ use FrankProjects\UltimateWarfare\Repository\PlayerRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Translation\TranslatableMessage;
 
 final class SurrenderController extends BaseGameController
 {
@@ -27,10 +28,10 @@ final class SurrenderController extends BaseGameController
 
             if ($passwordHasher->isPasswordValid($user, $plainPassword)) {
                 $playerRepository->remove($player);
-                $this->addFlash('success', "You have surrendered your empire...");
+                $this->addFlash('success', new TranslatableMessage('You have surrendered your empire...', [], 'surrender'));
                 return $this->redirectToRoute('Game/Account');
             } else {
-                $this->addFlash('error', 'Wrong password!');
+                $this->addFlash('error', new TranslatableMessage('Wrong password!', [], 'surrender'));
             }
         }
 

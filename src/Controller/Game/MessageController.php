@@ -10,6 +10,7 @@ use FrankProjects\UltimateWarfare\Service\Action\MessageActionService;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\TranslatableMessage;
 use Throwable;
 
 final class MessageController extends BaseGameController
@@ -37,7 +38,7 @@ final class MessageController extends BaseGameController
 
         foreach ($this->getSelectedMessagesFromRequest($request) as $messageId) {
             $this->messageActionService->deleteMessageFromInbox($player, $messageId);
-            $this->addFlash('success', 'Message successfully deleted!');
+            $this->addFlash('success', new TranslatableMessage('Message successfully deleted!', [], 'message'));
         }
 
         $messages = $this->messageRepository->findNonDeletedMessagesToPlayer($player);
@@ -82,7 +83,7 @@ final class MessageController extends BaseGameController
     {
         try {
             $this->messageActionService->deleteMessageFromInbox($this->getPlayer(), $messageId);
-            $this->addFlash('success', 'Message successfully deleted!');
+            $this->addFlash('success', new TranslatableMessage('Message successfully deleted!', [], 'message'));
         } catch (Throwable $e) {
             $this->addFlash('error', $e->getMessage());
         }
@@ -99,7 +100,7 @@ final class MessageController extends BaseGameController
 
         foreach ($this->getSelectedMessagesFromRequest($request) as $messageId) {
             $this->messageActionService->deleteMessageFromOutbox($player, $messageId);
-            $this->addFlash('success', 'Message successfully deleted!');
+            $this->addFlash('success', new TranslatableMessage('Message successfully deleted!', [], 'message'));
         }
 
         $messages = $this->messageRepository->findNonDeletedMessagesFromPlayer($player);
@@ -138,7 +139,7 @@ final class MessageController extends BaseGameController
     {
         try {
             $this->messageActionService->deleteMessageFromOutbox($this->getPlayer(), $messageId);
-            $this->addFlash('success', 'Message successfully deleted!');
+            $this->addFlash('success', new TranslatableMessage('Message successfully deleted!', [], 'message'));
         } catch (Throwable $e) {
             $this->addFlash('error', $e->getMessage());
         }
@@ -166,7 +167,7 @@ final class MessageController extends BaseGameController
                     $adminMessage
                 );
 
-                $this->addFlash('success', 'Message send!');
+                $this->addFlash('success', new TranslatableMessage('Message send!', [], 'message'));
             } catch (Throwable $e) {
                 $this->addFlash('error', $e->getMessage());
             }

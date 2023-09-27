@@ -34,34 +34,39 @@ final class AdvancedSpy extends OperationProcessor
         foreach ($worldRegions as $worldRegion) {
             $population += $worldRegion->getPopulation();
         }
-        $this->addToOperationLog("Searching for player information...");
+        $this->addToOperationLog($this->translator->trans('Searching for player information...', [], 'operations'));
 
         // XXX TODO: number_format($resource, 0, '.', ',')
-        $this->addToOperationLog("Cash: \${$player->getResources()->getCash()}");
-        $this->addToOperationLog("Food: {$player->getResources()->getFood()}");
-        $this->addToOperationLog("Wood: {$player->getResources()->getWood()}");
-        $this->addToOperationLog("Steel: {$player->getResources()->getSteel()}");
 
-        $this->addToOperationLog("Population: {$population}");
-        $this->addToOperationLog("Regions: {$regionCount}");
-        $this->addToOperationLog("Networth: {$player->getNetworth()}");
+        $this->addToOperationLog($this->translator->trans('Cash: %value%', ['%value%' => $player->getResources()->getCash()], 'operations'));
+        $this->addToOperationLog($this->translator->trans('Food: %value%', ['%value%' => $player->getResources()->getFood()], 'operations'));
+        $this->addToOperationLog($this->translator->trans('Wood: %value%', ['%value%' => $player->getResources()->getWood()], 'operations'));
+        $this->addToOperationLog($this->translator->trans('Steel: %value%', ['%value%' => $player->getResources()->getSteel()], 'operations'));
+
+        $this->addToOperationLog($this->translator->trans('Population: %value%', ['%value%' => $population], 'operations'));
+        $this->addToOperationLog($this->translator->trans('Regions: %value%', ['%value%' => $regionCount], 'operations'));
+        $this->addToOperationLog($this->translator->trans('Networth: %value%', ['%value%' => $player->getNetworth()], 'operations'));
     }
 
     public function processFailed(): void
     {
-        $spiesLost = intval($this->amount * 0.05);
+        $spiesLost = (int)($this->amount * 0.05);
 
         foreach ($this->playerRegion->getWorldRegionUnits() as $worldRegionUnit) {
             if ($worldRegionUnit->getGameUnit()->getId() === self::GAME_UNIT_SPY_ID) {
-                $worldRegionUnit->setAmount(intval($worldRegionUnit->getAmount() - $spiesLost));
+                $worldRegionUnit->setAmount(($worldRegionUnit->getAmount() - $spiesLost));
                 $this->worldRegionUnitRepository->save($worldRegionUnit);
             }
         }
 
-        $reportText = "{$this->playerRegion->getPlayer()->getName()} tried to spy on region {$this->region->getX()}, {$this->region->getY()} but failed.";
+        $reportText = $this->translator->trans('%player% tried to spy on region %regionX%, %regionY% but failed.', [
+            '%player%' => $this->playerRegion->getPlayer()->getName(),
+            '%regionX%' => $this->region->getX(),
+            '%regionY%' => $this->region->getY(),
+        ], 'operations');
         $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText, Report::TYPE_GENERAL);
 
-        $this->addToOperationLog("We failed to spy and lost {$spiesLost} spies");
+        $this->addToOperationLog($this->translator->trans('We failed to spy and lost %spies% spies', ['%spies%' => $spiesLost], 'operations'));
     }
 
     public function processPostOperation(): void

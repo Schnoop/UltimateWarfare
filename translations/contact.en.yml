@@ -1,7 +1,6 @@
-label:
-  email: Email
-  name: Name
-  subject: Subject
-  message: Message
-  send: Send
-
+label.email: Email
+label.name: Name
+label.subject: Subject
+label.message: Message
+label.send: Send
+'Thank you for contacting us!': '__Thank you for contacting us!'

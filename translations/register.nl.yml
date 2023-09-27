@@ -1,7 +1,8 @@
-label:
-  accept_rules: Accepteer de spelregels
-  email: Email
-  username: Gebruikersnaam
-  password: Wachtwoord
-  password_repeat: Wachtwoord herhalen
-  register: Registreren
+label.accept_rules: 'Accepteer de spelregels'
+label.email: Email
+label.username: Gebruikersnaam
+label.password: Wachtwoord
+label.password_repeat: 'Wachtwoord herhalen'
+label.register: Registreren
+'You successfully created an account! An e-mail has been sent to %email% with your activation code...': '__You successfully created an account! An e-mail has been sent to %email% with your activation code...'
+'You successfully activated your account!': '__You successfully activated your account!'

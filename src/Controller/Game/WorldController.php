@@ -12,6 +12,7 @@ use FrankProjects\UltimateWarfare\Repository\WorldRepository;
 use FrankProjects\UltimateWarfare\Service\WorldGeneratorService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\TranslatableMessage;
 
 final class WorldController extends BaseGameController
 {
@@ -34,11 +35,11 @@ final class WorldController extends BaseGameController
         $worlds = $this->worldRepository->findByPublic(true);
 
         if (count($worlds) !== 0) {
-            $this->addFlash('error', 'There are active worlds, no need to create a new one at this moment');
+            $this->addFlash('error', new TranslatableMessage('There are active worlds, no need to create a new one at this moment', [], 'world'));
             return $this->redirectToRoute('Game/SelectWorld', [], 302);
         }
 
-        $this->addFlash('success', 'Successfully created a new world!');
+        $this->addFlash('success', new TranslatableMessage('Successfully created a new world!', [], 'world'));
         $worldGeneratorService->generateBasicWorld();
 
         return $this->redirectToRoute('Game/SelectWorld', [], 302);
@@ -85,13 +86,13 @@ final class WorldController extends BaseGameController
 
         foreach ($user->getPlayers() as $player) {
             if ($player->getWorld()->getId() == $worldId) {
-                $this->addFlash('error', 'You are already playing in this world!');
+                $this->addFlash('error', new TranslatableMessage('You are already playing in this world!', [], 'world'));
                 return $this->redirectToRoute('Game/SelectName', ['worldId' => $worldId], 302);
             }
         }
 
         if ($this->playerRepository->findByNameAndWorld($name, $world) !== null) {
-            $this->addFlash('error', 'Another player with this name already exist!');
+            $this->addFlash('error', new TranslatableMessage('Another player with this name already exist!', [], 'world'));
             return $this->redirectToRoute('Game/SelectName', ['worldId' => $worldId], 302);
         }
 

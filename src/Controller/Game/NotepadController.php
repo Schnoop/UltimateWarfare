@@ -8,6 +8,7 @@ use FrankProjects\UltimateWarfare\Form\Game\NotepadType;
 use FrankProjects\UltimateWarfare\Repository\PlayerRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\TranslatableMessage;
 
 final class NotepadController extends BaseGameController
 {
@@ -19,7 +20,7 @@ final class NotepadController extends BaseGameController
 
         if ($notepadForm->isSubmitted() && $notepadForm->isValid()) {
             $playerRepository->save($player);
-            $this->addFlash('success', 'Notepad saved!');
+            $this->addFlash('success', new TranslatableMessage('Notepad saved!', [], 'notepad'));
         }
 
         return $this->render(

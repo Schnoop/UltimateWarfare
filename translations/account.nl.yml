@@ -1,7 +1,6 @@
-label:
-  old_password: Oud wachtwoord
-  password: Wachtwoord
-  password_repeat: Wachtwoord herhalen
-  change_password: Wachtwoord aanpassen
-  avatar: Avatar
-  upload: Upload
+label.old_password: 'Oud wachtwoord'
+label.password: Wachtwoord
+label.password_repeat: 'Wachtwoord herhalen'
+label.change_password: 'Wachtwoord aanpassen'
+label.avatar: Avatar
+label.upload: Upload

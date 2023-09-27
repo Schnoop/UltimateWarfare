@@ -1,6 +1,5 @@
-label:
-  username: Gebruikersnaam
-  password: Wachtwoord
-  login: Inloggen
-  lost_password: Wachtwoord vergeten?
-  remember_me: Onthoud mij
+label.username: Gebruikersnaam
+label.password: Wachtwoord
+label.login: Inloggen
+label.lost_password: 'Wachtwoord vergeten?'
+label.remember_me: 'Onthoud mij'

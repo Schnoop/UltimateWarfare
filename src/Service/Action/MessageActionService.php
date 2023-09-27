@@ -10,18 +10,22 @@ use FrankProjects\UltimateWarfare\Entity\User;
 use FrankProjects\UltimateWarfare\Repository\MessageRepository;
 use FrankProjects\UltimateWarfare\Repository\PlayerRepository;
 use RuntimeException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class MessageActionService
 {
     private PlayerRepository $playerRepository;
     private MessageRepository $messageRepository;
+    private TranslatorInterface $translator;
 
     public function __construct(
         PlayerRepository $playerRepository,
-        MessageRepository $messageRepository
+        MessageRepository $messageRepository,
+        TranslatorInterface $translator
     ) {
         $this->playerRepository = $playerRepository;
         $this->messageRepository = $messageRepository;
+        $this->translator = $translator;
     }
 
     public function deleteMessageFromInbox(Player $player, int $messageId): void
@@ -29,7 +33,7 @@ final class MessageActionService
         $message = $this->getMessage($messageId);
 
         if ($message->getToPlayer()->getId() !== $player->getId()) {
-            throw new RunTimeException('This is not your message!');
+            throw new RunTimeException($this->translator->trans('This is not your message!', [], 'message'));
         }
 
         $message->setToDelete(true);
@@ -41,7 +45,7 @@ final class MessageActionService
         $message = $this->getMessage($messageId);
 
         if ($message->getFromPlayer()->getId() !== $player->getId()) {
-            throw new RunTimeException('This is not your message!');
+            throw new RunTimeException($this->translator->trans('This is not your message!', [], 'message'));
         }
 
         $message->setFromDelete(true);
@@ -56,17 +60,17 @@ final class MessageActionService
         bool $adminMessage
     ): void {
         if ($subject == '') {
-            throw new RunTimeException('Please type a subject');
+            throw new RunTimeException($this->translator->trans('Please type a subject', [], 'message'));
         }
 
         if ($message == '') {
-            throw new RunTimeException('Please type a message');
+            throw new RunTimeException($this->translator->trans('Please type a message', [], 'message'));
         }
 
         $toPlayer = $this->playerRepository->findByNameAndWorld($toPlayerName, $player->getWorld());
 
         if ($toPlayer === null) {
-            throw new RunTimeException('No such player');
+            throw new RunTimeException($this->translator->trans('No such player', [], 'message'));
         }
 
         if (!$player->getUser()->hasRole(User::ROLE_ADMIN)) {
@@ -87,7 +91,7 @@ final class MessageActionService
         $message = $this->messageRepository->find($messageId);
 
         if ($message === null) {
-            throw new RunTimeException('No such message!');
+            throw new RunTimeException($this->translator->trans('No such message!', [], 'message'));
         }
 
         return $message;
@@ -98,7 +102,7 @@ final class MessageActionService
         $message = $this->getMessage($messageId);
 
         if ($message->getToPlayer()->getId() !== $player->getId()) {
-            throw new RunTimeException('This is not your message!');
+            throw new RunTimeException($this->translator->trans('This is not your message!', [], 'message'));
         }
 
         return $message;
@@ -109,7 +113,7 @@ final class MessageActionService
         $message = $this->getMessage($messageId);
 
         if ($message->getFromPlayer()->getId() !== $player->getId()) {
-            throw new RunTimeException('This is not your message!');
+            throw new RunTimeException($this->translator->trans('This is not your message!', [], 'message'));
         }
 
         return $message;
