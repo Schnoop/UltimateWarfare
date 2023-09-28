@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace FrankProjects\UltimateWarfare\Entity;
 
-class Operation
+use Knp\DoctrineBehaviors\Contract\Entity\TranslatableInterface;
+use Knp\DoctrineBehaviors\Model\Translatable\TranslatableTrait;
+
+class Operation implements TranslatableInterface
 {
+    use TranslatableTrait;
+
     private ?int $id;
-    private string $name;
-    private string $image;
     private int $cost;
-    private string $description;
     private bool $enabled = true;
     private float $difficulty = 0.5;
     private string $subclass;
@@ -28,26 +30,6 @@ class Operation
         return $this->id;
     }
 
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
-
-    public function getImage(): string
-    {
-        return $this->image;
-    }
-
-    public function setImage(string $image): void
-    {
-        $this->image = $image;
-    }
-
     public function getCost(): int
     {
         return $this->cost;
@@ -56,16 +38,6 @@ class Operation
     public function setCost(int $cost): void
     {
         $this->cost = $cost;
-    }
-
-    public function getDescription(): string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): void
-    {
-        $this->description = $description;
     }
 
     public function isEnabled(): bool

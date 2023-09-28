@@ -4,24 +4,9 @@
     <id name="id" type="integer" column="id">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="name" column="name" length="100">
-      <options>
-        <option name="fixed"/>
-      </options>
-    </field>
-    <field name="image" column="image" length="100">
-      <options>
-        <option name="fixed"/>
-      </options>
-    </field>
     <field name="cost" type="integer" column="cost">
       <options>
         <option name="unsigned"/>
-      </options>
-    </field>
-    <field name="description" type="text" column="description" length="65535">
-      <options>
-        <option name="fixed"/>
       </options>
     </field>
     <field name="enabled" type="boolean" column="enabled"/>

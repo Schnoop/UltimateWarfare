@@ -6,9 +6,13 @@ namespace FrankProjects\UltimateWarfare\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Knp\DoctrineBehaviors\Contract\Entity\TranslatableInterface;
+use Knp\DoctrineBehaviors\Model\Translatable\TranslatableTrait;
 
-class GameUnitType
+class GameUnitType implements TranslatableInterface
 {
+    use TranslatableTrait;
+
     public const GAME_UNIT_TYPE_BUILDINGS = 1;
     public const GAME_UNIT_TYPE_DEFENCE_BUILDINGS = 2;
     public const GAME_UNIT_TYPE_SPECIAL_BUILDINGS = 3;
@@ -16,8 +20,6 @@ class GameUnitType
     public const GAME_UNIT_TYPE_SPECIAL_UNITS = 5;
 
     private ?int $id;
-    private string $name;
-    private string $imageDir;
 
     /** @var Collection<int, GameUnit> */
     private Collection $gameUnits;
@@ -35,26 +37,6 @@ class GameUnitType
     public function getId(): int
     {
         return $this->id;
-    }
-
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function setImageDir(string $imageDir): void
-    {
-        $this->imageDir = $imageDir;
-    }
-
-    public function getImageDir(): string
-    {
-        return $this->imageDir;
     }
 
     /**
