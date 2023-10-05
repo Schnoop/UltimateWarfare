@@ -12,6 +12,7 @@ use Knp\DoctrineBehaviors\Model\Translatable\TranslationTrait;
 class ResearchTranslation implements TranslationInterface
 {
     use TranslationTrait;
+
     private ?int $id;
     private string $name;
     private string $image;

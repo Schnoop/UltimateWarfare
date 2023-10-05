@@ -10,6 +10,7 @@ use Knp\DoctrineBehaviors\Model\Translatable\TranslationTrait;
 class OperationTranslation implements TranslationInterface
 {
     use TranslationTrait;
+
     private ?int $id;
     private string $name;
     private string $image;
