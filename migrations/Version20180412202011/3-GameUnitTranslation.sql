@@ -42,5 +42,5 @@ VALUES (1, 1, 'Economic Center', 'Economic Centers', 'economic', 'ec.gif', 'An E
        (23, 405, 'Rocket', 'Rockets', 'rocket', 'rocket.gif', 'Rockets can be used to bomb an enemy country', 'en'),
        (24, 406, 'Chemical rocket', 'Chemical rockets', 'chem_rocket', 'chem_rocket.gif',
         'Chemical rockets can be used to posion enemy population.', 'en'),
-       (25, 407, 'Spy', 'Spies', 'spy', 'spy.gif',
-        'Spies can be used to spy on enemy countries. The more spies you send, the more information you gain\n', 'en');
+       (25, 407, 'Spy', 'Spies', 'spy', 'spy.gif', 'Spies can be used to spy on enemy countries. The more spies you send, the more information you gain\n', 'en'),
+       (26, 408, 'Nuclear Missile', 'Nuclear Missiles', 'nuclear_missile', 'nuclear.gif','', 'en');
