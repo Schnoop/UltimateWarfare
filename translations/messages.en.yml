@@ -11,3 +11,5 @@
 'You are banned!': 'You are banned!'
 'Game unit type does not exist!': 'Game unit type does not exist!'
 'World region does not exist!': 'World region does not exist!'
+'federation-accepted': '%player% has has been accepted into the Federation by %player2%'
+'report-federation-accepted': 'You have been accepted in the Federation %federation%'

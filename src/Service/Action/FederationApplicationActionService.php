@@ -64,7 +64,7 @@ final class FederationApplicationActionService
             $federationApplication->getPlayer(),
             time(),
             Report::TYPE_GENERAL,
-            'federation-accepted',
+            'report-federation-accepted',
             ['%federation%' => $player->getFederation()->getName()]
         );
         $this->reportRepository->save($report);

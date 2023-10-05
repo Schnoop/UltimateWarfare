@@ -19,7 +19,7 @@ class Report
     /**
      * @var array <string, mixed>
      */
-    private array $values;
+    private array $translationValues;
     private Player $player;
 
     public function setId(?int $id): void
@@ -65,17 +65,17 @@ class Report
     /**
      * @return array<string, mixed>
      */
-    public function getValues(): array
+    public function getTranslationValues(): array
     {
-        return $this->values;
+        return $this->translationValues;
     }
 
     /**
-     * @param  array<string, mixed>  $values
+     * @param  array<string, mixed>  $translationValues
      */
-    public function setValues(array $values): void
+    public function setTranslationValues(array $translationValues): void
     {
-        $this->values = $values;
+        $this->translationValues = $translationValues;
     }
 
     public function getPlayer(): Player
@@ -119,7 +119,7 @@ class Report
         $report->setTimestamp($timestamp);
         $report->setType($type);
         $report->setTranslationIdentifier($translationIdentifier);
-        $report->setValues($values);
+        $report->setTranslationValues($values);
 
         return $report;
     }

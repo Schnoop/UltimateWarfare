@@ -15,10 +15,10 @@
         {% for federationNews in federationNews %}
             <tr>
                 <td>
-                    {{ federationNews.timestamp }}
+                    {{ federationNews.timestamp|date }}
                 </td>
                 <td class="text-start">
-                    {{ federationNews.news }}
+                    {{ federationNews.translationIdentifier|trans(federationNews.translationValues) }}
                 </td>
             </tr>
         {% else %}

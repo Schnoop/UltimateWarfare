@@ -27,7 +27,7 @@ final class DoctrineFederationApplicationRepository implements FederationApplica
 
     public function findByIdAndWorld(int $id, World $world): ?FederationApplication
     {
-        return $this->repository->findOneBy(['id' => $id, 'world' => $world]);
+        return $this->repository->findOneBy(['id' => $id]);
     }
 
     public function remove(FederationApplication $federationApplication): void

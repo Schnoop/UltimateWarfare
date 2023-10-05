@@ -132,7 +132,7 @@
                     {{ report.timestamp|date }}
                 </td>
                 <td class="text-start">
-                    {{ report.report }}
+                    {{ report.translationIdentifier|trans(report.translationValues) }}
                 </td>
             </tr>
 

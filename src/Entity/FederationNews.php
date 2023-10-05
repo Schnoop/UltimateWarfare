@@ -14,7 +14,7 @@ class FederationNews
     /**
      * @var array <string, mixed>
      */
-    private array $values;
+    private array $translationValues;
 
     public function setId(?int $id): void
     {
@@ -52,19 +52,19 @@ class FederationNews
     }
 
     /**
-     * @return array <string, mixed>
+     * @return array<string, mixed>
      */
-    public function getValues(): array
+    public function getTranslationValues(): array
     {
-        return $this->values;
+        return $this->translationValues;
     }
 
     /**
-     * @param array<string, mixed> $values
+     * @param  array<string, mixed>  $translationValues
      */
-    public function setValues(array $values): void
+    public function setTranslationValues(array $translationValues): void
     {
-        $this->values = $values;
+        $this->translationValues = $translationValues;
     }
 
     public function setFederation(Federation $federation): void
@@ -81,7 +81,7 @@ class FederationNews
         $federationNews->setFederation($federation);
         $federationNews->setTranslationIdentifier($translationIdentifier);
         $federationNews->setTimestamp(time());
-        $federationNews->setValues($values);
+        $federationNews->setTranslationValues($values);
 
         return $federationNews;
     }
