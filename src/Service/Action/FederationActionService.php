@@ -102,8 +102,8 @@ final class FederationActionService
         }
 
         if ($resourceString !== '') {
-            $news = $this->translator->trans('%sender% has sent %ressource% to %player%', ['%sender' => $player->getName(), '%ressource%' => $resourceString, '%player%' => $aidPlayer->getName()], 'federation');
-            $federationNews = FederationNews::createForFederation($player->getFederation(), $news);
+            //$news = $this->translator->trans('%sender% has sent %ressource% to %player%', ['%sender' => $player->getName(), '%ressource%' => $resourceString, '%player%' => $aidPlayer->getName()], 'federation');
+            $federationNews = FederationNews::createForFederation($player->getFederation(), 'ressources-sent-from-sender-to-player', ['%sender' => $player->getName(), '%ressource%' => $resourceString, '%player%' => $aidPlayer->getName()]);
             $this->federationNewsRepository->save($federationNews);
 
             $aidPlayerNotifications = $aidPlayer->getNotifications();
@@ -159,8 +159,8 @@ final class FederationActionService
         }
 
         $federation = $player->getFederation();
-        $news = $this->translator->trans('%player% has left the Federation.', ['%player%' => $player->getName()], 'federation');
-        $federationNews = FederationNews::createForFederation($player->getFederation(), $news);
+        // $news = $this->translator->trans('%player% has left the Federation.', ['%player%' => $player->getName()], 'federation');
+        $federationNews = FederationNews::createForFederation($player->getFederation(), 'federation-left', ['%player%' => $player->getName()]);
         $this->federationNewsRepository->save($federationNews);
 
         $player->setFederation(null);
@@ -193,8 +193,8 @@ final class FederationActionService
         $kickPlayer->setFederationHierarchy(0);
         $this->playerRepository->save($kickPlayer);
 
-        $news = $this->translator->trans('%player% kicked %kickplayer% from the Federation.', ['%player%' => $player->getName(), '%kickplayer%' => $kickPlayer->getName()], 'federation');
-        $federationNews = FederationNews::createForFederation($player->getFederation(), $news);
+        //$news = $this->translator->trans('%player% kicked %kickplayer% from the Federation.', ['%player%' => $player->getName(), '%kickplayer%' => $kickPlayer->getName()], 'federation');
+        $federationNews = FederationNews::createForFederation($player->getFederation(), 'federation-kicked', ['%player%' => $player->getName(), '%kickplayer%' => $kickPlayer->getName()]);
         $this->federationNewsRepository->save($federationNews);
 
         $federation = $player->getFederation();

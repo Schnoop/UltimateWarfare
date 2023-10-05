@@ -32,7 +32,7 @@ final class AdvancedSpy2 extends OperationProcessor
         foreach ($player->getReports() as $report) {
             if ($report->getTimestamp() < time() && $report->getTimestamp() > time() - 86400) {
                 $this->addToOperationLog($this->translator->trans('Report - %time%', ['%time%' => $report->getTimestamp()], 'operations'));
-                $this->addToOperationLog($this->translator->trans($report->getTranslationIdentifier(), $report->getValues(), 'operations'));
+                $this->addToOperationLog($this->translator->trans($report->getTranslationIdentifier(), $report->getValues()));
             }
         }
     }

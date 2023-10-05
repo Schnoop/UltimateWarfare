@@ -55,8 +55,8 @@ final class FederationApplicationActionService
             throw new RunTimeException($this->translator->trans('Federation members world limit reached!', [], 'federation'));
         }
 
-        $news = $this->translator->trans('%player% has has been accepted into the Federation by %player2%', ['%player%' => $federationApplication->getPlayer()->getName(), '%player2%' => $player->getName()], 'federation');
-        $federationNews = FederationNews::createForFederation($player->getFederation(), $news);
+        // $news = $this->translator->trans('%player% has has been accepted into the Federation by %player2%', ['%player%' => $federationApplication->getPlayer()->getName(), '%player2%' => $player->getName()], 'federation');
+        $federationNews = FederationNews::createForFederation($player->getFederation(), 'federation-accepted', ['%player%' => $federationApplication->getPlayer()->getName(), '%player2%' => $player->getName()]);
         $this->federationNewsRepository->save($federationNews);
 
         // $reportString = $this->translator->trans('You have been accepted in the Federation %federation%', ['%federation%' => $player->getFederation()->getName()], 'federation');
@@ -93,8 +93,8 @@ final class FederationApplicationActionService
 
         $federationApplication = $this->getFederationApplication($player, $applicationId);
 
-        $news = $this->translator->trans('%player% has has been rejected to join the Federation by %player2%', ['%player%' => $federationApplication->getPlayer()->getName(), '%player2%' => $player->getName()], 'federation');
-        $federationNews = FederationNews::createForFederation($player->getFederation(), $news);
+        //$news = $this->translator->trans('%player% has has been rejected to join the Federation by %player2%', ['%player%' => $federationApplication->getPlayer()->getName(), '%player2%' => $player->getName()], 'federation');
+        $federationNews = FederationNews::createForFederation($player->getFederation(), 'federation-rejected', ['%player%' => $federationApplication->getPlayer()->getName(), '%player2%' => $player->getName()]);
         $this->federationNewsRepository->save($federationNews);
 
         // $reportString = $this->translator->trans('You have been rejected by the Federation %federation%', ['%federation%' => $player->getFederation()->getName()], 'federation');

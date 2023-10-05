@@ -66,8 +66,8 @@ final class FederationBankActionService
         }
 
         if ($resourceString !== '') {
-            $news = $this->translator->trans('%player% deposited %resources% to the Federation Bank', ['%player%' => $player->getName(), '%resources%' => $resourceString], 'federation');
-            $federationNews = FederationNews::createForFederation($player->getFederation(), $news);
+            // $news = $this->translator->trans('%player% deposited %resources% to the Federation Bank', ['%player%' => $player->getName(), '%resources%' => $resourceString], 'federation');
+            $federationNews = FederationNews::createForFederation($player->getFederation(), 'federation-deposited', ['%player%' => $player->getName(), '%resources%' => $resourceString]);
             $this->federationNewsRepository->save($federationNews);
 
             $this->playerRepository->save($player);
@@ -115,8 +115,8 @@ final class FederationBankActionService
         }
 
         if ($resourceString !== '') {
-            $news = $this->translator->trans('%player% withdrew %resources% from the Federation Bank', ['%player%' => $player->getName(), '%resources%' => $resourceString], 'federation');
-            $federationNews = FederationNews::createForFederation($player->getFederation(), $news);
+            //$news = $this->translator->trans('%player% withdrew %resources% from the Federation Bank', ['%player%' => $player->getName(), '%resources%' => $resourceString], 'federation');
+            $federationNews = FederationNews::createForFederation($player->getFederation(), 'federation-withdrew', ['%player%' => $player->getName(), '%resources%' => $resourceString]);
             $this->federationNewsRepository->save($federationNews);
 
             $this->playerRepository->save($player);

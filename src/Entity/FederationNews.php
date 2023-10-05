@@ -8,8 +8,13 @@ class FederationNews
 {
     private ?int $id;
     private int $timestamp;
-    private string $news;
+    private string $translationIdentifier;
     private Federation $federation;
+
+    /**
+     * @var array <string, mixed>
+     */
+    private array $values;
 
     public function setId(?int $id): void
     {
@@ -31,14 +36,14 @@ class FederationNews
         return $this->timestamp;
     }
 
-    public function setNews(string $news): void
+    public function getTranslationIdentifier(): string
     {
-        $this->news = $news;
+        return $this->translationIdentifier;
     }
 
-    public function getNews(): string
+    public function setTranslationIdentifier(string $translationIdentifier): void
     {
-        return $this->news;
+        $this->translationIdentifier = $translationIdentifier;
     }
 
     public function getFederation(): Federation
@@ -46,17 +51,37 @@ class FederationNews
         return $this->federation;
     }
 
+    /**
+     * @return array <string, mixed>
+     */
+    public function getValues(): array
+    {
+        return $this->values;
+    }
+
+    /**
+     * @param array<string, mixed> $values
+     */
+    public function setValues(array $values): void
+    {
+        $this->values = $values;
+    }
+
     public function setFederation(Federation $federation): void
     {
         $this->federation = $federation;
     }
 
-    public static function createForFederation(Federation $federation, string $news): FederationNews
+    /**
+     * @param  array<string, mixed>  $values
+     */
+    public static function createForFederation(Federation $federation, string $translationIdentifier, array $values = array()): FederationNews
     {
         $federationNews = new FederationNews();
         $federationNews->setFederation($federation);
-        $federationNews->setNews($news);
+        $federationNews->setTranslationIdentifier($translationIdentifier);
         $federationNews->setTimestamp(time());
+        $federationNews->setValues($values);
 
         return $federationNews;
     }

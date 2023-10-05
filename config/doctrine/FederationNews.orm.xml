@@ -9,11 +9,18 @@
         <option name="unsigned">1</option>
       </options>
     </field>
-    <field name="news" type="text" column="news" length="255">
+
+    <field name="translationIdentifier" type="string" column="translation_identifer" length="255">
       <options>
         <option name="fixed"/>
       </options>
     </field>
+    <field name="values" type="array" column="values" length="255">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+
     <many-to-one field="federation" target-entity="FrankProjects\UltimateWarfare\Entity\Federation" inversed-by="federationNews">
       <join-columns>
         <join-column name="federation_id" nullable="false"/>
