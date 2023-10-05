@@ -31,7 +31,7 @@ final class Spy extends OperationProcessor
         foreach ($this->region->getWorldRegionUnits() as $worldRegionUnit) {
             if ($worldRegionUnit->getGameUnit()->getGameUnitType()->getId() === GameUnitType::GAME_UNIT_TYPE_BUILDINGS) {
                 $this->addToOperationLog(
-                    "- {$worldRegionUnit->getAmount()} {$worldRegionUnit->getGameUnit()->getNameMulti()}"
+                    "- {$worldRegionUnit->getAmount()} {$worldRegionUnit->getGameUnit()->translate()->getNameMulti()}"
                 );
             }
         }
@@ -40,7 +40,7 @@ final class Spy extends OperationProcessor
         foreach ($this->region->getWorldRegionUnits() as $worldRegionUnit) {
             if ($worldRegionUnit->getGameUnit()->getGameUnitType()->getId() === GameUnitType::GAME_UNIT_TYPE_UNITS) {
                 $this->addToOperationLog(
-                    "- {$worldRegionUnit->getAmount()} {$worldRegionUnit->getGameUnit()->getNameMulti()}"
+                    "- {$worldRegionUnit->getAmount()} {$worldRegionUnit->getGameUnit()->translate()->getNameMulti()}"
                 );
             }
         }

@@ -37,7 +37,7 @@ final class ResearchProcessor implements Processor
 
             $research = $researchPlayer->getResearch();
             $finishedTimestamp = $researchPlayer->getTimestamp() + $research->getTimestamp();
-            $message = "You successfully researched a new technology: {$research->getName()}";
+            $message = "You successfully researched a new technology: {$research->translate()->getName()}";
             $report = Report::createForPlayer($player, $finishedTimestamp, 2, $message);
 
             $this->reportRepository->save($report);

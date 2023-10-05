@@ -43,7 +43,7 @@ final class MissileAttack extends OperationProcessor
                 if ($worldRegionUnit->getGameUnit()->getGameUnitType()->getId() == GameUnitType::GAME_UNIT_TYPE_BUILDINGS) {
                     $this->worldRegionUnitRepository->remove($worldRegionUnit);
                     $this->addToOperationLog(
-                        $this->translator->trans('You destroyed all %name% buildings!', ['%name%' => $worldRegionUnit->getGameUnit()->getName()], 'operations')
+                        $this->translator->trans('You destroyed all %name% buildings!', ['%name%' => $worldRegionUnit->getGameUnit()->translate()->getName()], 'operations')
                     );
                 }
             }
@@ -64,7 +64,7 @@ final class MissileAttack extends OperationProcessor
                     $worldRegionUnit->setAmount($worldRegionUnit->getAmount() - $destroyed);
                     $this->worldRegionUnitRepository->save($worldRegionUnit);
                     $this->addToOperationLog(
-                        $this->translator->trans('You destroyed %destroyed% %name% buildings!', ['%destroyed%' => $destroyed, '%name%' => $worldRegionUnit->getGameUnit()->getName()], 'operations')
+                        $this->translator->trans('You destroyed %destroyed% %name% buildings!', ['%destroyed%' => $destroyed, '%name%' => $worldRegionUnit->getGameUnit()->translate()->getName()], 'operations')
                     );
                 }
             }

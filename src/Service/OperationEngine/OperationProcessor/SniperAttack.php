@@ -40,7 +40,7 @@ final class SniperAttack extends OperationProcessor
             foreach ($this->region->getWorldRegionUnits() as $worldRegionUnit) {
                 if ($worldRegionUnit->getGameUnit()->getId() == self::GAME_UNIT_SOLDIER_ID) {
                     $this->worldRegionUnitRepository->remove($worldRegionUnit);
-                    $this->addToOperationLog($this->translator->trans('You killed %soldiers% %name%!', ['%soldiers%' => $soldiers, '%name%' => $worldRegionUnit->getGameUnit()->getNameMulti()], 'operations'));
+                    $this->addToOperationLog($this->translator->trans('You killed %soldiers% %name%!', ['%soldiers%' => $soldiers, '%name%' => $worldRegionUnit->getGameUnit()->translate()->getNameMulti()], 'operations'));
                 }
             }
 
@@ -58,7 +58,7 @@ final class SniperAttack extends OperationProcessor
                 if ($worldRegionUnit->getGameUnit()->getId() == self::GAME_UNIT_SOLDIER_ID) {
                     $worldRegionUnit->setAmount($worldRegionUnit->getAmount() - $soldiersKilled);
                     $this->worldRegionUnitRepository->save($worldRegionUnit);
-                    $this->addToOperationLog($this->translator->trans('You killed %soldiers% %name%!', ['%soldiers%' => $soldiersKilled, '%name%' => $worldRegionUnit->getGameUnit()->getNameMulti()], 'operations'));
+                    $this->addToOperationLog($this->translator->trans('You killed %soldiers% %name%!', ['%soldiers%' => $soldiersKilled, '%name%' => $worldRegionUnit->getGameUnit()->translate()->getNameMulti()], 'operations'));
                 }
             }
 

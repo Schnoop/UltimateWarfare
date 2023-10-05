@@ -155,7 +155,7 @@ final class FleetActionService
             if ($regionUnit->getGameUnit()->getId() == $gameUnit->getId()) {
                 $hasUnit = true;
                 if ($amount > $regionUnit->getAmount()) {
-                    throw new RunTimeException($this->translator->trans('You do not have that many %gameunit%s!', ['%gameunit%' => $gameUnit->getName()], 'fleet'));
+                    throw new RunTimeException($this->translator->trans('You do not have that many %gameunit%s!', ['%gameunit%' => $gameUnit->translate()->getName()], 'fleet'));
                 }
 
                 $regionUnit->setAmount($regionUnit->getAmount() - $amount);
@@ -173,7 +173,7 @@ final class FleetActionService
         }
 
         if ($hasUnit !== true) {
-            throw new RunTimeException($this->translator->trans('You do not have that many %gameunit%s!', ['%gameunit%' => $gameUnit->getName()], 'fleet'));
+            throw new RunTimeException($this->translator->trans('You do not have that many %gameunit%s!', ['%gameunit%' => $gameUnit->translate()->getName()], 'fleet'));
         }
     }
 }

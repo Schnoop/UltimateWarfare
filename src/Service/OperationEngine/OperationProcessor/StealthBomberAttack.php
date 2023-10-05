@@ -39,7 +39,7 @@ final class StealthBomberAttack extends OperationProcessor
             foreach ($this->region->getWorldRegionUnits() as $worldRegionUnit) {
                 if ($worldRegionUnit->getGameUnit()->getGameUnitType()->getId() == GameUnitType::GAME_UNIT_TYPE_SPECIAL_BUILDINGS) {
                     $this->worldRegionUnitRepository->remove($worldRegionUnit);
-                    $this->addToOperationLog($this->translator->trans('You destroyed all %gameUnitName% buildings!', ['%gameUnitName%' => $worldRegionUnit->getGameUnit()->getName()], 'operations'));
+                    $this->addToOperationLog($this->translator->trans('You destroyed all %gameUnitName% buildings!', ['%gameUnitName%' => $worldRegionUnit->getGameUnit()->translate()->getName()], 'operations'));
                 }
             }
 
@@ -58,7 +58,7 @@ final class StealthBomberAttack extends OperationProcessor
                     $destroyed = round($buildingsDestroyed * $percentage);
                     $worldRegionUnit->setAmount((int) ($worldRegionUnit->getAmount() - $destroyed));
                     $this->worldRegionUnitRepository->save($worldRegionUnit);
-                    $this->addToOperationLog($this->translator->trans('You destroyed %destroyed% %gameUnitName% buildings!', ['%destroyed%' => $destroyed, '%gameUnitName%' => $worldRegionUnit->getGameUnit()->getName()], 'operations'));
+                    $this->addToOperationLog($this->translator->trans('You destroyed %destroyed% %gameUnitName% buildings!', ['%destroyed%' => $destroyed, '%gameUnitName%' => $worldRegionUnit->getGameUnit()->translate()->getName()], 'operations'));
                 }
             }
 

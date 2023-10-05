@@ -116,9 +116,9 @@ final class ConstructionProcessor implements Processor
     {
         $reportType = Report::TYPE_GENERAL;
         if ($construction->getNumber() > 1) {
-            $message = "You completed {$construction->getNumber()} {$construction->getGameUnit()->getNameMulti()}!";
+            $message = "You completed {$construction->getNumber()} {$construction->getGameUnit()->translate()->getNameMulti()}!";
         } else {
-            $message = "You completed {$construction->getNumber()} {$construction->getGameUnit()->getName()}!";
+            $message = "You completed {$construction->getNumber()} {$construction->getGameUnit()->translate()->getName()}!";
         }
 
         $finishedConstructionTime = $construction->getTimestamp() + $construction->getGameUnit()->getTimestamp();

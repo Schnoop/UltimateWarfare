@@ -206,7 +206,7 @@ final class ConstructionActionService
             }
 
             if ($amount > $worldRegionUnit->getAmount()) {
-                throw new RunTimeException($this->translator->trans('You do not have that many %name%s!', ['%name%' => $gameUnit->getName()], 'construction'));
+                throw new RunTimeException($this->translator->trans('You do not have that many %name%s!', ['%name%' => $gameUnit->translate()->getName()], 'construction'));
             }
 
             $worldRegionUnit->setAmount($worldRegionUnit->getAmount() - $amount);

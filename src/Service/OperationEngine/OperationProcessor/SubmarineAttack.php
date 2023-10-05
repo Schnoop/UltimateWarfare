@@ -39,7 +39,7 @@ final class SubmarineAttack extends OperationProcessor
             foreach ($this->region->getWorldRegionUnits() as $worldRegionUnit) {
                 if ($worldRegionUnit->getGameUnit()->getId() == self::GAME_UNIT_SHIP_ID) {
                     $this->worldRegionUnitRepository->remove($worldRegionUnit);
-                    $this->addToOperationLog($this->translator->trans('You sunk %shipsDestroyed% %name%!', ['%shipsDestroyed%' => $ships, '%name%' => $worldRegionUnit->getGameUnit()->getNameMulti()], 'operations'));
+                    $this->addToOperationLog($this->translator->trans('You sunk %shipsDestroyed% %name%!', ['%shipsDestroyed%' => $ships, '%name%' => $worldRegionUnit->getGameUnit()->translate()->getNameMulti()], 'operations'));
                 }
             }
 
@@ -55,7 +55,7 @@ final class SubmarineAttack extends OperationProcessor
                 if ($worldRegionUnit->getGameUnit()->getId() == self::GAME_UNIT_SHIP_ID) {
                     $worldRegionUnit->setAmount($worldRegionUnit->getAmount() - $shipsDestroyed);
                     $this->worldRegionUnitRepository->save($worldRegionUnit);
-                    $this->addToOperationLog($this->translator->trans('You sunk %shipsDestroyed% %name%!', ['%shipsDestroyed%' => $shipsDestroyed, '%name%' => $worldRegionUnit->getGameUnit()->getNameMulti()], 'operations'));
+                    $this->addToOperationLog($this->translator->trans('You sunk %shipsDestroyed% %name%!', ['%shipsDestroyed%' => $shipsDestroyed, '%name%' => $worldRegionUnit->getGameUnit()->translate()->getNameMulti()], 'operations'));
                 }
             }
 
