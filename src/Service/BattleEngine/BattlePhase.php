@@ -9,6 +9,7 @@ use FrankProjects\UltimateWarfare\Entity\GameUnit;
 use FrankProjects\UltimateWarfare\Entity\GameUnit\BattleStats\AbstractBattleStats;
 use FrankProjects\UltimateWarfare\Entity\WorldRegionUnit;
 use RuntimeException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class BattlePhase implements IBattlePhase
 {
@@ -32,6 +33,7 @@ abstract class BattlePhase implements IBattlePhase
      * @var array <string>
      */
     protected array $battleLog = [];
+    private TranslatorInterface $translator;
 
     /**
      * BattlePhase constructor.
@@ -40,11 +42,12 @@ abstract class BattlePhase implements IBattlePhase
      * @param FleetUnit[] $attackerGameUnits
      * @param WorldRegionUnit[] $defenderGameUnits
      */
-    private function __construct(string $name, array $attackerGameUnits, array $defenderGameUnits)
+    private function __construct(string $name, array $attackerGameUnits, array $defenderGameUnits, TranslatorInterface $translator)
     {
         $this->name = $name;
         $this->attackerGameUnits = $attackerGameUnits;
         $this->defenderGameUnits = $defenderGameUnits;
+        $this->translator = $translator;
     }
 
     /**
@@ -56,14 +59,15 @@ abstract class BattlePhase implements IBattlePhase
     public static function factory(
         string $battlePhaseName,
         array $attackerGameUnits,
-        array $defenderGameUnits
+        array $defenderGameUnits,
+        TranslatorInterface $translator
     ): BattlePhase {
         $className = "FrankProjects\\UltimateWarfare\\Service\\BattleEngine\\BattlePhase\\" . ucfirst($battlePhaseName);
         if (!class_exists($className) || is_subclass_of($className, __CLASS__) === false) {
             throw new RunTimeException("Unknown BattlePhase {$battlePhaseName}");
         }
 
-        return new $className($battlePhaseName, $attackerGameUnits, $defenderGameUnits);
+        return new $className($battlePhaseName, $attackerGameUnits, $defenderGameUnits, $translator);
     }
 
     public function getName(): string
@@ -105,24 +109,24 @@ abstract class BattlePhase implements IBattlePhase
      */
     public function startBattlePhase(): void
     {
-        $this->addToBattleLog("Starting {$this->getName()} Battle Phase");
+        $this->addToBattleLog($this->translator->trans('Starting %phase% Battle Phase', ['%phase%' => $this->getName()], 'battle'));
 
         $defensePower = $this->getDefensePower();
-        $this->addToBattleLog("Defender starts with {$defensePower} defense power");
+        $this->addToBattleLog($this->translator->trans('Defender starts with %defense% defense power', ['%defense%' => $defensePower], 'battle'));
 
         if ($defensePower > 0) {
             $this->attackerGameUnits = $this->processBattlePhase($defensePower, $this->attackerGameUnits, 'attacking');
         }
 
         $attackPower = $this->getAttackPower();
-        $this->addToBattleLog("Attacker starts with {$attackPower} attack power");
+        $this->addToBattleLog($this->translator->trans('Attacker starts with %attack% attack power', ['%attack%' => $attackPower], 'battle'));
 
         if ($attackPower > 0) {
             $this->defenderGameUnits = $this->processBattlePhase($attackPower, $this->defenderGameUnits, 'defending');
         }
 
         if ($defensePower == 0 && $attackPower == 0) {
-            $this->addToBattleLog("No resistance in this battle phase...");
+            $this->addToBattleLog($this->translator->trans('No resistance in this battle phase...', [], 'battle'));
         }
     }
 
@@ -138,11 +142,11 @@ abstract class BattlePhase implements IBattlePhase
 
             if ($deaths >= $gameUnit->getAmount()) {
                 unset($gameUnits[$index]);
-                $this->addToBattleLog("All {$action} {$gameUnit->getGameUnit()->translate()->getNameMulti()} died in the fight");
+                $this->addToBattleLog($this->translator->trans('All %action% %gameUnitName% died in the fight', ['%action%' => $action, '%gameUnitName%' => $gameUnit->getGameUnit()->translate()->getNameMulti()], 'battle'));
             } elseif ($deaths > 0) {
                 $gameUnits[$index]->setAmount($gameUnit->getAmount() - $deaths);
                 $this->addToBattleLog(
-                    "{$deaths} {$action} {$gameUnit->getGameUnit()->translate()->getNameMulti()} died in the fight"
+                    $this->translator->trans('%death% %action% %gameUnitName% died in the fight.', ['%death%' => $deaths, '%action%' => $action, '%gameUnitName%' => $gameUnit->getGameUnit()->translate()->getNameMulti()], 'battle')
                 );
             }
         }

@@ -124,7 +124,7 @@ abstract class OperationProcessor implements OperationInterface
      */
     public function execute(): array
     {
-        $this->addToOperationLog("Launching operation {$this->operation->translate()->getName()}!");
+        $this->addToOperationLog($this->translator->trans("Launching operation %operation%!", ['%operation%' => $this->operation->translate()->getName()], 'operation'));
         $this->processPreOperation();
         $formula = $this->getFormula();
 

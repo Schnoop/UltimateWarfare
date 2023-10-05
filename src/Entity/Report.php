@@ -14,7 +14,12 @@ class Report
     private ?int $id;
     private int $type;
     private int $timestamp;
-    private string $report;
+    private string $translationIdentifier;
+
+    /**
+     * @var array <string, mixed>
+     */
+    private array $values;
     private Player $player;
 
     public function setId(?int $id): void
@@ -47,14 +52,30 @@ class Report
         return $this->timestamp;
     }
 
-    public function setReport(string $report): void
+    public function getTranslationIdentifier(): string
     {
-        $this->report = $report;
+        return $this->translationIdentifier;
     }
 
-    public function getReport(): string
+    public function setTranslationIdentifier(string $translationIdentifier): void
     {
-        return $this->report;
+        $this->translationIdentifier = $translationIdentifier;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getValues(): array
+    {
+        return $this->values;
+    }
+
+    /**
+     * @param  array<string, mixed>  $values
+     */
+    public function setValues(array $values): void
+    {
+        $this->values = $values;
     }
 
     public function getPlayer(): Player
@@ -67,13 +88,17 @@ class Report
         $this->player = $player;
     }
 
-    public static function createForPlayer(Player $player, int $timestamp, int $type, string $message): Report
+    /**
+     * @param  array<string, mixed>  $values
+     */
+    public static function createForPlayer(Player $player, int $timestamp, int $type, string $translationIdentifier, array $values = array()): Report
     {
         $report = new Report();
         $report->setPlayer($player);
         $report->setTimestamp($timestamp);
         $report->setType($type);
-        $report->setReport($message);
+        $report->setTranslationIdentifier($translationIdentifier);
+        $report->setValues($values);
 
         return $report;
     }

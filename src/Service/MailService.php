@@ -11,6 +11,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 final class MailService
@@ -18,15 +19,18 @@ final class MailService
     private LoggerInterface $logger;
     private Environment $twig;
     private MailerInterface $mailer;
+    private TranslatorInterface $translator;
 
     public function __construct(
         LoggerInterface $logger,
         Environment $twig,
-        MailerInterface $mailer
+        MailerInterface $mailer,
+        TranslatorInterface $translator,
     ) {
         $this->logger = $logger;
         $this->twig = $twig;
         $this->mailer = $mailer;
+        $this->translator = $translator;
     }
 
     public function sendRegistrationMail(User $user): void
@@ -37,7 +41,7 @@ final class MailService
         ];
 
         $message = (new Email())
-            ->subject('Welcome to Ultimate-Warfare')
+            ->subject($this->translator->trans('Welcome to Ultimate-Warfare', [], 'email'))
             ->from('no-reply@ultimate-warfare.com')
             ->to($user->getEmail())
             ->html($this->generateMailBody('email/register.html.twig', $mailParameters))
@@ -55,7 +59,7 @@ final class MailService
         ];
 
         $message = (new Email())
-            ->subject('Username & Password request')
+            ->subject($this->translator->trans('Username & Password request', [], 'email'))
             ->from('no-reply@ultimate-warfare.com')
             ->to($user->getEmail())
             ->html($this->generateMailBody('email/passwordReset.html.twig', $mailParameters));

@@ -14,6 +14,7 @@ use FrankProjects\UltimateWarfare\Repository\ReportRepository;
 use FrankProjects\UltimateWarfare\Repository\WorldRegionUnitRepository;
 use FrankProjects\UltimateWarfare\Service\GameEngine\Processor;
 use FrankProjects\UltimateWarfare\Service\NetworthUpdaterService;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ConstructionProcessor implements Processor
 {
@@ -22,19 +23,22 @@ final class ConstructionProcessor implements Processor
     private ReportRepository $reportRepository;
     private WorldRegionUnitRepository $worldRegionUnitRepository;
     private NetworthUpdaterService $networthUpdaterService;
+    private TranslatorInterface $translator;
 
     public function __construct(
         ConstructionRepository $constructionRepository,
         PlayerRepository $playerRepository,
         ReportRepository $reportRepository,
         WorldRegionUnitRepository $worldRegionUnitRepository,
-        NetworthUpdaterService $networthUpdaterService
+        NetworthUpdaterService $networthUpdaterService,
+        TranslatorInterface $translator
     ) {
         $this->constructionRepository = $constructionRepository;
         $this->playerRepository = $playerRepository;
         $this->reportRepository = $reportRepository;
         $this->worldRegionUnitRepository = $worldRegionUnitRepository;
         $this->networthUpdaterService = $networthUpdaterService;
+        $this->translator = $translator;
     }
 
     public function run(int $timestamp): void
@@ -116,9 +120,15 @@ final class ConstructionProcessor implements Processor
     {
         $reportType = Report::TYPE_GENERAL;
         if ($construction->getNumber() > 1) {
-            $message = "You completed {$construction->getNumber()} {$construction->getGameUnit()->translate()->getNameMulti()}!";
+            $message = $this->translator->trans('You completed %number% %gameUnitName%!', [
+                '%number%' => $construction->getNumber(),
+                '%gameUnitName%' => $construction->getGameUnit()->translate()->getNameMulti()
+            ], 'construction');
         } else {
-            $message = "You completed {$construction->getNumber()} {$construction->getGameUnit()->translate()->getName()}!";
+            $message = $this->translator->trans('You completed %number% %gameUnitName%!', [
+                '%number%' => $construction->getNumber(),
+                '%gameUnitName%' => $construction->getGameUnit()->translate()->getName()
+            ], 'construction');
         }
 
         $finishedConstructionTime = $construction->getTimestamp() + $construction->getGameUnit()->getTimestamp();

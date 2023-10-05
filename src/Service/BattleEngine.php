@@ -12,6 +12,7 @@ use FrankProjects\UltimateWarfare\Service\BattleEngine\BattleReportCreator;
 use FrankProjects\UltimateWarfare\Service\BattleEngine\BattleResult;
 use FrankProjects\UltimateWarfare\Service\BattleEngine\BattleUpdaterService;
 use RuntimeException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class BattleEngine
 {
@@ -19,17 +20,20 @@ final class BattleEngine
     private BattleReportCreator $battleReportCreator;
     private NetworthUpdaterService $networthUpdaterService;
     private IncomeUpdaterService $incomeUpdaterService;
+    private TranslatorInterface $translator;
 
     public function __construct(
         BattleUpdaterService $battleUpdaterService,
         BattleReportCreator $battleReportCreator,
         NetworthUpdaterService $networthUpdaterService,
-        IncomeUpdaterService $incomeUpdaterService
+        IncomeUpdaterService $incomeUpdaterService,
+        TranslatorInterface $translator,
     ) {
         $this->battleUpdaterService = $battleUpdaterService;
         $this->battleReportCreator = $battleReportCreator;
         $this->networthUpdaterService = $networthUpdaterService;
         $this->incomeUpdaterService = $incomeUpdaterService;
+        $this->translator = $translator;
     }
 
     /**
@@ -49,7 +53,7 @@ final class BattleEngine
 
         $battlePhaseResults = [];
         foreach ($this->getBattlePhases() as $battlePhaseName) {
-            $battlePhase = BattlePhase::factory($battlePhaseName, $attackerGameUnits, $defenderGameUnits);
+            $battlePhase = BattlePhase::factory($battlePhaseName, $attackerGameUnits, $defenderGameUnits, $this->translator);
             $battlePhase->startBattlePhase();
 
             $attackerGameUnits = $battlePhase->getAttackerGameUnits();
@@ -80,24 +84,24 @@ final class BattleEngine
     private function ensureCanAttack(Fleet $fleet): void
     {
         if ($fleet->getTimestampArrive() > time()) {
-            throw new RunTimeException("Fleet not arrived yet");
+            throw new RunTimeException($this->translator->trans('Fleet not arrived yet', [], 'battle'));
         }
 
         $targetPlayer = $fleet->getTargetWorldRegion()->getPlayer();
         if ($targetPlayer === null) {
-            throw new RunTimeException("Target region has no owner");
+            throw new RunTimeException($this->translator->trans('Target region has no owner', [], 'battle'));
         }
 
         if ($fleet->getPlayer()->getId() === $targetPlayer->getId()) {
-            throw new RunTimeException("You can not attack yourself");
+            throw new RunTimeException($this->translator->trans('You can not attack yourself', [], 'battle'));
         }
 
         if (count($targetPlayer->getWorldRegions()) === 1) {
-            throw new RunTimeException("Target player has only 1 region left");
+            throw new RunTimeException($this->translator->trans('Target player has only 1 region left', [], 'battle'));
         }
 
         if ($targetPlayer->getTimestampJoined() + 172800 > time()) {
-            throw new RunTimeException("You can not attack this player in the first 48 hours");
+            throw new RunTimeException($this->translator->trans('You can not attack this player in the first 48 hours', [], 'battle'));
         }
     }
 

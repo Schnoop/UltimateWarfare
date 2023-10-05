@@ -17,7 +17,12 @@
         <option name="unsigned">1</option>
       </options>
     </field>
-    <field name="report" type="text" column="report" length="255">
+    <field name="translationIdentifier" type="string" column="translation_identifer" length="255">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="values" type="array" column="values" length="255">
       <options>
         <option name="fixed"/>
       </options>
