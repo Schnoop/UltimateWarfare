@@ -1,4 +1,4 @@
-INSERT INTO `game_unit` (`id`, `translatable_id`, `name`, `name_multi`, `row_name`, `image`, `description`, `locale`)
+INSERT INTO `game_unit_translation` (`id`, `translatable_id`, `name`, `name_multi`, `row_name`, `image`, `description`, `locale`)
 VALUES (1, 1, 'Economic Center', 'Economic Centers', 'economic', 'ec.gif', 'An Economic Center makes 15 cash a tick.',
         'en'),
        (2, 2, 'Farm', 'Farms', 'farm', 'farm.gif', 'A farm makes 50 food a tick.', 'en'),
