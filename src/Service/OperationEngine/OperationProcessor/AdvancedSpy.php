@@ -16,7 +16,8 @@ final class AdvancedSpy extends OperationProcessor
         $guards = $this->getGuards();
         $total_units = $this->amount + $guards + 1;
 
-        return (3 * $this->amount / (2 * $total_units)) - (3 * $guards / (2 * $total_units)) - $this->operation->getDifficulty() + $this->getRandomChance();
+        return (3 * $this->amount / (2 * $total_units)) - (3 * $guards / (2 * $total_units)) - $this->operation->getDifficulty(
+            ) + $this->getRandomChance();
     }
 
     public function processPreOperation(): void
@@ -38,14 +39,28 @@ final class AdvancedSpy extends OperationProcessor
 
         // XXX TODO: number_format($resource, 0, '.', ',')
 
-        $this->addToOperationLog($this->translator->trans('Cash: %value%', ['%value%' => $player->getResources()->getCash()], 'operations'));
-        $this->addToOperationLog($this->translator->trans('Food: %value%', ['%value%' => $player->getResources()->getFood()], 'operations'));
-        $this->addToOperationLog($this->translator->trans('Wood: %value%', ['%value%' => $player->getResources()->getWood()], 'operations'));
-        $this->addToOperationLog($this->translator->trans('Steel: %value%', ['%value%' => $player->getResources()->getSteel()], 'operations'));
+        $this->addToOperationLog(
+            $this->translator->trans('Cash: %value%', ['%value%' => $player->getResources()->getCash()], 'operations')
+        );
+        $this->addToOperationLog(
+            $this->translator->trans('Food: %value%', ['%value%' => $player->getResources()->getFood()], 'operations')
+        );
+        $this->addToOperationLog(
+            $this->translator->trans('Wood: %value%', ['%value%' => $player->getResources()->getWood()], 'operations')
+        );
+        $this->addToOperationLog(
+            $this->translator->trans('Steel: %value%', ['%value%' => $player->getResources()->getSteel()], 'operations')
+        );
 
-        $this->addToOperationLog($this->translator->trans('Population: %value%', ['%value%' => $population], 'operations'));
-        $this->addToOperationLog($this->translator->trans('Regions: %value%', ['%value%' => $regionCount], 'operations'));
-        $this->addToOperationLog($this->translator->trans('Networth: %value%', ['%value%' => $player->getNetworth()], 'operations'));
+        $this->addToOperationLog(
+            $this->translator->trans('Population: %value%', ['%value%' => $population], 'operations')
+        );
+        $this->addToOperationLog(
+            $this->translator->trans('Regions: %value%', ['%value%' => $regionCount], 'operations')
+        );
+        $this->addToOperationLog(
+            $this->translator->trans('Networth: %value%', ['%value%' => $player->getNetworth()], 'operations')
+        );
     }
 
     public function processFailed(): void
@@ -68,9 +83,11 @@ final class AdvancedSpy extends OperationProcessor
             '%player%' => $this->playerRegion->getPlayer()->getName(),
             '%regionX%' => $this->region->getX(),
             '%regionY%' => $this->region->getY(),
-        ],Report::TYPE_GENERAL);
+        ], Report::TYPE_GENERAL);
 
-        $this->addToOperationLog($this->translator->trans('We failed to spy and lost %spies% spies', ['%spies%' => $spiesLost], 'operations'));
+        $this->addToOperationLog(
+            $this->translator->trans('We failed to spy and lost %spies% spies', ['%spies%' => $spiesLost], 'operations')
+        );
     }
 
     public function processPostOperation(): void
