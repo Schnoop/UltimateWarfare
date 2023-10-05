@@ -59,12 +59,16 @@ final class AdvancedSpy extends OperationProcessor
             }
         }
 
-        $reportText = $this->translator->trans('%player% tried to spy on region %regionX%, %regionY% but failed.', [
+//        $reportText = $this->translator->trans('%player% tried to spy on region %regionX%, %regionY% but failed.', [
+//            '%player%' => $this->playerRegion->getPlayer()->getName(),
+//            '%regionX%' => $this->region->getX(),
+//            '%regionY%' => $this->region->getY(),
+//        ], 'operations');
+        $this->reportCreator->createReport($this->region->getPlayer(), time(), 'failed-spy-on-region', [
             '%player%' => $this->playerRegion->getPlayer()->getName(),
             '%regionX%' => $this->region->getX(),
             '%regionY%' => $this->region->getY(),
-        ], 'operations');
-        $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText, Report::TYPE_GENERAL);
+        ],Report::TYPE_GENERAL);
 
         $this->addToOperationLog($this->translator->trans('We failed to spy and lost %spies% spies', ['%spies%' => $spiesLost], 'operations'));
     }

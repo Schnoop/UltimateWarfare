@@ -9,25 +9,21 @@ use FrankProjects\UltimateWarfare\Repository\ReportRepository;
 use FrankProjects\UltimateWarfare\Repository\ResearchPlayerRepository;
 use FrankProjects\UltimateWarfare\Service\GameEngine\Processor;
 use FrankProjects\UltimateWarfare\Service\NetworthUpdaterService;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ResearchProcessor implements Processor
 {
     private ResearchPlayerRepository $researchPlayerRepository;
     private ReportRepository $reportRepository;
     private NetworthUpdaterService $networthUpdaterService;
-    private TranslatorInterface $translator;
 
     public function __construct(
         ResearchPlayerRepository $researchPlayerRepository,
         ReportRepository $reportRepository,
         NetworthUpdaterService $networthUpdaterService,
-        TranslatorInterface $translator
     ) {
         $this->researchPlayerRepository = $researchPlayerRepository;
         $this->reportRepository = $reportRepository;
         $this->networthUpdaterService = $networthUpdaterService;
-        $this->translator = $translator;
     }
 
     public function run(int $timestamp): void
@@ -41,8 +37,8 @@ final class ResearchProcessor implements Processor
 
             $research = $researchPlayer->getResearch();
             $finishedTimestamp = $researchPlayer->getTimestamp() + $research->getTimestamp();
-            $message = $this->translator->trans('You successfully researched a new technology: %research%', ['%research%' => $research->translate()->getName()], 'research');
-            $report = Report::createForPlayer($player, $finishedTimestamp, 2, $message);
+            //$message = $this->translator->trans('You successfully researched a new technology: %research%', ['%research%' => $research->translate()->getName()], 'research');
+            $report = Report::createForPlayer($player, $finishedTimestamp, Report::TYPE_GENERAL, 'technology-researched', ['%research%' => $research->translate()->getName()]);
 
             $this->reportRepository->save($report);
             $this->researchPlayerRepository->save($researchPlayer);

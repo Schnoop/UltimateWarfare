@@ -112,12 +112,12 @@ final class FederationActionService
             $this->playerRepository->save($aidPlayer);
             $this->playerRepository->save($player);
 
-            $reportString = $this->translator->trans('%sender% has sent %ressource% to you', ['%sender' => $player->getName(), '%ressource%' => $resourceString], 'federation');
-            $report = Report::createForPlayer($aidPlayer, time(), Report::TYPE_AID, $reportString);
+            // $reportString = $this->translator->trans('%sender% has sent %ressource% to you', ['%sender' => $player->getName(), '%ressource%' => $resourceString], 'federation');
+            $report = Report::createForPlayer($aidPlayer, time(), Report::TYPE_AID, 'ressource-sent-to-you', ['%sender' => $player->getName(), '%ressource%' => $resourceString]);
             $this->reportRepository->save($report);
 
-            $reportString = $this->translator->trans('You have send %ressource% to %player%', ['%ressource%' => $resourceString, '%player%' => $aidPlayer->getName()], 'federation');
-            $report = Report::createForPlayer($player, time(), Report::TYPE_AID, $reportString);
+            // $reportString = $this->translator->trans('You have send %ressource% to %player%', ['%ressource%' => $resourceString, '%player%' => $aidPlayer->getName()], 'federation');
+            $report = Report::createForPlayer($player, time(), Report::TYPE_AID, 'ressource-sent-to-player', ['%ressource%' => $resourceString, '%player%' => $aidPlayer->getName()]);
             $this->reportRepository->save($report);
         }
     }
@@ -202,8 +202,8 @@ final class FederationActionService
         $federation->setRegions($federation->getRegions() - count($kickPlayer->getWorldRegions()));
         $this->federationRepository->save($federation);
 
-        $reportString = $this->translator->trans('You have been kicked from Federation %federation%', ['%federation%' => $federation->getName()], 'federation');
-        $report = Report::createForPlayer($kickPlayer, time(), Report::TYPE_GENERAL, $reportString);
+        // $reportString = $this->translator->trans('You have been kicked from Federation %federation%', ['%federation%' => $federation->getName()], 'federation');
+        $report = Report::createForPlayer($kickPlayer, time(), Report::TYPE_GENERAL, 'kicked-from-federation', ['%federation%' => $federation->getName()]);
         $this->reportRepository->save($report);
     }
 

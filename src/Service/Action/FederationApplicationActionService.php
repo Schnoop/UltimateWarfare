@@ -59,12 +59,13 @@ final class FederationApplicationActionService
         $federationNews = FederationNews::createForFederation($player->getFederation(), $news);
         $this->federationNewsRepository->save($federationNews);
 
-        $reportString = $this->translator->trans('You have been accepted in the Federation %federation%', ['%federation%' => $player->getFederation()->getName()], 'federation');
+        // $reportString = $this->translator->trans('You have been accepted in the Federation %federation%', ['%federation%' => $player->getFederation()->getName()], 'federation');
         $report = Report::createForPlayer(
             $federationApplication->getPlayer(),
             time(),
             Report::TYPE_GENERAL,
-            $reportString
+            'federation-accepted',
+            ['%federation%' => $player->getFederation()->getName()]
         );
         $this->reportRepository->save($report);
 
@@ -96,12 +97,13 @@ final class FederationApplicationActionService
         $federationNews = FederationNews::createForFederation($player->getFederation(), $news);
         $this->federationNewsRepository->save($federationNews);
 
-        $reportString = $this->translator->trans('You have been rejected by the Federation %federation%', ['%federation%' => $player->getFederation()->getName()], 'federation');
+        // $reportString = $this->translator->trans('You have been rejected by the Federation %federation%', ['%federation%' => $player->getFederation()->getName()], 'federation');
         $report = Report::createForPlayer(
             $federationApplication->getPlayer(),
             time(),
             Report::TYPE_GENERAL,
-            $reportString
+            'federation-rejected',
+            ['%federation%' => $player->getFederation()->getName()]
         );
         $this->reportRepository->save($report);
 

@@ -88,21 +88,6 @@ class Report
         $this->player = $player;
     }
 
-    /**
-     * @param  array<string, mixed>  $values
-     */
-    public static function createForPlayer(Player $player, int $timestamp, int $type, string $translationIdentifier, array $values = array()): Report
-    {
-        $report = new Report();
-        $report->setPlayer($player);
-        $report->setTimestamp($timestamp);
-        $report->setType($type);
-        $report->setTranslationIdentifier($translationIdentifier);
-        $report->setValues($values);
-
-        return $report;
-    }
-
     public static function getReportSubject(int $type): string
     {
         if ($type == self::TYPE_ATTACKED) {
@@ -122,5 +107,20 @@ class Report
         }
 
         return 'All reports';
+    }
+
+    /**
+     * @param  array<string, mixed>  $values
+     */
+    public static function createForPlayer(Player $player, int $timestamp, int $type, string $translationIdentifier, array $values = array()): Report
+    {
+        $report = new Report();
+        $report->setPlayer($player);
+        $report->setTimestamp($timestamp);
+        $report->setType($type);
+        $report->setTranslationIdentifier($translationIdentifier);
+        $report->setValues($values);
+
+        return $report;
     }
 }

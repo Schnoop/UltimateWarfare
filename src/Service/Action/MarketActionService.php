@@ -74,17 +74,23 @@ final class MarketActionService
 
     private function createBuyReports(MarketItem $marketItem, Player $player): void
     {
-        $buyMessage = $this->translator->trans("You bought %amount% %resource%.", [
+//        $buyMessage = $this->translator->trans("You bought %amount% %resource%.", [
+//            '%amount%' => $marketItem->getAmount(),
+//            '%resource%' => $marketItem->getGameResource()
+//        ], "market");
+        $this->createReport($player, 'ressource-bought', [
             '%amount%' => $marketItem->getAmount(),
             '%resource%' => $marketItem->getGameResource()
-        ], "market");
-        $this->createReport($player, $buyMessage);
+        ]);
 
-        $sellMessage = $this->translator->trans("You sold %amount% %resource%.", [
+//        $sellMessage = $this->translator->trans("You sold %amount% %resource%.", [
+//            '%amount%' => $marketItem->getAmount(),
+//            '%resource%' => $marketItem->getGameResource()
+//        ], "market");
+        $this->createReport($marketItem->getPlayer(), 'ressource-sold', [
             '%amount%' => $marketItem->getAmount(),
             '%resource%' => $marketItem->getGameResource()
-        ], "market");
-        $this->createReport($marketItem->getPlayer(), $sellMessage);
+        ]);
     }
 
     public function cancelOrder(Player $player, int $marketItemId): void
@@ -144,17 +150,23 @@ final class MarketActionService
 
     private function createSellReports(MarketItem $marketItem, Player $player): void
     {
-        $sellMessage = $this->translator->trans("You sold %amount% %resource%.", [
+//        $sellMessage = $this->translator->trans("You sold %amount% %resource%.", [
+//            '%amount%' => $marketItem->getAmount(),
+//            '%resource%' => $marketItem->getGameResource()
+//        ], "market");
+        $this->createReport($player, 'ressource-sold', [
             '%amount%' => $marketItem->getAmount(),
             '%resource%' => $marketItem->getGameResource()
-        ], "market");
-        $this->createReport($player, $sellMessage);
+        ]);
 
-        $buyMessage = $this->translator->trans("You bought %amount% %resource%.", [
+//        $buyMessage = $this->translator->trans("You bought %amount% %resource%.", [
+//            '%amount%' => $marketItem->getAmount(),
+//            '%resource%' => $marketItem->getGameResource()
+//        ], "market");
+        $this->createReport($marketItem->getPlayer(), 'ressource-bought', [
             '%amount%' => $marketItem->getAmount(),
             '%resource%' => $marketItem->getGameResource()
-        ], "market");
-        $this->createReport($marketItem->getPlayer(), $buyMessage);
+        ]);
     }
 
     public function placeOffer(Player $player, string $gameResource, int $price, int $amount, string $action): void
@@ -292,9 +304,12 @@ final class MarketActionService
         }
     }
 
-    private function createReport(Player $player, string $text): void
+    /**
+     * @param  array<string, int|string>  $values
+     */
+    private function createReport(Player $player, string $translationIdentifier, array $values = array()): void
     {
-        $report = Report::createForPlayer($player, time(), Report::TYPE_MARKET, $text);
+        $report = Report::createForPlayer($player, time(), Report::TYPE_MARKET, $translationIdentifier, $values);
         $this->reportRepository->save($report);
     }
 }

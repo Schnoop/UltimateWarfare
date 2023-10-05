@@ -23,22 +23,18 @@ final class ConstructionProcessor implements Processor
     private ReportRepository $reportRepository;
     private WorldRegionUnitRepository $worldRegionUnitRepository;
     private NetworthUpdaterService $networthUpdaterService;
-    private TranslatorInterface $translator;
-
     public function __construct(
         ConstructionRepository $constructionRepository,
         PlayerRepository $playerRepository,
         ReportRepository $reportRepository,
         WorldRegionUnitRepository $worldRegionUnitRepository,
         NetworthUpdaterService $networthUpdaterService,
-        TranslatorInterface $translator
     ) {
         $this->constructionRepository = $constructionRepository;
         $this->playerRepository = $playerRepository;
         $this->reportRepository = $reportRepository;
         $this->worldRegionUnitRepository = $worldRegionUnitRepository;
         $this->networthUpdaterService = $networthUpdaterService;
-        $this->translator = $translator;
     }
 
     public function run(int $timestamp): void
@@ -120,19 +116,29 @@ final class ConstructionProcessor implements Processor
     {
         $reportType = Report::TYPE_GENERAL;
         if ($construction->getNumber() > 1) {
-            $message = $this->translator->trans('You completed %number% %gameUnitName%!', [
+            $message = 'construction-complete-multi';
+            $values = [
                 '%number%' => $construction->getNumber(),
                 '%gameUnitName%' => $construction->getGameUnit()->translate()->getNameMulti()
-            ], 'construction');
+            ];
+//            $message = $this->translator->trans('You completed %number% %gameUnitName%!', [
+//                '%number%' => $construction->getNumber(),
+//                '%gameUnitName%' => $construction->getGameUnit()->translate()->getNameMulti()
+//            ], 'construction');
         } else {
-            $message = $this->translator->trans('You completed %number% %gameUnitName%!', [
+            $message = 'construction-complete-single';
+            $values = [
                 '%number%' => $construction->getNumber(),
                 '%gameUnitName%' => $construction->getGameUnit()->translate()->getName()
-            ], 'construction');
+            ];
+//            $message = $this->translator->trans('You completed %number% %gameUnitName%!', [
+//                '%number%' => $construction->getNumber(),
+//                '%gameUnitName%' => $construction->getGameUnit()->translate()->getName()
+//            ], 'construction');
         }
 
         $finishedConstructionTime = $construction->getTimestamp() + $construction->getGameUnit()->getTimestamp();
-        $report = Report::createForPlayer($construction->getPlayer(), $finishedConstructionTime, $reportType, $message);
+        $report = Report::createForPlayer($construction->getPlayer(), $finishedConstructionTime, $reportType, $message, $values);
         $this->reportRepository->save($report);
     }
 
