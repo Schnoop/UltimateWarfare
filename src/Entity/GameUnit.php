@@ -10,17 +10,17 @@ use FrankProjects\UltimateWarfare\Entity\GameUnit\BattleStats;
 use FrankProjects\UltimateWarfare\Entity\GameUnit\Cost;
 use FrankProjects\UltimateWarfare\Entity\GameUnit\Income;
 use FrankProjects\UltimateWarfare\Entity\GameUnit\Upkeep;
+use Knp\DoctrineBehaviors\Contract\Entity\TranslatableInterface;
+use Knp\DoctrineBehaviors\Model\Translatable\TranslatableTrait;
 
-class GameUnit
+class GameUnit implements TranslatableInterface
 {
+
+    use TranslatableTrait;
+
     private ?int $id;
-    private string $name;
-    private string $nameMulti;
-    private string $rowName;
-    private string $image;
     private int $networth;
     private int $timestamp;
-    private string $description;
     private GameUnitType $gameUnitType;
 
     /** @var Collection<int, WorldRegionUnit> */
@@ -61,46 +61,6 @@ class GameUnit
         return $this->id;
     }
 
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function setNameMulti(string $nameMulti): void
-    {
-        $this->nameMulti = $nameMulti;
-    }
-
-    public function getNameMulti(): string
-    {
-        return $this->nameMulti;
-    }
-
-    public function setRowName(string $rowName): void
-    {
-        $this->rowName = $rowName;
-    }
-
-    public function getRowName(): string
-    {
-        return $this->rowName;
-    }
-
-    public function setImage(string $image): void
-    {
-        $this->image = $image;
-    }
-
-    public function getImage(): string
-    {
-        return $this->image;
-    }
-
     public function setNetworth(int $networth): void
     {
         $this->networth = $networth;
@@ -119,16 +79,6 @@ class GameUnit
     public function getTimestamp(): int
     {
         return $this->timestamp;
-    }
-
-    public function setDescription(string $description): void
-    {
-        $this->description = $description;
-    }
-
-    public function getDescription(): string
-    {
-        return $this->description;
     }
 
     public function getBattleStats(): BattleStats

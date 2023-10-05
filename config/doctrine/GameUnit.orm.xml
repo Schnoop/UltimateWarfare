@@ -4,26 +4,6 @@
     <id name="id" type="integer" column="id">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="name" column="name" length="20">
-      <options>
-        <option name="fixed"/>
-      </options>
-    </field>
-    <field name="nameMulti" column="name_multi" length="50">
-      <options>
-        <option name="fixed"/>
-      </options>
-    </field>
-    <field name="rowName" column="row_name" length="20">
-      <options>
-        <option name="fixed"/>
-      </options>
-    </field>
-    <field name="image" column="image" length="100">
-      <options>
-        <option name="fixed"/>
-      </options>
-    </field>
     <field name="networth" type="integer" column="networth">
       <options>
         <option name="unsigned"/>
@@ -32,11 +12,6 @@
     <field name="timestamp" type="integer" column="timestamp">
       <options>
         <option name="unsigned">1</option>
-      </options>
-    </field>
-    <field name="description" type="text" column="description" length="65535">
-      <options>
-        <option name="fixed"/>
       </options>
     </field>
     <embedded name="battleStats" class="FrankProjects\UltimateWarfare\Entity\GameUnit\BattleStats"/>

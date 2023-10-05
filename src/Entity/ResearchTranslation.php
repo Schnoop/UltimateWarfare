@@ -6,16 +6,18 @@ namespace FrankProjects\UltimateWarfare\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Knp\DoctrineBehaviors\Contract\Entity\TranslatableInterface;
-use Knp\DoctrineBehaviors\Model\Translatable\TranslatableTrait;
+use Knp\DoctrineBehaviors\Contract\Entity\TranslationInterface;
+use Knp\DoctrineBehaviors\Model\Translatable\TranslationTrait;
 
-class Research implements TranslatableInterface
+class ResearchTranslation implements TranslationInterface
 {
-    use TranslatableTrait;
-
+    use TranslationTrait;
     private ?int $id;
+    private string $name;
+    private string $image;
     private int $cost;
     private int $timestamp;
+    private string $description;
     private bool $active = false;
 
     /** @var Collection<int, ResearchPlayer> */
@@ -48,6 +50,26 @@ class Research implements TranslatableInterface
         return $this->id;
     }
 
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getImage(): string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): void
+    {
+        $this->image = $image;
+    }
+
     public function setCost(int $cost): void
     {
         $this->cost = $cost;
@@ -66,6 +88,16 @@ class Research implements TranslatableInterface
     public function getTimestamp(): int
     {
         return $this->timestamp;
+    }
+
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
     }
 
     public function setActive(bool $active): void
