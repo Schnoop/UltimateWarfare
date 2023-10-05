@@ -15,7 +15,6 @@ use Knp\DoctrineBehaviors\Model\Translatable\TranslatableTrait;
 
 class GameUnit implements TranslatableInterface
 {
-
     use TranslatableTrait;
 
     private ?int $id;

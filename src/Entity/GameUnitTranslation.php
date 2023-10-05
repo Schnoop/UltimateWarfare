@@ -9,7 +9,6 @@ use Knp\DoctrineBehaviors\Model\Translatable\TranslationTrait;
 
 class GameUnitTranslation implements TranslationInterface
 {
-
     use TranslationTrait;
 
     private ?int $id;

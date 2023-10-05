@@ -8,7 +8,6 @@ use Knp\DoctrineBehaviors\Contract\Entity\TranslationInterface;
 use Knp\DoctrineBehaviors\Model\Translatable\TranslationTrait;
 class GameUnitTypeTranslation implements TranslationInterface
 {
-
     use TranslationTrait;
 
     private string $name;
