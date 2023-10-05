@@ -21,7 +21,7 @@
             {% set finish = researchPlayer.timestamp + researchPlayer.research.timestamp %}
 
             <tr>
-                <td>{{ researchPlayer.research.name }}</td>
+                <td>{{ researchPlayer.research.translate.name }}</td>
                 <td><span class="timer">timestamp_left</span></td>
                 <td>{{ finish|date }}</td>
                 <td><a class="B" href="{{ path('Game/Research/Cancel', {'researchId': researchPlayer.research.id}) }}">Cancel</a></td>
@@ -43,13 +43,13 @@
         {% for researchData in researchDataArray %}
             <tr>
                 <td width="150" rowspan="2">
-                    <img src="{{ asset('images/research/' ~ researchData.research.image ) }}" alt="{{ researchData.research.name }}" width="150" height="130">
+                    <img src="{{ asset('images/research/' ~ researchData.research.translate.image ) }}" alt="{{ researchData.research.translate.name }}" width="150" height="130">
                 </td>
-                <td class="text-start" width="550" colspan="2">{{ researchData.research.description }}</td>
+                <td class="text-start" width="550" colspan="2">{{ researchData.research.translate.description }}</td>
             </tr>
             <tr>
                 <td class="text-start" valign="top">
-                    <div><b>Name:</b> {{ researchData.research.name }}</div>
+                    <div><b>Name:</b> {{ researchData.research.translate.name }}</div>
                     <div><b>Costs:</b> ${{ researchData.research.cost }}</div>
                     <div><b>Duration:</b>
                         {% set days = (researchData.research.timestamp / (24 * 60 * 60))|round(0, 'floor') %}
@@ -65,11 +65,11 @@
                 <td valign="top">
                     <b>Requirements:</b><br />
                     {% for researchNeed in researchData.needs.notDone %}
-                        <div class="bad">{{ researchNeed.requiredResearch.name }}</div>
+                        <div class="bad">{{ researchNeed.requiredResearch.translate.name }}</div>
                     {% endfor %}
 
                     {% for researchNeed in researchData.needs.done %}
-                        <div class="good">{{ researchNeed.requiredResearch.name }}</div>
+                        <div class="good">{{ researchNeed.requiredResearch.translate.name }}</div>
                     {% endfor %}
                 </td>
             </tr>

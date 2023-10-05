@@ -3,11 +3,11 @@
 {% block content %}
     <table class="table text-center">
         <tr class="tabletop">
-            <td colspan="2"><b>{{ gameUnit.name }}</b></td>
+            <td colspan="2"><b>{{ gameUnit.translate.name }}</b></td>
         </tr>
         <tr>
             <td class="text-start" width="350">
-                {{ gameUnit.description }}<br /><br />
+                {{ gameUnit.translate.description }}<br /><br />
                 Cash: {{ gameUnit.cost.cash }}<br />
                 Wood: {{ gameUnit.cost.wood }}<br />
                 Steel: {{ gameUnit.cost.steel }}<br />
@@ -16,7 +16,7 @@
                 Building time: {{ gameUnit.timestamp }}<br />
             </td>
             <td width="350">
-                <img src="{{ asset('images/' ~ gameUnit.gameUnitType.imageDir ~ gameUnit.image) }}" alt="{{ gameUnit.name }}" width="150" height="130">
+                <img src="{{ asset('images/' ~ gameUnit.gameUnitType.translate.imageDir ~ gameUnit.translate.image) }}" alt="{{ gameUnit.translate.name }}" width="150" height="130">
             </td>
         </tr>
         <tr>

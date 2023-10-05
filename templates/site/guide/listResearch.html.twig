@@ -7,18 +7,18 @@
         </tr>
         {% for research in researches %}
             <tr>
-                <td width="150"><img src="{{ asset('images/research/' ~ research.image) }}" alt="{{ research.name }}" width="150" height="130"></td>
+                <td width="150"><img src="{{ asset('images/research/' ~ research.translate.image) }}" alt="{{ research.translate.name }}" width="150" height="130"></td>
 
                 <td class="text-start" width="450">
-                    {{ research.description }}<br /><br />
-                    Name: {{ research.name }}<br />
+                    {{ research.translate.description }}<br /><br />
+                    Name: {{ research.translate.name }}<br />
                     Cash: {{ research.cost }}<br />
                     Research time: {{ research.timestamp }}<br /><br />
 
                     <b>Requirements:</b><br />
 
                     {% for researchNeeds in research.researchNeeds %}
-                        - {{ researchNeeds.requiredResearch.name }}<br />
+                        - {{ researchNeeds.requiredResearch.translate.name }}<br />
                     {% endfor %}
                 </td>
         {% endfor %}
