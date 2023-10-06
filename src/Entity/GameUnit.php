@@ -173,4 +173,12 @@ class GameUnit implements TranslatableInterface
     {
         $this->operations = $operations;
     }
+
+    /**
+     * @param  array<string, mixed>  $arguments
+     */
+    public function __call(string $method, array $arguments = array()): mixed
+    {
+        return $this->proxyCurrentLocaleTranslation($method, $arguments);
+    }
 }

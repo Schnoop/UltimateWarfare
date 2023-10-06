@@ -54,4 +54,12 @@ class GameUnitType implements TranslatableInterface
     {
         $this->gameUnits = $gameUnits;
     }
+
+    /**
+     * @param  array<string, mixed>  $arguments
+     */
+    public function __call(string $method, array $arguments = array()): mixed
+    {
+        return $this->proxyCurrentLocaleTranslation($method, $arguments);
+    }
 }

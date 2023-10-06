@@ -17,12 +17,12 @@
             {% for gameUnit in gameUnitType.gameUnits %}
                 <tr>
                     <td width="150">
-                        <img src="{{ asset('images/' ~ gameUnitType.translate.imageDir ~ gameUnit.translate.image) }}" alt="{{ gameUnit.translate.name }}" width="150" height="130">
+                        <img src="{{ asset('images/' ~ gameUnitType.imageDir ~ gameUnit.image) }}" alt="{{ gameUnit.name }}" width="150" height="130">
                     </td>
                     <td width="150">
                         <a class="B" href="{{ path('Guide/GameUnit', {'gameUnitId': gameUnit.id}) }}"
-                           target="_blank" title="Information about {{ gameUnit.translate.name }}" tabIndex="-1">
-                            <b>{{ gameUnit.translate.name }}</b>
+                           target="_blank" title="Information about {{ gameUnit.name }}" tabIndex="-1">
+                            <b>{{ gameUnit.name }}</b>
                         </a>
                     </td>
                     <td width="100">

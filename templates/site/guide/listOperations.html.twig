@@ -9,11 +9,11 @@
             <tr>
                 <td width="150"><img src="{{ asset('images/operations/' ~ operation.image) }}" alt="{{ operation.name }}" width="150" height="130"></td>
                 <td class="text-start" width="450">
-                    {{ operation.translate.description }}
+                    {{ operation.description }}
                     <ul>
                         <li>Name: {{ operation.name }}</li>
                         <li>Cash: {{ operation.cost }}</li>
-                        <li>Research requirement: {{ operation.research.translate.name }}</li>
+                        <li>Research requirement: {{ operation.research.name }}</li>
                         <li>Difficulty: {{ operation.difficulty }}</li>
                     </ul>
                 </td>

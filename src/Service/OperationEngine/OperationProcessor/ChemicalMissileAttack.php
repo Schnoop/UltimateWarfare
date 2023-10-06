@@ -38,7 +38,11 @@ final class ChemicalMissileAttack extends OperationProcessor
                 '%regionY%' => $this->region->getY(),
             ], 'operations');
 
-            $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
+            $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText, [
+                '%player%' => $this->playerRegion->getPlayer()->getName(),
+                '%regionX%' => $this->region->getX(),
+                '%regionY%' => $this->region->getY(),
+            ]);
 
             $this->addToOperationLog($this->translator->trans('You killed all population!', [], 'operations'));
         } else {
@@ -52,7 +56,12 @@ final class ChemicalMissileAttack extends OperationProcessor
                 '%regionY%' => $this->region->getY(),
             ], 'operations');
 
-            $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
+            $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText, [
+                '%player%' => $this->playerRegion->getPlayer()->getName(),
+                '%population%' => $populationKilled,
+                '%regionX%' => $this->region->getX(),
+                '%regionY%' => $this->region->getY(),
+            ]);
 
             $this->addToOperationLog($this->translator->trans('You killed %population% population!', ['%population%' => $populationKilled], 'operations'));
         }
