@@ -31,14 +31,7 @@ final class ChemicalMissileAttack extends OperationProcessor
     {
         if ($this->amount * 100 > $this->region->getPopulation()) {
             $this->region->setPopulation(0);
-
-            $reportText = $this->translator->trans('%player% launched a chemical missile attack against region %regionX%, %regionY% and killed all population.', [
-                '%player%' => $this->playerRegion->getPlayer()->getName(),
-                '%regionX%' => $this->region->getX(),
-                '%regionY%' => $this->region->getY(),
-            ], 'operations');
-
-            $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText, [
+            $this->reportCreator->createReport($this->region->getPlayer(), time(), 'chemicalmissile-full-success', [
                 '%player%' => $this->playerRegion->getPlayer()->getName(),
                 '%regionX%' => $this->region->getX(),
                 '%regionY%' => $this->region->getY(),
@@ -49,14 +42,7 @@ final class ChemicalMissileAttack extends OperationProcessor
             $populationKilled = $this->amount * 100;
             $this->region->setPopulation($this->region->getPopulation() - $populationKilled);
 
-            $reportText = $this->translator->trans('%player% launched a chemical missile attack against region %regionX%, %regionY% and killed %population% population.', [
-                '%player%' => $this->playerRegion->getPlayer()->getName(),
-                '%population%' => $populationKilled,
-                '%regionX%' => $this->region->getX(),
-                '%regionY%' => $this->region->getY(),
-            ], 'operations');
-
-            $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText, [
+            $this->reportCreator->createReport($this->region->getPlayer(), time(), 'chemicalmissile-partly-success', [
                 '%player%' => $this->playerRegion->getPlayer()->getName(),
                 '%population%' => $populationKilled,
                 '%regionX%' => $this->region->getX(),
@@ -80,13 +66,11 @@ final class ChemicalMissileAttack extends OperationProcessor
             }
         }
 
-        $reportText = $this->translator->trans('%player% tried to launched a chemical missile attack against region %regionX%, %regionY% but failed.', [
+        $this->reportCreator->createReport($this->region->getPlayer(), time(), 'chemicalmissile-failed', [
             '%player%' => $this->playerRegion->getPlayer()->getName(),
             '%regionX%' => $this->region->getX(),
             '%regionY%' => $this->region->getY(),
-        ], 'operations');
-
-        $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
+        ]);
 
         $this->addToOperationLog($this->translator->trans('We failed to our chemical missile attack and lost %specialOpsLost% Special Ops', ['%specialOpsLost%' => $specialOpsLost], 'operations'));
     }

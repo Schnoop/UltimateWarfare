@@ -48,13 +48,11 @@ final class MissileAttack extends OperationProcessor
                 }
             }
 
-            $reportText = $this->translator->trans('%player% launched a missile attack against region %regionX%, %regionY% and destroyed all buildings.', [
+            $this->reportCreator->createReport($this->region->getPlayer(), time(), 'missile-full-success', [
                 '%player%' => $this->playerRegion->getPlayer()->getName(),
                 '%regionX%' => $this->region->getX(),
                 '%regionY%' => $this->region->getY(),
-            ], 'operations');
-
-            $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
+            ]);
         } else {
             $buildingsDestroyed = (int)($this->amount / 2);
             foreach ($this->region->getWorldRegionUnits() as $worldRegionUnit) {
@@ -68,15 +66,12 @@ final class MissileAttack extends OperationProcessor
                     );
                 }
             }
-
-            $reportText = $this->translator->trans('%player% launched a missile attack against region %regionX%, %regionY% and destroyed %destroyed% buildings.', [
+            $this->reportCreator->createReport($this->region->getPlayer(), time(), 'missile-partly-success', [
                 '%player%' => $this->playerRegion->getPlayer()->getName(),
                 '%destroyed%' => $buildingsDestroyed,
                 '%regionX%' => $this->region->getX(),
                 '%regionY%' => $this->region->getY(),
-            ], 'operations');
-
-            $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
+            ]);
         }
 
         $this->addToOperationLog(
@@ -95,13 +90,11 @@ final class MissileAttack extends OperationProcessor
             }
         }
 
-        $reportText = $this->translator->trans('%player% tried to launch a missile attack against region %regionX%, %regionY% but failed.', [
+        $this->reportCreator->createReport($this->region->getPlayer(), time(), 'missile-failed', [
             '%player%' => $this->playerRegion->getPlayer()->getName(),
             '%regionX%' => $this->region->getX(),
             '%regionY%' => $this->region->getY(),
-        ], 'operations');
-
-        $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
+        ]);
 
         $this->addToOperationLog($this->translator->trans('We failed our Missile Attack and lost %specialOpsLost% Special Ops', ['%specialOpsLost%' => $troopsLost], 'operations'));
     }

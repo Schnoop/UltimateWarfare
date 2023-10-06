@@ -13,3 +13,33 @@
 'World region does not exist!': 'World region does not exist!'
 'federation-accepted': '%player% has has been accepted into the Federation by %player2%'
 'report-federation-accepted': 'You have been accepted in the Federation %federation%'
+'failed-spy-on-region': '%player% tried to spy on region %regionX%, %regionY% but failed.'
+
+'submarine-full-success': 'Somebody launched a Submarine attack against region %regionX%, %regionY% and sunk all ships.'
+'submarine-partly-success': 'Somebody launched a Submarine attack against region %regionX%, %regionY% and sunk %sunk% ships.'
+'submarine-failed': '%player% tried to launch a Submarine attack against region %regionX%, %regionY% but failed.'
+
+'stealthbomber-full-success': 'Somebody launched a Stealth Bomber attack against region %regionX%, %regionY% and destroyed all special buildings.'
+'stealthbomber-partly-success': 'Somebody launched a Stealth Bomber attack against region %regionX%, %regionY% and destroyed %destroyed% buildings.'
+'stealthbomber-failed': '%player% tried to launch a Stealth Bomber attack against region %regionX%, %regionY% but failed.'
+
+'chemicalmissile-full-success': 'Somebody launched a Stealth Bomber attack against region %regionX%, %regionY% and destroyed all special buildings.'
+'chemicalmissile-partly-success': 'Somebody launched a Stealth Bomber attack against region %regionX%, %regionY% and destroyed %destroyed% buildings.'
+'chemicalmissile-failed': '%player% tried to launch a Stealth Bomber attack against region %regionX%, %regionY% but failed.'
+
+'missile-full-success': '%player% launched a missile attack against region %regionX%, %regionY% and destroyed all buildings.'
+'missile-partly-success': '%player% launched a missile attack against region %regionX%, %regionY% and destroyed %destroyed% buildings.'
+'missile-failed': '%player% tried to launch a missile attack against region %regionX%, %regionY% but failed.'
+
+'sniper-full-success': '%player% launched a missile attack against region %regionX%, %regionY% and destroyed all buildings.'
+'sniper-partly-success': '%player% launched a missile attack against region %regionX%, %regionY% and destroyed %destroyed% buildings.'
+'sniper-failed': '%player% tried to launch a missile attack against region %regionX%, %regionY% but failed.'
+
+'nuclearmissile-full-success': '%player% launched a nuclear missile attack against region %regionX%, %regionY% and destroyed everything.'
+'nuclearmissile-failed': '%player% tried to launch a nuclear missile attack against region %regionX%, %regionY% but failed.'
+
+'destroycash-full-success': '%player% destroyed %cash% cash on region %regionX%, %regionY%.'
+'destroycash-failed': '%player% tried to destroy cash on region %regionX%, %regionY% but failed.'
+
+'destroyfood-full-success': '%player% destroyed %food% food on region %regionX%, %regionY%.'
+'destroyfood-failed': '%player% tried to destroy food on region %regionX%, %regionY% but failed.'

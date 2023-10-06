@@ -59,14 +59,13 @@ final class DestroyFood extends OperationProcessor
         $this->playerRepository->save($player);
 
         $this->addToOperationLog($this->translator->trans('You destroyed %percentageDestroyed% of the food, %foodDestroyed% in total!', ['%percentageDestroyed%' => $percentageDestroyed . '%', '%foodDestroyed%' => $foodDestroyed], 'operations'));
-        $reportText = $this->translator->trans('%player% destroyed %food% food on region %regionX%, %regionY%.', [
+
+        $this->reportCreator->createReport($this->region->getPlayer(), time(), 'destroyfood-full-success', [
             '%player%' => $this->playerRegion->getPlayer()->getName(),
             '%food%' => $foodDestroyed,
             '%regionX%' => $this->region->getX(),
             '%regionY%' => $this->region->getY(),
-        ], 'operations');
-
-        $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
+        ]);
     }
 
     public function processFailed(): void
@@ -80,13 +79,11 @@ final class DestroyFood extends OperationProcessor
             }
         }
 
-        $reportText = $this->translator->trans('%player% tried to destroy food on region %regionX%, %regionY% but failed.', [
+        $this->reportCreator->createReport($this->region->getPlayer(), time(), 'destroyfood-failed', [
             '%player%' => $this->playerRegion->getPlayer()->getName(),
             '%regionX%' => $this->region->getX(),
             '%regionY%' => $this->region->getY(),
-        ], 'operations');
-
-        $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
+        ]);
 
         $this->addToOperationLog($this->translator->trans('We failed to destroy food and lost %specialOpsLost% Special Ops', ['%specialOpsLost%' => $specialOpsLost], 'operations'));
     }

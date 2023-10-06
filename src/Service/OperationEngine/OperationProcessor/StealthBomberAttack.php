@@ -44,12 +44,10 @@ final class StealthBomberAttack extends OperationProcessor
             }
 
             $this->addToOperationLog($this->translator->trans('You destroyed all special buildings!', [], 'operations'));
-            $reportText = $this->translator->trans('Somebody launched a Stealth Bomber attack against region %regionX%, %regionY% and destroyed all special buildings.', [
+            $this->reportCreator->createReport($this->region->getPlayer(), time(), 'stealthbomber-full-success', [
                 '%regionX%' => $this->region->getX(),
                 '%regionY%' => $this->region->getY(),
-            ], 'operations');
-
-            $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
+            ]);
         } else {
             $buildingsDestroyed = $this->amount * self::BUILDINGS_DESTROYED_PER_BOMBER;
             foreach ($this->region->getWorldRegionUnits() as $worldRegionUnit) {
@@ -62,12 +60,11 @@ final class StealthBomberAttack extends OperationProcessor
                 }
             }
 
-            $reportText = $this->translator->trans('Somebody launched a Stealth Bomber attack against region %regionX%, %regionY% and destroyed %destroyed% buildings.', [
+            $this->reportCreator->createReport($this->region->getPlayer(), time(), 'stealthbomber-partly-success', [
                 '%destroyed%' => $buildingsDestroyed,
                 '%regionX%' => $this->region->getX(),
                 '%regionY%' => $this->region->getY(),
-            ], 'operations');
-            $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
+            ]);
         }
     }
 
@@ -88,12 +85,11 @@ final class StealthBomberAttack extends OperationProcessor
             }
         }
 
-        $reportText = $this->translator->trans('%player% tried to launch a Stealth Bomber attack against region %regionX%, %regionY% but failed.', [
+        $this->reportCreator->createReport($this->region->getPlayer(), time(), 'stealthbomber-failed', [
             '%player%' => $this->playerRegion->getPlayer()->getName(),
             '%regionX%' => $this->region->getX(),
             '%regionY%' => $this->region->getY(),
-        ], 'operations');
-        $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
+        ]);
 
         $this->addToOperationLog($this->translator->trans('We failed our Stealth Bomber attack and lost %specialOpsLost% Special Ops and %stealthBombersLost% Stealth Bombers', ['%specialOpsLost%' => $specialOpsLost, '%stealthBombersLost%' => $stealthBombersLost], 'operations'));
     }

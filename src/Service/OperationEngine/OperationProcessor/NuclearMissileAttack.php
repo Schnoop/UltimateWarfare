@@ -41,13 +41,11 @@ final class NuclearMissileAttack extends OperationProcessor
         $this->region->setPlayer(null);
         $this->worldRegionRepository->save($this->region);
 
-        $reportText = $this->translator->trans('%player% launched a nuclear missile attack against region %regionX%, %regionY% and destroyed everything.', [
+        $this->reportCreator->createReport($this->region->getPlayer(), time(), 'nuclearmissile-full-success', [
             '%player%' => $this->playerRegion->getPlayer()->getName(),
             '%regionX%' => $this->region->getX(),
             '%regionY%' => $this->region->getY(),
-        ], 'operations');
-
-        $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
+        ]);
 
         $this->addToOperationLog($this->translator->trans('The region is fully destroyed, a high amount of toxic radiation will make the region unliveable for an unknown amount of time!', [], 'operations'));
     }
@@ -63,13 +61,11 @@ final class NuclearMissileAttack extends OperationProcessor
             }
         }
 
-        $reportText = $this->translator->trans('%player% tried to launch a nuclear missile attack against region %regionX%, %regionY% but failed.', [
+        $this->reportCreator->createReport($this->region->getPlayer(), time(), 'nuclearmissile-failed', [
             '%player%' => $this->playerRegion->getPlayer()->getName(),
             '%regionX%' => $this->region->getX(),
             '%regionY%' => $this->region->getY(),
-        ], 'operations');
-
-        $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
+        ]);
 
         $this->addToOperationLog($this->translator->trans('We failed to our nuclear missile attack and lost %specialOpsLost% Special Ops', ['%specialOpsLost%' => $specialOpsLost], 'operations'));
     }

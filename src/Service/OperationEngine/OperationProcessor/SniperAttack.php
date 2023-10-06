@@ -46,12 +46,10 @@ final class SniperAttack extends OperationProcessor
 
             $this->addToOperationLog($this->translator->trans('You killed all soldiers!', [], 'operations'));
 
-            $reportText = $this->translator->trans('Somebody launched a Sniper attack against region %regionX%, %regionY% and killed all soldiers.', [
+            $this->reportCreator->createReport($this->region->getPlayer(), time(), 'sniper-full-success', [
                 '%regionX%' => $this->region->getX(),
                 '%regionY%' => $this->region->getY(),
-            ], 'operations');
-
-            $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
+            ]);
         } else {
             $soldiersKilled = $this->amount * self::SOLDIERS_KILLED_PER_SNIPER;
             foreach ($this->region->getWorldRegionUnits() as $worldRegionUnit) {
@@ -62,12 +60,11 @@ final class SniperAttack extends OperationProcessor
                 }
             }
 
-            $reportText = $this->translator->trans('Somebody launched a Sniper attack against region %regionX%, %regionY% and killed %killed% soldiers.', [
-                '%killed%' => $soldiersKilled,
+            $this->reportCreator->createReport($this->region->getPlayer(), time(), 'sniper-partly-success', [
                 '%regionX%' => $this->region->getX(),
                 '%regionY%' => $this->region->getY(),
-            ], 'operations');
-            $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
+                '%killed%' => $soldiersKilled,
+            ]);
         }
     }
 
@@ -88,13 +85,11 @@ final class SniperAttack extends OperationProcessor
             }
         }
 
-        $reportText = $this->translator->trans('%player% launched a Sniper attack against region %regionX%, %regionY% but failed.', [
+        $this->reportCreator->createReport($this->region->getPlayer(), time(), 'sniper-failed', [
             '%player%' => $this->playerRegion->getPlayer()->getName(),
             '%regionX%' => $this->region->getX(),
             '%regionY%' => $this->region->getY(),
-        ], 'operations');
-
-        $this->reportCreator->createReport($this->region->getPlayer(), time(), $reportText);
+        ]);
 
         $this->addToOperationLog($this->translator->trans('We failed our Sniper attack and lost %specialOpsLost% Special Ops and %snipersLost% Snipers', ['%specialOpsLost%' => $specialOpsLost, '%snipersLost%' => $snipersLost], 'operations'));
     }
