@@ -7,3 +7,5 @@
 'Could not upload avatar': '__Could not upload avatar'
 'Avatar successfully deleted!': '__Avatar successfully deleted!'
 'Successfully changed settings!': '__Successfully changed settings!'
+'User already has this role': '__User already has this role'
+'User does not have this role': '__User does not have this role'

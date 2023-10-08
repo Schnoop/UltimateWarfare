@@ -1,1 +1,8 @@
 'You have bought a Region!': '__You have bought a Region!'
+'Can not attack region without owner!': '__Can not attack region without owner!'
+'Can not attack your own region!': '__Can not attack your own region!'
+'Region is already owned by somebody!': '__Region is already owned by somebody!'
+'You do not have enough money!': '__You do not have enough money!'
+'World region is not part for your game world!': '__World region is not part for your game world!'
+'World region has no owner!': '__World region has no owner!'
+'World region is not yours!': '__World region is not yours!'

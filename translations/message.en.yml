@@ -1,2 +1,7 @@
 'Message successfully deleted!': '__Message successfully deleted!'
 'Message send!': '__Message send!'
+'This is not your message!': '__This is not your message!'
+'Please type a subject': '__Please type a subject'
+'Please type a message': '__Please type a message'
+'No such player': '__No such player'
+'No such message!': '__No such message!'

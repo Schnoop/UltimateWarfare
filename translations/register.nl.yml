@@ -6,3 +6,7 @@ label.password_repeat: 'Wachtwoord herhalen'
 label.register: Registreren
 'You successfully created an account! An e-mail has been sent to %email% with your activation code...': '__You successfully created an account! An e-mail has been sent to %email% with your activation code...'
 'You successfully activated your account!': '__You successfully activated your account!'
+'User with this token does not exist': '__User with this token does not exist'
+'TokenGenerator failed!': '__TokenGenerator failed!'
+'User with this email already exist!': '__User with this email already exist!'
+'User with this username already exist!': '__User with this username already exist!'

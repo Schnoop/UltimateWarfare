@@ -20,3 +20,5 @@ label.seed: Seed
 'Successfully created a new world!': '__Successfully created a new world!'
 'You are already playing in this world!': '__You are already playing in this world!'
 'Another player with this name already exist!': '__Another player with this name already exist!'
+'World has active players, can not remove!': '__World has active players, can not remove!'
+'World does not exist!': '__World does not exist!'

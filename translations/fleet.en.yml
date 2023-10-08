@@ -1,3 +1,8 @@
 'You successfully recalled your troops!': '__You successfully recalled your troops!'
 'You successfully reinforced your region!': '__You successfully reinforced your region!'
 'You successfully send units!': '__You successfully send units!'
+'You are not the owner of this region!': '__You are not the owner of this region!'
+'Target region does not exist!': '__Target region does not exist!'
+'Region is not owned by you.': '__Region is not owned by you.'
+'Fleet does not exist!': '__Fleet does not exist!'
+'You do not have that many %gameunit%s!': '__You do not have that many %gameunit%s!'
