@@ -1,0 +1,15 @@
+label.add_reaction: 'Reactie toevoegen'
+label.close: Sluiten
+label.date: Datum/Tijd
+label.forum: Forum
+label.name: Naam
+label.title: Titel
+label.topics: Onderwerpen
+label.post: Bericht
+action.post.edit: 'Bericht aanpassen'
+action.topic.create: 'Onderwerp aanmaken'
+action.topic.close: 'Sluit dit onderwerp'
+action.topic.delete: 'Verwijder dit onderwerp'
+action.topic.edit: 'Pas onderwerp aan'
+action.topic.sticky: 'Sticky onderwerp'
+action.topic.unsticky: 'Unsticky onderwerp'

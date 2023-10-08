@@ -64,7 +64,7 @@ abstract class BattlePhase implements IBattlePhase
     ): BattlePhase {
         $className = "FrankProjects\\UltimateWarfare\\Service\\BattleEngine\\BattlePhase\\" . ucfirst($battlePhaseName);
         if (!class_exists($className) || is_subclass_of($className, __CLASS__) === false) {
-            throw new RunTimeException("Unknown BattlePhase {$battlePhaseName}");
+            throw new RuntimeException("Unknown BattlePhase {$battlePhaseName}");
         }
 
         return new $className($battlePhaseName, $attackerGameUnits, $defenderGameUnits, $translator);
@@ -180,7 +180,7 @@ abstract class BattlePhase implements IBattlePhase
             return $gameUnit->getBattleStats()->getGroundBattleStats();
         }
 
-        throw new RunTimeException("Invalid BattleStats for {$this->name}");
+        throw new RuntimeException("Invalid BattleStats for {$this->name}");
     }
 
     public function getAttackPower(): int

@@ -70,11 +70,40 @@ final class UserController extends AbstractController
         return $this->redirectToRoute('Admin/User/Read', ['userId' => $userId], 302);
     }
 
+    public function forumBan(int $userId): RedirectResponse
+    {
+        $user = $this->getUserObject($userId);
+        if ($user->getForumBan()) {
+            $this->addFlash('error', 'User is already forum banned');
+        } else {
+            $user->setForumBan(true);
+            $this->userRepository->save($user);
+            $this->addFlash('success', 'User forum banned!');
+        }
+
+        return $this->redirectToRoute('Admin/User/Read', ['userId' => $userId], 302);
+    }
+
+    public function forumUnban(int $userId): RedirectResponse
+    {
+        $user = $this->getUserObject($userId);
+        if (!$user->getForumBan()) {
+            $this->addFlash('error', 'User is not forum banned');
+        } else {
+            $user->setForumBan(false);
+            $this->userRepository->save($user);
+            $this->addFlash('success', 'User forum unbanned!');
+        }
+
+        return $this->redirectToRoute('Admin/User/Read', ['userId' => $userId], 302);
+    }
+
     public function list(Request $request): Response
     {
         $user = match ($request->get('filter')) {
             'banned' => $this->userRepository->findAllBanned(),
             'disabled' => $this->userRepository->findAllDisabled(),
+            'active' => $this->userRepository->findAllActive(),
             default => $this->userRepository->findAll(),
         };
 

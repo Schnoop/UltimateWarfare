@@ -1,0 +1,15 @@
+label.add_reaction: 'Add reaction'
+label.close: Close
+label.date: Date/Time
+label.forum: Forum
+label.name: Name
+label.title: Title
+label.topics: Topics
+label.post: Post
+action.post.edit: 'Edit post'
+action.topic.create: 'Create Topic'
+action.topic.close: 'Close this Topic'
+action.topic.delete: 'Delete this Topic'
+action.topic.edit: 'Edit this Topic'
+action.topic.sticky: 'Sticky this Topic'
+action.topic.unsticky: 'Unsticky this Topic'

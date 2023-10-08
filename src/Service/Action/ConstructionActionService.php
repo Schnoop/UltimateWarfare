@@ -89,20 +89,20 @@ final class ConstructionActionService
             $totalSpace = $region->getSpace() - $regionBuildings - $buildingsInConstruction;
 
             if ($totalBuild > $totalSpace) {
-                throw new RunTimeException($this->translator->trans('You do not have that much building space.', [], 'construction'));
+                throw new RuntimeException($this->translator->trans('You do not have that much building space.', [], 'construction'));
             }
         }
 
         $resources = $player->getResources();
 
         if ($priceCash > $resources->getCash()) {
-            throw new RunTimeException($this->translator->trans('You do not have enough cash to build that.', [], 'construction'));
+            throw new RuntimeException($this->translator->trans('You do not have enough cash to build that.', [], 'construction'));
         }
         if ($priceWood > $resources->getWood()) {
-            throw new RunTimeException($this->translator->trans('You do not have enough wood to build that.', [], 'construction'));
+            throw new RuntimeException($this->translator->trans('You do not have enough wood to build that.', [], 'construction'));
         }
         if ($priceSteel > $resources->getSteel()) {
-            throw new RunTimeException($this->translator->trans('You do not have enough steel to build that.', [], 'construction'));
+            throw new RuntimeException($this->translator->trans('You do not have enough steel to build that.', [], 'construction'));
         }
 
         $resources->setCash($resources->getCash() - $priceCash);
@@ -152,11 +152,11 @@ final class ConstructionActionService
         $construction = $this->constructionRepository->find($constructionId);
 
         if ($construction === null) {
-            throw new RunTimeException($this->translator->trans('This construction queue does not exist!', [], 'construction'));
+            throw new RuntimeException($this->translator->trans('This construction queue does not exist!', [], 'construction'));
         }
 
         if ($construction->getPlayer()->getId() != $player->getId()) {
-            throw new RunTimeException($this->translator->trans('This is not your construction queue!', [], 'construction'));
+            throw new RuntimeException($this->translator->trans('This is not your construction queue!', [], 'construction'));
         }
 
         $this->constructionRepository->remove($construction);
@@ -206,7 +206,7 @@ final class ConstructionActionService
             }
 
             if ($amount > $worldRegionUnit->getAmount()) {
-                throw new RunTimeException($this->translator->trans('You do not have that many %name%s!', ['%name%' => $gameUnit->translate()->getName()], 'construction'));
+                throw new RuntimeException($this->translator->trans('You do not have that many %name%s!', ['%name%' => $gameUnit->translate()->getName()], 'construction'));
             }
 
             $worldRegionUnit->setAmount($worldRegionUnit->getAmount() - $amount);

@@ -93,23 +93,23 @@ final class OperationService
         int $amount
     ): void {
         if (!$operation->isEnabled()) {
-            throw new RunTimeException($this->translator->trans('Operation not enabled', [], 'operation'));
+            throw new RuntimeException($this->translator->trans('Operation not enabled', [], 'operation'));
         }
 
         if ($region->getWorld()->getId() !== $playerRegion->getWorld()->getId()) {
-            throw new RunTimeException($this->translator->trans('Regions not in same world', [], 'operation'));
+            throw new RuntimeException($this->translator->trans('Regions not in same world', [], 'operation'));
         }
 
         if ($region->getPlayer() === null) {
-            throw new RunTimeException($this->translator->trans('Target region has no owner', [], 'operation'));
+            throw new RuntimeException($this->translator->trans('Target region has no owner', [], 'operation'));
         }
 
         if ($region->getPlayer()->getId() === $playerRegion->getPlayer()->getId()) {
-            throw new RunTimeException($this->translator->trans('You can not attack yourself', [], 'operation'));
+            throw new RuntimeException($this->translator->trans('You can not attack yourself', [], 'operation'));
         }
 
         if ($playerRegion->getPlayer()->getResources()->getCash() < $operation->getCost() * $amount) {
-            throw new RunTimeException($this->translator->trans('You do not have enough cash', [], 'operation'));
+            throw new RuntimeException($this->translator->trans('You do not have enough cash', [], 'operation'));
         }
 
         foreach ($playerRegion->getPlayer()->getPlayerResearch() as $playerResearch) {
@@ -120,13 +120,13 @@ final class OperationService
                 return;
             }
         }
-        throw new RunTimeException($this->translator->trans('You do not have all requirements to perform this operation', [], 'operation'));
+        throw new RuntimeException($this->translator->trans('You do not have all requirements to perform this operation', [], 'operation'));
     }
 
     private function hasWorldRegionGameUnitAmount(WorldRegion $region, Operation $operation, int $amount): void
     {
         if ($amount < 1) {
-            throw new RunTimeException($this->translator->trans('Can not send negative game units', [], 'operation'));
+            throw new RuntimeException($this->translator->trans('Can not send negative game units', [], 'operation'));
         }
 
         foreach ($region->getWorldRegionUnits() as $regionUnit) {
@@ -136,6 +136,6 @@ final class OperationService
                 }
             }
         }
-        throw new RunTimeException($this->translator->trans('Not enough game units', [], 'operation'));
+        throw new RuntimeException($this->translator->trans('Not enough game units', [], 'operation'));
     }
 }

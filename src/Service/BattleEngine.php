@@ -84,24 +84,24 @@ final class BattleEngine
     private function ensureCanAttack(Fleet $fleet): void
     {
         if ($fleet->getTimestampArrive() > time()) {
-            throw new RunTimeException($this->translator->trans('Fleet not arrived yet', [], 'battle'));
+            throw new RuntimeException($this->translator->trans('Fleet not arrived yet', [], 'battle'));
         }
 
         $targetPlayer = $fleet->getTargetWorldRegion()->getPlayer();
         if ($targetPlayer === null) {
-            throw new RunTimeException($this->translator->trans('Target region has no owner', [], 'battle'));
+            throw new RuntimeException($this->translator->trans('Target region has no owner', [], 'battle'));
         }
 
         if ($fleet->getPlayer()->getId() === $targetPlayer->getId()) {
-            throw new RunTimeException($this->translator->trans('You can not attack yourself', [], 'battle'));
+            throw new RuntimeException($this->translator->trans('You can not attack yourself', [], 'battle'));
         }
 
         if (count($targetPlayer->getWorldRegions()) === 1) {
-            throw new RunTimeException($this->translator->trans('Target player has only 1 region left', [], 'battle'));
+            throw new RuntimeException($this->translator->trans('Target player has only 1 region left', [], 'battle'));
         }
 
         if ($targetPlayer->getTimestampJoined() + 172800 > time()) {
-            throw new RunTimeException($this->translator->trans('You can not attack this player in the first 48 hours', [], 'battle'));
+            throw new RuntimeException($this->translator->trans('You can not attack this player in the first 48 hours', [], 'battle'));
         }
     }
 

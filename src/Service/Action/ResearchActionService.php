@@ -62,7 +62,7 @@ final class ResearchActionService
             }
 
             if ($playerResearch->getActive()) {
-                throw new RunTimeException($this->translator->trans('Research project is already completed!', [], 'research'));
+                throw new RuntimeException($this->translator->trans('Research project is already completed!', [], 'research'));
             }
 
             $this->researchPlayerRepository->remove($playerResearch);
@@ -74,11 +74,11 @@ final class ResearchActionService
         $research = $this->researchRepository->find($researchId);
 
         if ($research === null) {
-            throw new RunTimeException($this->translator->trans('This technology does not exist!', [], 'research'));
+            throw new RuntimeException($this->translator->trans('This technology does not exist!', [], 'research'));
         }
 
         if (!$research->getActive()) {
-            throw new RunTimeException($this->translator->trans('This technology is disabled!', [], 'research'));
+            throw new RuntimeException($this->translator->trans('This technology is disabled!', [], 'research'));
         }
 
         return $research;
@@ -91,11 +91,11 @@ final class ResearchActionService
         /** @var ResearchPlayer $playerResearch */
         foreach ($player->getPlayerResearch() as $playerResearch) {
             if (!$playerResearch->getActive()) {
-                throw new RunTimeException($this->translator->trans('You can only research 1 technology at a time!', [], 'research'));
+                throw new RuntimeException($this->translator->trans('You can only research 1 technology at a time!', [], 'research'));
             }
 
             if ($playerResearch->getResearch()->getId() === $research->getId()) {
-                throw new RunTimeException($this->translator->trans('This technology has already been researched!', [], 'research'));
+                throw new RuntimeException($this->translator->trans('This technology has already been researched!', [], 'research'));
             }
 
             $researchArray[$playerResearch->getResearch()->getId()] = $playerResearch->getResearch();
@@ -103,12 +103,12 @@ final class ResearchActionService
 
         foreach ($research->getResearchNeeds() as $researchNeed) {
             if (!isset($researchArray[$researchNeed->getRequiredResearch()->getId()])) {
-                throw new RunTimeException($this->translator->trans('You do not have all required technologies!', [], 'research'));
+                throw new RuntimeException($this->translator->trans('You do not have all required technologies!', [], 'research'));
             }
         }
 
         if ($research->getCost() > $player->getResources()->getCash()) {
-            throw new RunTimeException($this->translator->trans('You can not afford that!', [], 'research'));
+            throw new RuntimeException($this->translator->trans('You can not afford that!', [], 'research'));
         }
     }
 }

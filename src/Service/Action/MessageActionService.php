@@ -33,7 +33,7 @@ final class MessageActionService
         $message = $this->getMessage($messageId);
 
         if ($message->getToPlayer()->getId() !== $player->getId()) {
-            throw new RunTimeException($this->translator->trans('This is not your message!', [], 'message'));
+            throw new RuntimeException($this->translator->trans('This is not your message!', [], 'message'));
         }
 
         $message->setToDelete(true);
@@ -45,7 +45,7 @@ final class MessageActionService
         $message = $this->getMessage($messageId);
 
         if ($message->getFromPlayer()->getId() !== $player->getId()) {
-            throw new RunTimeException($this->translator->trans('This is not your message!', [], 'message'));
+            throw new RuntimeException($this->translator->trans('This is not your message!', [], 'message'));
         }
 
         $message->setFromDelete(true);
@@ -60,17 +60,17 @@ final class MessageActionService
         bool $adminMessage
     ): void {
         if ($subject == '') {
-            throw new RunTimeException($this->translator->trans('Please type a subject', [], 'message'));
+            throw new RuntimeException($this->translator->trans('Please type a subject', [], 'message'));
         }
 
         if ($message == '') {
-            throw new RunTimeException($this->translator->trans('Please type a message', [], 'message'));
+            throw new RuntimeException($this->translator->trans('Please type a message', [], 'message'));
         }
 
         $toPlayer = $this->playerRepository->findByNameAndWorld($toPlayerName, $player->getWorld());
 
         if ($toPlayer === null) {
-            throw new RunTimeException($this->translator->trans('No such player', [], 'message'));
+            throw new RuntimeException($this->translator->trans('No such player', [], 'message'));
         }
 
         if (!$player->getUser()->hasRole(User::ROLE_ADMIN)) {
@@ -91,7 +91,7 @@ final class MessageActionService
         $message = $this->messageRepository->find($messageId);
 
         if ($message === null) {
-            throw new RunTimeException($this->translator->trans('No such message!', [], 'message'));
+            throw new RuntimeException($this->translator->trans('No such message!', [], 'message'));
         }
 
         return $message;
@@ -102,7 +102,7 @@ final class MessageActionService
         $message = $this->getMessage($messageId);
 
         if ($message->getToPlayer()->getId() !== $player->getId()) {
-            throw new RunTimeException($this->translator->trans('This is not your message!', [], 'message'));
+            throw new RuntimeException($this->translator->trans('This is not your message!', [], 'message'));
         }
 
         return $message;
@@ -113,7 +113,7 @@ final class MessageActionService
         $message = $this->getMessage($messageId);
 
         if ($message->getFromPlayer()->getId() !== $player->getId()) {
-            throw new RunTimeException($this->translator->trans('This is not your message!', [], 'message'));
+            throw new RuntimeException($this->translator->trans('This is not your message!', [], 'message'));
         }
 
         return $message;

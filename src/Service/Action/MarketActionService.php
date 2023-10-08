@@ -41,14 +41,14 @@ final class MarketActionService
         $marketItem = $this->getMarketItem($player, $marketItemId);
 
         if ($marketItem->getType() != MarketItem::TYPE_SELL) {
-            throw new RunTimeException($this->translator->trans('Market order is not a buy order!', [], 'market'));
+            throw new RuntimeException($this->translator->trans('Market order is not a buy order!', [], 'market'));
         }
 
         $this->ensureMarketItemNotOwnedByPlayer($marketItem, $player);
 
         $resources = $player->getResources();
         if ($marketItem->getPrice() > $resources->getCash()) {
-            throw new RunTimeException($this->translator->trans('You do not have enough cash!', [], 'market'));
+            throw new RuntimeException($this->translator->trans('You do not have enough cash!', [], 'market'));
         }
 
         $resources->setCash($resources->getCash() - $marketItem->getPrice());
@@ -100,7 +100,7 @@ final class MarketActionService
         $marketItem = $this->getMarketItem($player, $marketItemId);
 
         if ($marketItem->getPlayer()->getId() != $player->getId()) {
-            throw new RunTimeException($this->translator->trans('You can not cancel orders that do not belong to you!', [], 'market'));
+            throw new RuntimeException($this->translator->trans('You can not cancel orders that do not belong to you!', [], 'market'));
         }
 
         $resources = $player->getResources();
@@ -122,7 +122,7 @@ final class MarketActionService
         $marketItem = $this->getMarketItem($player, $marketItemId);
 
         if ($marketItem->getType() != MarketItem::TYPE_BUY) {
-            throw new RunTimeException($this->translator->trans('Market order is not a sell order!', [], 'market'));
+            throw new RuntimeException($this->translator->trans('Market order is not a sell order!', [], 'market'));
         }
 
         $this->ensureMarketItemNotOwnedByPlayer($marketItem, $player);
@@ -174,21 +174,21 @@ final class MarketActionService
         $this->ensureValidGameResource($gameResource);
 
         if ($price < 1 || $amount < 1) {
-            throw new RunTimeException($this->translator->trans('Invalid input!', [], 'market'));
+            throw new RuntimeException($this->translator->trans('Invalid input!', [], 'market'));
         }
 
         $resources = $player->getResources();
 
         if ($action == MarketItem::TYPE_BUY) {
             if ($price > $resources->getCash()) {
-                throw new RunTimeException($this->translator->trans('You do not have enough cash!', [], 'market'));
+                throw new RuntimeException($this->translator->trans('You do not have enough cash!', [], 'market'));
             }
 
             $resources->setCash($resources->getCash() - $price);
         } elseif ($action == MarketItem::TYPE_SELL) {
             $resources = $this->substractAndValidateGameResources($gameResource, $resources, $amount);
         } else {
-            throw new RunTimeException($this->translator->trans('Invalid option!', [], 'market'));
+            throw new RuntimeException($this->translator->trans('Invalid option!', [], 'market'));
         }
 
         $player->setResources($resources);
@@ -201,21 +201,21 @@ final class MarketActionService
     {
         $world = $player->getWorld();
         if (!$world->getMarket()) {
-            throw new RunTimeException($this->translator->trans('Market not enabled!', [], 'market'));
+            throw new RuntimeException($this->translator->trans('Market not enabled!', [], 'market'));
         }
     }
 
     private function ensureMarketItemNotOwnedByPlayer(MarketItem $marketItem, Player $player): void
     {
         if ($marketItem->getPlayer()->getId() === $player->getId()) {
-            throw new RunTimeException($this->translator->trans('Can not buy or sell to yourself!', [], 'market'));
+            throw new RuntimeException($this->translator->trans('Can not buy or sell to yourself!', [], 'market'));
         }
     }
 
     private function ensureValidGameResource(string $gameResource): void
     {
         if (!GameResource::isValid($gameResource)) {
-            throw new RunTimeException($this->translator->trans('Invalid resource!', [], 'market'));
+            throw new RuntimeException($this->translator->trans('Invalid resource!', [], 'market'));
         }
     }
 
@@ -224,11 +224,11 @@ final class MarketActionService
         $marketItem = $this->marketItemRepository->find($marketItemId);
 
         if ($marketItem === null) {
-            throw new RunTimeException($this->translator->trans('Market order does not exist!', [], 'market'));
+            throw new RuntimeException($this->translator->trans('Market order does not exist!', [], 'market'));
         }
 
         if ($marketItem->getWorld()->getId() != $player->getWorld()->getId()) {
-            throw new RunTimeException($this->translator->trans('Wrong game world!', [], 'market'));
+            throw new RuntimeException($this->translator->trans('Wrong game world!', [], 'market'));
         }
 
         return $marketItem;
@@ -247,7 +247,7 @@ final class MarketActionService
                 $resources->setSteel($resources->getSteel() + $marketItem->getAmount());
                 break;
             default:
-                throw new RunTimeException($this->translator->trans('Unknown resource type!', [], 'market'));
+                throw new RuntimeException($this->translator->trans('Unknown resource type!', [], 'market'));
         }
 
         return $resources;
@@ -266,7 +266,7 @@ final class MarketActionService
                 $resources->setSteel($resources->getSteel() - $marketItem->getAmount());
                 break;
             default:
-                throw new RunTimeException($this->translator->trans('Unknown resource type!', [], 'market'));
+                throw new RuntimeException($this->translator->trans('Unknown resource type!', [], 'market'));
         }
 
         return $resources;
@@ -291,7 +291,7 @@ final class MarketActionService
                 $resources->setSteel($resources->getSteel() - $amount);
                 break;
             default:
-                throw new RunTimeException($this->translator->trans('Unknown resource type!', [], 'market'));
+                throw new RuntimeException($this->translator->trans('Unknown resource type!', [], 'market'));
         }
 
         return $resources;
@@ -300,7 +300,7 @@ final class MarketActionService
     private function ensureEnoughResources(int $amount, int $resourceAmount, string $resourceName): void
     {
         if ($amount > $resourceAmount) {
-            throw new RunTimeException($this->translator->trans('You do not have enough %ressource%!', ['%ressource%' => $resourceName], 'market'));
+            throw new RuntimeException($this->translator->trans('You do not have enough %ressource%!', ['%ressource%' => $resourceName], 'market'));
         }
     }
 

@@ -40,7 +40,7 @@ final class FederationBankActionService
         $this->ensureFederationEnabled($player);
         $federation = $player->getFederation();
         if ($federation === null) {
-            throw new RunTimeException($this->translator->trans('You are not in a Federation!', [], 'federation'));
+            throw new RuntimeException($this->translator->trans('You are not in a Federation!', [], 'federation'));
         }
 
         $resourceString = '';
@@ -55,7 +55,7 @@ final class FederationBankActionService
             }
             $resourceAmount = $player->getResources()->getValueByName($resourceName);
             if ($amount > $resourceAmount) {
-                throw new RunTimeException($this->translator->trans('You do not have enough %ressource%', ['%ressource%' => $resourceName], 'federation'));
+                throw new RuntimeException($this->translator->trans('You do not have enough %ressource%', ['%ressource%' => $resourceName], 'federation'));
             }
 
             $player->getResources()->setValueByName($resourceName, $resourceAmount - $amount);
@@ -84,11 +84,11 @@ final class FederationBankActionService
 
         $federation = $player->getFederation();
         if ($federation === null) {
-            throw new RunTimeException($this->translator->trans('You are not in a Federation!', [], 'federation'));
+            throw new RuntimeException($this->translator->trans('You are not in a Federation!', [], 'federation'));
         }
 
         if ($player->getFederationHierarchy() < Player::FEDERATION_HIERARCHY_CAPTAIN) {
-            throw new RunTimeException($this->translator->trans('You do not have permission to use the Federation Bank!', [], 'federation'));
+            throw new RuntimeException($this->translator->trans('You do not have permission to use the Federation Bank!', [], 'federation'));
         }
 
         $resourceString = '';
@@ -104,7 +104,7 @@ final class FederationBankActionService
 
             $resourceAmount = $player->getResources()->getValueByName($resourceName);
             if ($amount > $resourceAmount) {
-                throw new RunTimeException($this->translator->trans('Federation Bank does not have enough %ressource%!', ['%ressource%' => $resourceName], 'federation'));
+                throw new RuntimeException($this->translator->trans('Federation Bank does not have enough %ressource%!', ['%ressource%' => $resourceName], 'federation'));
             }
 
             $player->getResources()->setValueByName($resourceName, $resourceAmount + $amount);
@@ -128,7 +128,7 @@ final class FederationBankActionService
     {
         $world = $player->getWorld();
         if (!$world->getFederation()) {
-            throw new RunTimeException($this->translator->trans('Federations not enabled!', [], 'federation'));
+            throw new RuntimeException($this->translator->trans('Federations not enabled!', [], 'federation'));
         }
     }
 

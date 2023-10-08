@@ -48,11 +48,11 @@ final class FederationApplicationActionService
 
         $federationApplication = $this->getFederationApplication($player, $applicationId);
         if ($federationApplication->getPlayer()->getFederation() !== null) {
-            throw new RunTimeException($this->translator->trans('Player is already in another Federation!', [], 'federation'));
+            throw new RuntimeException($this->translator->trans('Player is already in another Federation!', [], 'federation'));
         }
 
         if (count($player->getFederation()->getPlayers()) >= $player->getWorld()->getFederationLimit()) {
-            throw new RunTimeException($this->translator->trans('Federation members world limit reached!', [], 'federation'));
+            throw new RuntimeException($this->translator->trans('Federation members world limit reached!', [], 'federation'));
         }
 
         // $news = $this->translator->trans('%player% has has been accepted into the Federation by %player2%', ['%player%' => $federationApplication->getPlayer()->getName(), '%player2%' => $player->getName()], 'federation');
@@ -115,11 +115,11 @@ final class FederationApplicationActionService
         $this->ensureFederationEnabled($player);
 
         if ($player->getFederation() !== null) {
-            throw new RunTimeException($this->translator->trans('You are already in a Federation!', [], 'federation'));
+            throw new RuntimeException($this->translator->trans('You are already in a Federation!', [], 'federation'));
         }
 
         if ($federation->getWorld()->getId() !== $player->getWorld()->getId()) {
-            throw new RunTimeException($this->translator->trans('Federation is not in your world!', [], 'federation'));
+            throw new RuntimeException($this->translator->trans('Federation is not in your world!', [], 'federation'));
         }
 
         $federationApplication = FederationApplication::createForFederation($federation, $player, $application);
@@ -130,7 +130,7 @@ final class FederationApplicationActionService
     {
         $world = $player->getWorld();
         if (!$world->getFederation()) {
-            throw new RunTimeException($this->translator->trans('Federations not enabled!', [], 'federation'));
+            throw new RuntimeException($this->translator->trans('Federations not enabled!', [], 'federation'));
         }
     }
 
@@ -142,15 +142,15 @@ final class FederationApplicationActionService
         );
 
         if ($federationApplication === null) {
-            throw new RunTimeException($this->translator->trans('FederationApplication does not exist!', [], 'federation'));
+            throw new RuntimeException($this->translator->trans('FederationApplication does not exist!', [], 'federation'));
         }
 
         if ($player->getFederation() === null) {
-            throw new RunTimeException($this->translator->trans('You are not in a Federation!', [], 'federation'));
+            throw new RuntimeException($this->translator->trans('You are not in a Federation!', [], 'federation'));
         }
 
         if ($player->getFederation()->getId() !== $federationApplication->getFederation()->getId()) {
-            throw new RunTimeException($this->translator->trans('FederationApplication does not belong to your Federation!', [], 'federation'));
+            throw new RuntimeException($this->translator->trans('FederationApplication does not belong to your Federation!', [], 'federation'));
         }
 
         return $federationApplication;
